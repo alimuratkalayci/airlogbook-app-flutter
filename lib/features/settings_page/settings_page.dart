@@ -1,5 +1,5 @@
 import 'package:coin_go/features/settings_page/add_giveaway/add_giveaway_page.dart';
-import 'package:coin_go/features/sign_in_page.dart';
+import 'package:coin_go/features/sign_in_page/sign_in_page.dart';
 import 'package:coin_go/theme/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

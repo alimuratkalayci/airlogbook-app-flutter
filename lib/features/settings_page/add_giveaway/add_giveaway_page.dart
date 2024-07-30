@@ -208,7 +208,7 @@ class _AddGiveawayPageState extends State<AddGiveawayPage> {
         selectedItem == null ||
         selectedDuration == null ||
         _image == null ||
-        _priceController.text.isEmpty) { // Bilet fiyatı kontrolü eklendi
+        _priceController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Lütfen tüm alanları doldurun ve resim seçin'),
       ));
@@ -228,12 +228,12 @@ class _AddGiveawayPageState extends State<AddGiveawayPage> {
     DateTime endDate = startDate.add(Duration(days: durationInDays));
 
     try {
-      // Resmi Firebase Storage'a yükle
+
       String imageUrl = await _uploadImage();
 
-      // Çekilişi Firestore'a ekle
+      // Çekilişi Firestore'a ekleme
       DocumentReference giveawayRef = await FirebaseFirestore.instance.collection('giveaways').add({
-        'giveawayId': '', // Boş olarak başlatıyoruz
+        'giveawayId': '',
         'title': _titleController.text,
         'item': selectedItem,
         'duration': selectedDuration,
@@ -242,12 +242,12 @@ class _AddGiveawayPageState extends State<AddGiveawayPage> {
         'status': 'active',
         'imageUrl': imageUrl,
         'ticket_price': double.parse(_priceController.text),
-        'participants': {}, // Katılımcılar başlangıçta boş bir harita olarak ekleniyor
+        'participants': {},
       });
 
-      String giveawayId = giveawayRef.id; // Oluşturulan çekilişin ID'si
+      String giveawayId = giveawayRef.id;
 
-      // Oluşturulan çekilişin giveawayId'sini güncelleme
+
       await giveawayRef.update({
         'giveawayId': giveawayId,
       });

@@ -2,8 +2,9 @@ import 'package:coin_go/root_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'features/sign_in_page.dart';
-import 'firebase_options.dart';
+import 'features/sign_in_page/sign_in_page.dart';
+import 'features/welcome_page/welcome_screen.dart';
+import 'general_components/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
               return RootScreen();
             }
             else {
-              return SignInPage();
+              return WelcomeScreen();
             }
           }
       ),

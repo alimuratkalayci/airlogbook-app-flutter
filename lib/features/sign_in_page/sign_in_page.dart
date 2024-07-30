@@ -1,7 +1,7 @@
 import 'package:coin_go/features/sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../root_screen.dart';
+import '../../root_screen.dart';
 
 
 class SignInPage extends StatefulWidget {
@@ -47,7 +47,7 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfffbac18),
+      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -59,15 +59,15 @@ class _SignInPageState extends State<SignInPage> {
                 labelText: 'E-mail',
                 labelStyle: TextStyle(color: Color(0xff28397f)),
                 border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: BorderSide(color: Color(0xff28397f)),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: BorderSide(color: Color(0xff28397f)),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: BorderSide(color: Color(0xff28397f)),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
@@ -96,15 +96,15 @@ class _SignInPageState extends State<SignInPage> {
                 labelText: 'Password',
                 labelStyle: TextStyle(color: Color(0xff28397f)),
                 border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: BorderSide(color: Color(0xff28397f)),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: BorderSide(color: Color(0xff28397f)),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: BorderSide(color: Color(0xff28397f)),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
               ),

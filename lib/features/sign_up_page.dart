@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:coin_go/features/sign_in_page.dart';
+import 'package:coin_go/features/sign_in_page/sign_in_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -131,9 +131,9 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfffbac18),
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Color(0xfffbac18),
+        backgroundColor: Colors.white,
         title: Text('Sign Up'),
       ),
       body: Padding(
@@ -141,21 +141,22 @@ class _SignUpPageState extends State<SignUpPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Spacer(flex: 1,),
             TextField(
               controller: usernameController,
               decoration: InputDecoration(
                 labelText: 'Username',
-                labelStyle: TextStyle(color: Colors.white, letterSpacing: 5),
+                labelStyle: TextStyle(color: Color(0xff28397f), letterSpacing: 5),
                 border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: BorderSide(color: Color(0xff28397f)),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: BorderSide(color: Color(0xff28397f)),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: BorderSide(color: Color(0xff28397f)),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
@@ -170,17 +171,17 @@ class _SignUpPageState extends State<SignUpPage> {
               controller: emailController,
               decoration: InputDecoration(
                 labelText: 'E-mail',
-                labelStyle: TextStyle(color: Colors.white, letterSpacing: 5),
+                labelStyle: TextStyle(color: Color(0xff28397f), letterSpacing: 5),
                 border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: BorderSide(color: Color(0xff28397f)),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: BorderSide(color: Color(0xff28397f)),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: BorderSide(color: Color(0xff28397f)),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
@@ -190,17 +191,17 @@ class _SignUpPageState extends State<SignUpPage> {
               controller: passwordController,
               decoration: InputDecoration(
                 labelText: 'Password',
-                labelStyle: TextStyle(color: Colors.white, letterSpacing: 5),
+                labelStyle: TextStyle(color: Color(0xff28397f), letterSpacing: 5),
                 border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: BorderSide(color: Color(0xff28397f)),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: BorderSide(color: Color(0xff28397f)),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: BorderSide(color: Color(0xff28397f)),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
@@ -211,17 +212,17 @@ class _SignUpPageState extends State<SignUpPage> {
               controller: confirmPasswordController,
               decoration: InputDecoration(
                 labelText: 'Repeat Password',
-                labelStyle: TextStyle(color: Colors.white, letterSpacing: 5),
+                labelStyle: TextStyle(color: Color(0xff28397f), letterSpacing: 5),
                 border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: BorderSide(color: Color(0xff28397f)),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: BorderSide(color: Color(0xff28397f)),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: BorderSide(color: Color(0xff28397f)),
                   borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
@@ -264,6 +265,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ],
             ),
+            Spacer(flex: 2,),
+
           ],
         ),
       ),
