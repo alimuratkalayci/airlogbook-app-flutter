@@ -55,7 +55,22 @@ class RootScreenUI extends StatelessWidget {
       items: [
         TabItem(icon: Icons.home, title: 'Home'),
         TabItem(icon: Icons.card_giftcard_outlined, title: 'Giveaways'),
-        TabItem(icon: Center(child: Stack(children: [Icon(Icons.airplanemode_active,size: 48,),Icon(Icons.plus_one,size: 16,),],)), title: 'Add Flight'),
+        TabItem(
+          icon: Center(
+            child: Stack(
+              clipBehavior: Clip.none, // Out of bounds widget'lar görünür
+              children: [
+                Icon(Icons.airplanemode_active, size: 64),
+                Positioned(
+                  right: -16, // Sağ kenardan uzaklık
+                  bottom: 0, // Alt kenardan uzaklık
+                  child: Icon(Icons.add_box, size: 16,color: Colors.white,),
+                ),
+              ],
+            ),
+          ),
+          title: 'Add Flight',
+        ),
         TabItem(icon: Icons.chat_bubble_outline, title: 'Chat'),
         TabItem(icon: Icons.settings, title: 'Settings'),
       ],
@@ -63,7 +78,7 @@ class RootScreenUI extends StatelessWidget {
       onTap: (int index) {
         context.read<NavigationCubit>().selectItem(NavigationItem.values[index]);
       },
-      activeColor: AppTheme.darkAccentColor,
+      activeColor: Colors.deepOrange,
       color: Colors.white,
     );
   }
