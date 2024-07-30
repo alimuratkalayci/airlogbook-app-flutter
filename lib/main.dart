@@ -1,4 +1,3 @@
-import 'package:coin_go/root_screen_navigation/navigation_cubit.dart';
 import 'package:coin_go/root_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'features/welcome_page/welcome_screen.dart';
 import 'general_components/firebase_options.dart';
+import 'navigation/navigation_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
