@@ -25,8 +25,9 @@ class _SignInPageState extends State<SignInPage> {
 
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) =>  RootScreen()),
+          MaterialPageRoute(builder: (context) => RootScreen()),
         );
+
 
       } catch (e) {
         print('Giriş hatası: $e');

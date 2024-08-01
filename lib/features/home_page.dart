@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
             children: [
               Center(
                 child: Text(
-                  'Son üç çekiliş!',
+                  'Last 10 Flight!',
                   style: TextStyle(color: Colors.white),
                 ),
               ),
