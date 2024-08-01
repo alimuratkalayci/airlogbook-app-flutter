@@ -50,7 +50,8 @@ class _SignUpPageState extends State<SignUpPage> {
           'username': usernameController.text,
           'email': emailController.text,
           'balance': 0,
-          'admin': 'no'
+          'admin': 'no',
+          'favorite_types': [],
         });
 
         // Kayıt başarılıysa Sign In sayfasına yönlendirme
