@@ -10,13 +10,26 @@ class AddFlightPage extends StatefulWidget {
 
 class _AddFlightPageState extends State<AddFlightPage> {
   final _formKey = GlobalKey<FormState>();
-  final _flightNumberController = TextEditingController();
   final _departureAirportController = TextEditingController();
+  final _routeWayController = TextEditingController();
   final _arrivalAirportController = TextEditingController();
-  final _flightDurationController = TextEditingController();
-  final _flightTypeController = TextEditingController();
-  final _pilotNameController = TextEditingController();
   final _airCraftController = TextEditingController();
+  final _dateController = TextEditingController();
+  final _totalTimeController = TextEditingController();
+  final _nightTimeController = TextEditingController();
+  final _picController = TextEditingController();
+  final _dualRcvdController = TextEditingController();
+  final _soloController = TextEditingController();
+  final _xcController = TextEditingController();
+  final _simInstController = TextEditingController();
+  final _actualInstController = TextEditingController();
+  final _simulatorController = TextEditingController();
+  final _groundController = TextEditingController();
+  final _dayToController = TextEditingController();
+  final _dayLdgController = TextEditingController();
+  final _nightToController = TextEditingController();
+  final _nightLdgController = TextEditingController();
+  final _remarksController = TextEditingController();
 
   DateTime? _selectedDate;
   final DateFormat _dateFormat = DateFormat('yyyy-MM-dd');
@@ -109,6 +122,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
       }
       setState(() {
         _selectedDate = pickedDate;
+        _dateController.text = _dateFormat.format(pickedDate);
       });
     });
   }
@@ -117,134 +131,288 @@ class _AddFlightPageState extends State<AddFlightPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(8.0),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextFormField(
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: EdgeInsets.all(8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Flight', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              controller: _dateController,
+                              decoration: InputDecoration(
+                                labelText: 'Date',
+                                hintText: _selectedDate == null
+                                    ? 'No Date Chosen!'
+                                    : _dateFormat.format(_selectedDate!),
+                                border: InputBorder.none,
+                              ),
+                              readOnly: true,
+                              onTap: _presentDatePicker,
+                              validator: (value) {
+                                if (_selectedDate == null) {
+                                  return 'Please pick a date';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.calendar_today),
+                            onPressed: _presentDatePicker,
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Text('Favorite Aircrafts'),
+                          SizedBox(width: 8,),
+                          Expanded(
+                            child: isLoading
+                                ? CircularProgressIndicator()
+                                : errorMessage.isNotEmpty
+                                ? Text(errorMessage, style: TextStyle(color: Colors.red))
+                                : DropdownButtonFormField<String>(
+                              value: selectedAircraftType,
+                              hint: Text('Aircraft Types'),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  selectedAircraftType = newValue;
+                                });
+                              },
+                              items: aircraftTypes
+                                  .map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Select an aircraft type';
+                                }
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _airCraftController,
                         decoration: InputDecoration(
-                          labelText: 'Date',
-                          hintText: _selectedDate == null
-                              ? 'No Date Chosen!'
-                              : _dateFormat.format(_selectedDate!),
+                          labelText: 'Aircraft ID',
+                          labelStyle: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          border: InputBorder.none,
                         ),
-                        readOnly: true,
-                        onTap: _presentDatePicker,
                         validator: (value) {
-                          if (_selectedDate == null) {
-                            return 'Please pick a date';
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the aircraft ID';
                           }
                           return null;
                         },
                       ),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.calendar_today),
-                      onPressed: _presentDatePicker,
-                    ),
-                  ],
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _departureAirportController,
+                        decoration: InputDecoration(
+                          labelText: 'Departure Airport',
+                          border: InputBorder.none,
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the departure airport';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _routeWayController,
+                        decoration: InputDecoration(
+                          labelText: 'Route',
+                          border: InputBorder.none,
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the route way';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: _arrivalAirportController,
+                        decoration: InputDecoration(
+                          labelText: 'Arrival Airport',
+                          border: InputBorder.none,
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the arrival airport';
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
+                  ),
                 ),
+
+                SizedBox(height: 20),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: EdgeInsets.all(8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Time', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      TextFormField(
+                        controller: _totalTimeController,
+                        decoration: InputDecoration(
+                          labelText: 'Total Time',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                      TextFormField(
+                        controller: _nightTimeController,
+                        decoration: InputDecoration(
+                          labelText: 'Night Time',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                      TextFormField(
+                        controller: _picController,
+                        decoration: InputDecoration(
+                          labelText: 'PIC',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                      TextFormField(
+                        controller: _dualRcvdController,
+                        decoration: InputDecoration(
+                          labelText: 'Dual Rcvd',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                      TextFormField(
+                        controller: _soloController,
+                        decoration: InputDecoration(
+                          labelText: 'Solo',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                      TextFormField(
+                        controller: _xcController,
+                        decoration: InputDecoration(
+                          labelText: 'XC',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                      TextFormField(
+                        controller: _simInstController,
+                        decoration: InputDecoration(
+                          labelText: 'Sim Inst',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                      TextFormField(
+                        controller: _actualInstController,
+                        decoration: InputDecoration(
+                          labelText: 'Actual Inst',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                      TextFormField(
+                        controller: _simulatorController,
+                        decoration: InputDecoration(
+                          labelText: 'Simulator',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                      TextFormField(
+                        controller: _groundController,
+                        decoration: InputDecoration(
+                          labelText: 'Ground',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: EdgeInsets.all(8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Landings', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      TextFormField(
+                        controller: _dayToController,
+                        decoration: InputDecoration(
+                          labelText: 'Day T/O',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                      TextFormField(
+                        controller: _dayLdgController,
+                        decoration: InputDecoration(
+                          labelText: 'Day Ldg',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                      TextFormField(
+                        controller: _nightToController,
+                        decoration: InputDecoration(
+                          labelText: 'Night T/O',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                      TextFormField(
+                        controller: _nightLdgController,
+                        decoration: InputDecoration(
+                          labelText: 'Night Ldg',
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 20),
                 TextFormField(
-                  controller: _flightNumberController,
-                  decoration: InputDecoration(labelText: 'Flight Number'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the flight number';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _airCraftController,
-                  decoration: InputDecoration(labelText: 'Aircraft ID'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the aircraft ID';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _departureAirportController,
-                  decoration: InputDecoration(labelText: 'Departure Airport'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the departure airport';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _arrivalAirportController,
-                  decoration: InputDecoration(labelText: 'Arrival Airport'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the arrival airport';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _flightDurationController,
-                  decoration: InputDecoration(labelText: 'Flight Duration'),
-                  keyboardType: TextInputType.number,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the flight duration';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _flightTypeController,
-                  decoration: InputDecoration(labelText: 'Flight Type'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the flight type';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _pilotNameController,
-                  decoration: InputDecoration(labelText: 'Pilot Name'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the pilot name';
-                    }
-                    return null;
-                  },
-                ),
-                isLoading
-                    ? CircularProgressIndicator()
-                    : errorMessage.isNotEmpty
-                    ? Text(errorMessage, style: TextStyle(color: Colors.red))
-                    : DropdownButtonFormField<String>(
-                  value: selectedAircraftType,
-                  hint: Text('Select an Aircraft Type'),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      selectedAircraftType = newValue;
-                    });
-                  },
-                  items: aircraftTypes
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please select an aircraft type';
-                    }
-                    return null;
-                  },
+                  controller: _remarksController,
+                  maxLines: 4,
+                  decoration: InputDecoration(
+                    labelText: 'Remarks',
+                    border: OutlineInputBorder(),
+                  ),
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
