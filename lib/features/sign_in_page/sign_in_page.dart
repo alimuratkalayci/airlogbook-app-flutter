@@ -1,4 +1,4 @@
-import 'package:coin_go/features/sign_up_page.dart';
+import 'package:coin_go/features/sign_up_page/sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../root_screen.dart';

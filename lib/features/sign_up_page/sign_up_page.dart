@@ -49,7 +49,6 @@ class _SignUpPageState extends State<SignUpPage> {
         await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
           'username': usernameController.text,
           'email': emailController.text,
-          'balance': 0,
           'admin': 'no',
           'favorite_types': [],
         });

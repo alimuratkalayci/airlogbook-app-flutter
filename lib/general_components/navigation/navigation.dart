@@ -3,10 +3,10 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:coin_go/theme/theme.dart';
-import '../features/chat_page/chat_page.dart';
-import '../features/giveaway_page.dart';
-import '../features/home_page.dart';
-import '../features/settings_page/settings_page.dart';
+import '../../features/chat_page/chat_page.dart';
+import '../../features/home_page/home_page.dart';
+import '../../features/my_flights_page/my_flights_page.dart';
+import '../../features/settings_page/settings_page.dart';
 import 'navigation_cubit.dart';
 import 'navigation_state.dart';
 
@@ -15,7 +15,7 @@ class RootScreenUI extends StatelessWidget {
 
   final List<Widget> _pages = [
     HomePage(),
-    GiveawayPage(),
+    MyFlightsPage(),
     AddFlightPage(),
     ChatPage(),
     SettingPage(),
@@ -54,21 +54,15 @@ class RootScreenUI extends StatelessWidget {
       style: TabStyle.fixedCircle,
       items: [
         TabItem(icon: Icons.home, title: 'Home'),
-        TabItem(icon: Icons.card_giftcard_outlined, title: 'Giveaways'),
-        TabItem(
-          icon: Center(
-            child: Stack(
-              clipBehavior: Clip.none, // Out of bounds widget'lar görünür
-              children: [
-                Icon(Icons.airplanemode_active, size: 64),
-                Positioned(
-                  right: -16, // Sağ kenardan uzaklık
-                  bottom: 0, // Alt kenardan uzaklık
-                  child: Icon(Icons.add_box, size: 16,color: Colors.white,),
-                ),
-              ],
-            ),
+        TabItem(icon: Transform.rotate(
+          angle: 90 * 3.1415926535897932 / 180, // 90 dereceyi radyana çevir
+          child: Icon(
+            Icons.airplanemode_active_sharp,
+            color: Colors.white,
           ),
+        ), title: 'My Flights'),
+        TabItem(
+          icon: Icons.add,
           title: 'Add Flight',
         ),
         TabItem(icon: Icons.chat_bubble_outline, title: 'Chat'),
@@ -88,7 +82,7 @@ class RootScreenUI extends StatelessWidget {
       case NavigationItem.home:
         return 'Home';
       case NavigationItem.chat:
-        return 'Chat';
+        return 'My Flights';
       case NavigationItem.wallet:
         return 'Wallet';
       case NavigationItem.settings:

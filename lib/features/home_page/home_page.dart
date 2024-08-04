@@ -1,7 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-import '../theme/theme.dart';
+import '../../theme/theme.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,6 +12,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String? userEmail;
+
+  @override
+  void initState() {
+    super.initState();
+    getUserEmail();
+  }
+
+  void getUserEmail() {
+    User? user = FirebaseAuth.instance.currentUser;
+    setState(() {
+      userEmail = user?.email;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +43,16 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(color: Colors.white),
                 ),
               ),
-              SizedBox(height: 16,),
+              if (userEmail != null) ...[
+                SizedBox(height: 16),
+                Center(
+                  child: Text(
+                    'Logged in as: $userEmail',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+              SizedBox(height: 16),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8),
                 child: CarouselSlider(
@@ -37,19 +62,16 @@ class _HomePageState extends State<HomePage> {
                       builder: (BuildContext context) {
                         return Container(
                           width: MediaQuery.of(context).size.width,
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                          ),
+                          margin: const EdgeInsets.symmetric(horizontal: 8),
                           child: GestureDetector(
                             onTap: () {
-                              print(Text('tıklandı'));
-                              //TODO SONRA EKLE
+                              print('tıklandı');
+                              // TODO: SONRA EKLE
                               /* Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) => const SignUpPage()),
                               ); */
                             },
-
                             child: Card(
                               color: Colors.white,
                             ),
@@ -59,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                     );
                   }).toList(),
                 ),
-              )
+              ),
             ],
           ),
         ],

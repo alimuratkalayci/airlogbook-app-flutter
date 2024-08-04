@@ -110,6 +110,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
     }
   }
 
+
   void _presentDatePicker() {
     showDatePicker(
       context: context,
@@ -125,6 +126,92 @@ class _AddFlightPageState extends State<AddFlightPage> {
         _dateController.text = _dateFormat.format(pickedDate);
       });
     });
+  }
+
+  Future<void> _saveFlightRecord() async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    final User? currentUser = auth.currentUser;
+
+    if (currentUser == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('No user logged in')),
+      );
+      return;
+    }
+
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    try {
+      final userEmail = currentUser.email;
+
+      if (userEmail == null) {
+        throw Exception('User email is null');
+      }
+
+      final flightRecord = {
+        'date': _dateController.text,
+        'aircraft_type': selectedAircraftType,
+        'aircraft_id': _airCraftController.text,
+        'departure_airport': _departureAirportController.text,
+        'route': _routeWayController.text,
+        'arrival_airport': _arrivalAirportController.text,
+        'total_time': _totalTimeController.text,
+        'night_time': _nightTimeController.text,
+        'pic': _picController.text,
+        'dual_rcvd': _dualRcvdController.text,
+        'solo': _soloController.text,
+        'xc': _xcController.text,
+        'sim_inst': _simInstController.text,
+        'actual_inst': _actualInstController.text,
+        'simulator': _simulatorController.text,
+        'ground': _groundController.text,
+        'day_to': _dayToController.text,
+        'day_ldg': _dayLdgController.text,
+        'night_to': _nightToController.text,
+        'night_ldg': _nightLdgController.text,
+        'remarks': _remarksController.text,
+      };
+
+      await firestore
+          .collection('users')
+          .doc(currentUser.uid)
+          .collection('my_flights')
+          .add(flightRecord);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Flight record added')),
+      );
+
+      // Clear form fields if needed
+      _formKey.currentState?.reset();
+      _dateController.clear();
+      _airCraftController.clear();
+      _departureAirportController.clear();
+      _routeWayController.clear();
+      _arrivalAirportController.clear();
+      _totalTimeController.clear();
+      _nightTimeController.clear();
+      _picController.clear();
+      _dualRcvdController.clear();
+      _soloController.clear();
+      _xcController.clear();
+      _simInstController.clear();
+      _actualInstController.clear();
+      _simulatorController.clear();
+      _groundController.clear();
+      _dayToController.clear();
+      _dayLdgController.clear();
+      _nightToController.clear();
+      _nightLdgController.clear();
+      _remarksController.clear();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error adding flight record: $e')),
+      );
+    }
   }
 
   @override
@@ -219,16 +306,11 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         controller: _airCraftController,
                         decoration: InputDecoration(
                           labelText: 'Aircraft ID',
-                          labelStyle: TextStyle(
-                            color: Colors.blue,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          border: InputBorder.none,
+                          border: OutlineInputBorder(),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter the aircraft ID';
+                            return 'Please enter Aircraft ID';
                           }
                           return null;
                         },
@@ -238,11 +320,11 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         controller: _departureAirportController,
                         decoration: InputDecoration(
                           labelText: 'Departure Airport',
-                          border: InputBorder.none,
+                          border: OutlineInputBorder(),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter the departure airport';
+                            return 'Please enter Departure Airport';
                           }
                           return null;
                         },
@@ -252,11 +334,11 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         controller: _routeWayController,
                         decoration: InputDecoration(
                           labelText: 'Route',
-                          border: InputBorder.none,
+                          border: OutlineInputBorder(),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter the route way';
+                            return 'Please enter Route';
                           }
                           return null;
                         },
@@ -266,11 +348,11 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         controller: _arrivalAirportController,
                         decoration: InputDecoration(
                           labelText: 'Arrival Airport',
-                          border: InputBorder.none,
+                          border: OutlineInputBorder(),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter the arrival airport';
+                            return 'Please enter Arrival Airport';
                           }
                           return null;
                         },
@@ -278,7 +360,6 @@ class _AddFlightPageState extends State<AddFlightPage> {
                     ],
                   ),
                 ),
-
                 SizedBox(height: 20),
                 Container(
                   decoration: BoxDecoration(
@@ -290,75 +371,145 @@ class _AddFlightPageState extends State<AddFlightPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Time', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 10),
                       TextFormField(
                         controller: _totalTimeController,
                         decoration: InputDecoration(
                           labelText: 'Total Time',
-                          border: InputBorder.none,
+                          border: OutlineInputBorder(),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Total Time';
+                          }
+                          return null;
+                        },
                       ),
+                      SizedBox(height: 10),
                       TextFormField(
                         controller: _nightTimeController,
                         decoration: InputDecoration(
                           labelText: 'Night Time',
-                          border: InputBorder.none,
+                          border: OutlineInputBorder(),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Night Time';
+                          }
+                          return null;
+                        },
                       ),
+                      SizedBox(height: 10),
                       TextFormField(
                         controller: _picController,
                         decoration: InputDecoration(
                           labelText: 'PIC',
-                          border: InputBorder.none,
+                          border: OutlineInputBorder(),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter PIC';
+                          }
+                          return null;
+                        },
                       ),
+                      SizedBox(height: 10),
                       TextFormField(
                         controller: _dualRcvdController,
                         decoration: InputDecoration(
-                          labelText: 'Dual Rcvd',
-                          border: InputBorder.none,
+                          labelText: 'Dual Received',
+                          border: OutlineInputBorder(),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Dual Received';
+                          }
+                          return null;
+                        },
                       ),
+                      SizedBox(height: 10),
                       TextFormField(
                         controller: _soloController,
                         decoration: InputDecoration(
                           labelText: 'Solo',
-                          border: InputBorder.none,
+                          border: OutlineInputBorder(),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Solo';
+                          }
+                          return null;
+                        },
                       ),
+                      SizedBox(height: 10),
                       TextFormField(
                         controller: _xcController,
                         decoration: InputDecoration(
                           labelText: 'XC',
-                          border: InputBorder.none,
+                          border: OutlineInputBorder(),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter XC';
+                          }
+                          return null;
+                        },
                       ),
+                      SizedBox(height: 10),
                       TextFormField(
                         controller: _simInstController,
                         decoration: InputDecoration(
                           labelText: 'Sim Inst',
-                          border: InputBorder.none,
+                          border: OutlineInputBorder(),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Sim Inst';
+                          }
+                          return null;
+                        },
                       ),
+                      SizedBox(height: 10),
                       TextFormField(
                         controller: _actualInstController,
                         decoration: InputDecoration(
                           labelText: 'Actual Inst',
-                          border: InputBorder.none,
+                          border: OutlineInputBorder(),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Actual Inst';
+                          }
+                          return null;
+                        },
                       ),
+                      SizedBox(height: 10),
                       TextFormField(
                         controller: _simulatorController,
                         decoration: InputDecoration(
                           labelText: 'Simulator',
-                          border: InputBorder.none,
+                          border: OutlineInputBorder(),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Simulator';
+                          }
+                          return null;
+                        },
                       ),
+                      SizedBox(height: 10),
                       TextFormField(
                         controller: _groundController,
                         decoration: InputDecoration(
                           labelText: 'Ground',
-                          border: InputBorder.none,
+                          border: OutlineInputBorder(),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Ground';
+                          }
+                          return null;
+                        },
                       ),
                     ],
                   ),
@@ -374,33 +525,61 @@ class _AddFlightPageState extends State<AddFlightPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('Landings', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      SizedBox(height: 10),
                       TextFormField(
                         controller: _dayToController,
                         decoration: InputDecoration(
-                          labelText: 'Day T/O',
-                          border: InputBorder.none,
+                          labelText: 'Day Takeoffs',
+                          border: OutlineInputBorder(),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Day Takeoffs';
+                          }
+                          return null;
+                        },
                       ),
+                      SizedBox(height: 10),
                       TextFormField(
                         controller: _dayLdgController,
                         decoration: InputDecoration(
-                          labelText: 'Day Ldg',
-                          border: InputBorder.none,
+                          labelText: 'Day Landings',
+                          border: OutlineInputBorder(),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Day Landings';
+                          }
+                          return null;
+                        },
                       ),
+                      SizedBox(height: 10),
                       TextFormField(
                         controller: _nightToController,
                         decoration: InputDecoration(
-                          labelText: 'Night T/O',
-                          border: InputBorder.none,
+                          labelText: 'Night Takeoffs',
+                          border: OutlineInputBorder(),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Night Takeoffs';
+                          }
+                          return null;
+                        },
                       ),
+                      SizedBox(height: 10),
                       TextFormField(
                         controller: _nightLdgController,
                         decoration: InputDecoration(
-                          labelText: 'Night Ldg',
-                          border: InputBorder.none,
+                          labelText: 'Night Landings',
+                          border: OutlineInputBorder(),
                         ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Night Landings';
+                          }
+                          return null;
+                        },
                       ),
                     ],
                   ),
@@ -416,15 +595,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
-                      // Process data
-                      // You can add code here to save the flight record
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Flight record added')),
-                      );
-                    }
-                  },
+                  onPressed: _saveFlightRecord,
                   child: Text('Add Flight Record'),
                 ),
               ],
