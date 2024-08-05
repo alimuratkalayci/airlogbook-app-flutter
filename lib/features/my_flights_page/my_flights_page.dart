@@ -2,24 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'My Flights',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyFlightsPage(),
-    );
-  }
+String formatDay(String date) {
+  DateTime parsedDate = DateTime.parse(date);
+  return DateFormat('dd').format(parsedDate);
+}
+
+String formatMonthYear(String date) {
+  DateTime parsedDate = DateTime.parse(date);
+  return DateFormat('MM-yyyy').format(parsedDate);
 }
 
 class MyFlightsPage extends StatelessWidget {
@@ -42,6 +39,7 @@ class MyFlightsPage extends StatelessWidget {
                 .collection('users')
                 .doc(userID)
                 .collection('my_flights')
+                .orderBy('date', descending: true)
                 .snapshots(),
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (!snapshot.hasData) {
@@ -56,7 +54,7 @@ class MyFlightsPage extends StatelessWidget {
                   var flight = flights[index];
                   return FlightCard(
                     date: flight['date'],
-                    total_time: flight['total_time'],
+                    total_time: flight['total_time'].toString(),
                     aircraft_id: flight['aircraft_id'],
                     aircraft_type: flight['aircraft_type'],
                     departure: flight['departure_airport'],
@@ -100,24 +98,61 @@ class FlightCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(10.0),
+      margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: EdgeInsets.all(10.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          padding: EdgeInsets.all(16.0),
+          child: Row(
             children: [
-              Text('Date: $date', style: TextStyle(fontWeight: FontWeight.bold)),
-              SizedBox(height: 5),
-              Text('Time: $total_time'),
-              SizedBox(height: 10),
-              Text('Aircraft ID: $aircraft_id'),
-              Text('Aircraft Type: $aircraft_type'),
-              SizedBox(height: 10),
-              Text('Departure: $departure'),
-              Text('Route: $route'),
-              Text('Destination: $arrival'),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(formatDay(date),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 48)),
+                  Text(formatMonthYear(date), style: TextStyle(fontSize: 16)),
+                ],
+              ),
+              SizedBox(width: 16), // Space between date/time and other info
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('$departure'),
+                        route.isEmpty ? Spacer() : Text('$route'),
+                        Text('$arrival'),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('$total_time hours'),
+                        Text('$aircraft_id'),
+                        Text('$aircraft_type'),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 16),
+              Column(
+                children: [
+                  Transform.rotate(
+                    angle: 90 *
+                        3.1415926535897932 /
+                        180, // 90 dereceyi radyana çevir
+                    child: Icon(
+                      Icons.airplanemode_active_sharp,
+                      size: 48,
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),
