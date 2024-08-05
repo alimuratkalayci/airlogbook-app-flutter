@@ -120,14 +120,16 @@ class FlightCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    SizedBox(height: 10,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('$departure'),
-                        route.isEmpty ? Spacer() : Text('$route'),
+                        Text('$route'),
                         Text('$arrival'),
                       ],
                     ),
+                    SizedBox(height: 36,),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

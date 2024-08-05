@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class AddFlightPage extends StatefulWidget {
@@ -355,9 +356,6 @@ class _AddFlightPageState extends State<AddFlightPage> {
                           border: OutlineInputBorder(),
                         ),
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter Route';
-                          }
                           return null;
                         },
                       ),
@@ -392,6 +390,9 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       SizedBox(height: 10),
                       TextFormField(
                         keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         controller: _totalTimeController,
                         decoration: InputDecoration(
                           labelText: 'Total Time',
@@ -407,6 +408,9 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       SizedBox(height: 10),
                       TextFormField(
                         keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         controller: _nightTimeController,
                         decoration: InputDecoration(
                           labelText: 'Night Time',
@@ -419,6 +423,9 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       SizedBox(height: 10),
                       TextFormField(
                         keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         controller: _picController,
                         decoration: InputDecoration(
                           labelText: 'PIC',
@@ -431,6 +438,9 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       SizedBox(height: 10),
                       TextFormField(
                         keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         controller: _dualRcvdController,
                         decoration: InputDecoration(
                           labelText: 'Dual Received',
@@ -443,6 +453,9 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       SizedBox(height: 10),
                       TextFormField(
                         keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         controller: _soloController,
                         decoration: InputDecoration(
                           labelText: 'Solo',
@@ -455,6 +468,9 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       SizedBox(height: 10),
                       TextFormField(
                         keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         controller: _xcController,
                         decoration: InputDecoration(
                           labelText: 'XC',
@@ -467,6 +483,9 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       SizedBox(height: 10),
                       TextFormField(
                         keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         controller: _simInstController,
                         decoration: InputDecoration(
                           labelText: 'Sim Inst',
@@ -479,6 +498,9 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       SizedBox(height: 10),
                       TextFormField(
                         keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         controller: _actualInstController,
                         decoration: InputDecoration(
                           labelText: 'Actual Inst',
@@ -491,6 +513,9 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       SizedBox(height: 10),
                       TextFormField(
                         keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         controller: _simulatorController,
                         decoration: InputDecoration(
                           labelText: 'Simulator',
@@ -503,6 +528,9 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       SizedBox(height: 10),
                       TextFormField(
                         keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         controller: _groundController,
                         decoration: InputDecoration(
                           labelText: 'Ground',
@@ -529,6 +557,9 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       SizedBox(height: 10),
                       TextFormField(
                         keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         controller: _dayToController,
                         decoration: InputDecoration(
                           labelText: 'Day Takeoffs',
@@ -541,6 +572,9 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       SizedBox(height: 10),
                       TextFormField(
                         keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         controller: _dayLdgController,
                         decoration: InputDecoration(
                           labelText: 'Day Landings',
@@ -553,6 +587,9 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       SizedBox(height: 10),
                       TextFormField(
                         keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         controller: _nightToController,
                         decoration: InputDecoration(
                           labelText: 'Night Takeoffs',
@@ -565,6 +602,9 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       SizedBox(height: 10),
                       TextFormField(
                         keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
                         controller: _nightLdgController,
                         decoration: InputDecoration(
                           labelText: 'Night Landings',
