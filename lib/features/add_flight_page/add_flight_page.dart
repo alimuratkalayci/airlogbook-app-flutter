@@ -31,6 +31,8 @@ class _AddFlightPageState extends State<AddFlightPage> {
   final _nightToController = TextEditingController();
   final _nightLdgController = TextEditingController();
   final _remarksController = TextEditingController();
+  final _hobbsInController = TextEditingController();
+  final _hobbsOutController = TextEditingController();
 
   DateTime? _selectedDate;
   final DateFormat _dateFormat = DateFormat('yyyy-MM-dd');
@@ -129,6 +131,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
     });
   }
 
+
   Future<void> _saveFlightRecord() async {
     final FirebaseAuth auth = FirebaseAuth.instance;
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -176,6 +179,8 @@ class _AddFlightPageState extends State<AddFlightPage> {
         'departure_airport': _departureAirportController.text,
         'route': _routeWayController.text,
         'arrival_airport': _arrivalAirportController.text,
+        'hobbs_in': _hobbsInController.text.isEmpty ? int.tryParse('0') : int.tryParse(_hobbsInController.text),
+        'hobbs_out': _hobbsOutController.text.isEmpty ? int.tryParse('0') : int.tryParse(_hobbsOutController.text),
         'total_time': totalTime,  // Storing as float
         'night_time': nightTime,  // Storing as float
         'pic': pic,
@@ -210,6 +215,8 @@ class _AddFlightPageState extends State<AddFlightPage> {
       _departureAirportController.clear();
       _routeWayController.clear();
       _arrivalAirportController.clear();
+      _hobbsInController.clear();
+      _hobbsOutController.clear();
       _totalTimeController.clear();
       _nightTimeController.clear();
       _picController.clear();
@@ -231,6 +238,18 @@ class _AddFlightPageState extends State<AddFlightPage> {
       );
     }
   }
+
+  void _updateTotalTime() {
+    double? hobbsIn = double.tryParse(_hobbsInController.text);
+    double? hobbsOut = double.tryParse(_hobbsOutController.text);
+    if (hobbsIn != null && hobbsOut != null) {
+      double totalTime = hobbsIn - hobbsOut;
+      _totalTimeController.text = totalTime.toStringAsFixed(2);
+    } else {
+      _totalTimeController.text = '';
+    }
+  }
+
 
 
   @override
@@ -373,6 +392,39 @@ class _AddFlightPageState extends State<AddFlightPage> {
                           return null;
                         },
                       ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                        ],
+                        controller: _hobbsInController,
+                        decoration: InputDecoration(
+                          labelText: 'Hobbs In',
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                        ],
+                        controller: _hobbsOutController,
+                        decoration: InputDecoration(
+                          labelText: 'Hobbs Out',
+                          border: OutlineInputBorder(),
+                        ),
+                        validator: (value) {
+                          return null;
+                        },
+                        onChanged: (value) {
+                          _updateTotalTime();
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -386,12 +438,12 @@ class _AddFlightPageState extends State<AddFlightPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Time as a minute', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      Text('Time', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                       SizedBox(height: 10),
                       TextFormField(
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly,
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                         ],
                         controller: _totalTimeController,
                         decoration: InputDecoration(
@@ -409,7 +461,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       TextFormField(
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly,
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                         ],
                         controller: _nightTimeController,
                         decoration: InputDecoration(
@@ -424,7 +476,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       TextFormField(
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly,
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                         ],
                         controller: _picController,
                         decoration: InputDecoration(
@@ -439,7 +491,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       TextFormField(
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly,
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                         ],
                         controller: _dualRcvdController,
                         decoration: InputDecoration(
@@ -454,7 +506,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       TextFormField(
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly,
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                         ],
                         controller: _soloController,
                         decoration: InputDecoration(
@@ -469,7 +521,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       TextFormField(
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly,
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                         ],
                         controller: _xcController,
                         decoration: InputDecoration(
@@ -484,7 +536,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       TextFormField(
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly,
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                         ],
                         controller: _simInstController,
                         decoration: InputDecoration(
@@ -499,7 +551,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       TextFormField(
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly,
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                         ],
                         controller: _actualInstController,
                         decoration: InputDecoration(
@@ -514,7 +566,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       TextFormField(
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly,
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                         ],
                         controller: _simulatorController,
                         decoration: InputDecoration(
@@ -529,7 +581,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       TextFormField(
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.digitsOnly,
+                          FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
                         ],
                         controller: _groundController,
                         decoration: InputDecoration(

@@ -19,11 +19,6 @@ String formatMonthYear(String date) {
   return DateFormat('MM-yyyy').format(parsedDate);
 }
 
-String formatTotalTime(double totalMinutes) {
-  int hours = totalMinutes ~/ 60;
-  int minutes = (totalMinutes % 60).toInt();
-  return '${hours}h ${minutes}m';
-}
 
 class MyFlightsPage extends StatelessWidget {
   @override
@@ -122,7 +117,7 @@ class FlightCard extends StatelessWidget {
                   Text(formatMonthYear(date), style: TextStyle(fontSize: 16)),
                 ],
               ),
-              SizedBox(width: 8),
+              SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -136,11 +131,11 @@ class FlightCard extends StatelessWidget {
                       children: [
                         Text('$departure'),
                         if (route.isNotEmpty)
-                          Icon(Icons.arrow_right,
+                          Icon(Icons.arrow_forward_sharp,
                               size: 16, color: Colors.deepOrange), // Ok işareti
                         if (route.isNotEmpty) Text('$route'),
                         if (route.isNotEmpty)
-                          Icon(Icons.arrow_right,
+                          Icon(Icons.arrow_forward_sharp,
                               size: 16, color: Colors.deepOrange), // Ok işareti
                         Text('$arrival'),
                       ],
@@ -151,7 +146,7 @@ class FlightCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(formatTotalTime(total_time)),
+                        Text('Time $total_time'),
                         Text('$aircraft_id'),
                         Text('$aircraft_type'),
                       ],
@@ -159,7 +154,7 @@ class FlightCard extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(width: 8),
+              SizedBox(width: 16),
               Column(
                 children: [
                   Transform.rotate(
