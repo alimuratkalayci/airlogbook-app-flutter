@@ -386,7 +386,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Time', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      Text('Time as a minute', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                       SizedBox(height: 10),
                       TextFormField(
                         keyboardType: TextInputType.number,
@@ -564,6 +564,13 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         decoration: InputDecoration(
                           labelText: 'Day Takeoffs',
                           border: OutlineInputBorder(),
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.add,color: Colors.deepOrange),
+                            onPressed: () {
+                              int currentValue = int.tryParse(_dayToController.text) ?? 0;
+                              _dayToController.text = (currentValue + 1).toString();
+                            },
+                          ),
                         ),
                         validator: (value) {
                           return null;
@@ -579,6 +586,13 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         decoration: InputDecoration(
                           labelText: 'Day Landings',
                           border: OutlineInputBorder(),
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.add,color: Colors.deepOrange),
+                            onPressed: () {
+                              int currentValue = int.tryParse(_dayLdgController.text) ?? 0;
+                              _dayLdgController.text = (currentValue + 1).toString();
+                            },
+                          ),
                         ),
                         validator: (value) {
                           return null;
@@ -594,6 +608,13 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         decoration: InputDecoration(
                           labelText: 'Night Takeoffs',
                           border: OutlineInputBorder(),
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.add,color: Colors.deepOrange),
+                            onPressed: () {
+                              int currentValue = int.tryParse(_nightToController.text) ?? 0;
+                              _nightToController.text = (currentValue + 1).toString();
+                            },
+                          ),
                         ),
                         validator: (value) {
                           return null;
@@ -609,6 +630,13 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         decoration: InputDecoration(
                           labelText: 'Night Landings',
                           border: OutlineInputBorder(),
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.add,color: Colors.deepOrange),
+                            onPressed: () {
+                              int currentValue = int.tryParse(_nightLdgController.text) ?? 0;
+                              _nightLdgController.text = (currentValue + 1).toString();
+                            },
+                          ),
                         ),
                         validator: (value) {
                           return null;

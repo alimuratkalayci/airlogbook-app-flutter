@@ -54,17 +54,12 @@ class RootScreenUI extends StatelessWidget {
       style: TabStyle.fixedCircle,
       items: [
         TabItem(icon: Icons.home, title: 'Home'),
-        TabItem(icon: Transform.rotate(
-          angle: 90 * 3.1415926535897932 / 180, // 90 dereceyi radyana çevir
-          child: Icon(
-            Icons.airplanemode_active_sharp,
-            color: Colors.white,
-          ),
-        ), title: 'My Flights'),
         TabItem(
-          icon: Icons.add,
-          title: 'Add Flight',
+          icon: Image.asset('assets/icons/flights1.png'),
+          activeIcon: Image.asset('assets/icons/flights2.png'),
+          title: 'Flights',
         ),
+        TabItem(icon: Icons.add, title: 'Add Flight'),
         TabItem(icon: Icons.chat_bubble_outline, title: 'Chat'),
         TabItem(icon: Icons.settings, title: 'Settings'),
       ],
@@ -76,6 +71,7 @@ class RootScreenUI extends StatelessWidget {
       color: Colors.white,
     );
   }
+
 
   String _getPageTitle(NavigationItem item) {
     switch (item) {

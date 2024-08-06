@@ -19,6 +19,12 @@ String formatMonthYear(String date) {
   return DateFormat('MM-yyyy').format(parsedDate);
 }
 
+String formatTotalTime(double totalMinutes) {
+  int hours = totalMinutes ~/ 60;
+  int minutes = (totalMinutes % 60).toInt();
+  return '${hours}h ${minutes}m';
+}
+
 class MyFlightsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -54,7 +60,7 @@ class MyFlightsPage extends StatelessWidget {
                   var flight = flights[index];
                   return FlightCard(
                     date: flight['date'],
-                    total_time: flight['total_time'].toString(),
+                    total_time: flight['total_time'],
                     aircraft_id: flight['aircraft_id'],
                     aircraft_type: flight['aircraft_type'],
                     departure: flight['departure_airport'],
@@ -76,7 +82,7 @@ class MyFlightsPage extends StatelessWidget {
 
 class FlightCard extends StatelessWidget {
   final String date;
-  final String total_time;
+  final double total_time;
   final String aircraft_id;
   final String aircraft_type;
   final String departure;
@@ -102,38 +108,50 @@ class FlightCard extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(8.0),
           child: Row(
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(formatDay(date),
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 48)),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 32,
+                          color: Colors.deepOrange)),
                   Text(formatMonthYear(date), style: TextStyle(fontSize: 16)),
                 ],
               ),
-              SizedBox(width: 16), // Space between date/time and other info
+              SizedBox(width: 8),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('$departure'),
-                        Text('$route'),
+                        if (route.isNotEmpty)
+                          Icon(Icons.arrow_right,
+                              size: 16, color: Colors.deepOrange), // Ok işareti
+                        if (route.isNotEmpty) Text('$route'),
+                        if (route.isNotEmpty)
+                          Icon(Icons.arrow_right,
+                              size: 16, color: Colors.deepOrange), // Ok işareti
                         Text('$arrival'),
                       ],
                     ),
-                    SizedBox(height: 36,),
+                    SizedBox(
+                      height: 16,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('$total_time hours'),
+                        Text(formatTotalTime(total_time)),
                         Text('$aircraft_id'),
                         Text('$aircraft_type'),
                       ],
@@ -141,7 +159,7 @@ class FlightCard extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(width: 16),
+              SizedBox(width: 8),
               Column(
                 children: [
                   Transform.rotate(
@@ -151,6 +169,7 @@ class FlightCard extends StatelessWidget {
                     child: Icon(
                       Icons.airplanemode_active_sharp,
                       size: 48,
+                      color: Colors.deepOrange,
                     ),
                   ),
                 ],
