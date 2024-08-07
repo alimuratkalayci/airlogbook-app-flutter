@@ -155,21 +155,49 @@ class _AddFlightPageState extends State<AddFlightPage> {
         throw Exception('User email is null');
       }
 
+      final double? totalTime = _totalTimeController.text.isNotEmpty
+          ? double.tryParse(_totalTimeController.text)
+          : 0.0;
+      final double? nightTime = _nightTimeController.text.isNotEmpty
+          ? double.tryParse(_nightTimeController.text)
+          : 0.0;
+      final double? pic = _picController.text.isNotEmpty
+          ? double.tryParse(_picController.text)
+          : 0.0;
+      final double? dual_rcvd = _dualRcvdController.text.isNotEmpty
+          ? double.tryParse(_dualRcvdController.text)
+          : 0.0;
+      final double? solo = _soloController.text.isNotEmpty
+          ? double.tryParse(_soloController.text)
+          : 0.0;
+      final double? xc = _xcController.text.isNotEmpty
+          ? double.tryParse(_xcController.text)
+          : 0.0;
+      final double? sim_inst = _simInstController.text.isNotEmpty
+          ? double.tryParse(_simInstController.text)
+          : 0.0;
+      final double? actual_inst = _actualInstController.text.isNotEmpty
+          ? double.tryParse(_actualInstController.text)
+          : 0.0;
+      final double? simulator = _simulatorController.text.isNotEmpty
+          ? double.tryParse(_simulatorController.text)
+          : 0.0;
+      final double? ground = _groundController.text.isNotEmpty
+          ? double.tryParse(_groundController.text)
+          : 0.0;
 
-      final double? totalTime = double.tryParse(_totalTimeController.text);
-      final double? nightTime = double.tryParse(_nightTimeController.text);
-      final double? pic = double.tryParse(_picController.text);
-      final double? dual_rcvd = double.tryParse(_dualRcvdController.text);
-      final double? solo = double.tryParse(_soloController.text);
-      final double? xc = double.tryParse(_xcController.text);
-      final double? sim_inst = double.tryParse(_simInstController.text);
-      final double? actual_inst = double.tryParse(_actualInstController.text);
-      final double? simulator = double.tryParse(_simulatorController.text);
-      final double? ground = double.tryParse(_groundController.text);
-      final int? dayTakeoffs = int.tryParse(_dayToController.text);
-      final int? dayLandings = int.tryParse(_dayLdgController.text);
-      final int? nightTakeoffs = int.tryParse(_nightToController.text);
-      final int? nightLandings = int.tryParse(_nightLdgController.text);
+      final int? dayTakeoffs = _dayToController.text.isNotEmpty
+          ? int.tryParse(_dayToController.text)
+          : 0;
+      final int? dayLandings = _dayLdgController.text.isNotEmpty
+          ? int.tryParse(_dayLdgController.text)
+          : 0;
+      final int? nightTakeoffs = _nightToController.text.isNotEmpty
+          ? int.tryParse(_nightToController.text)
+          : 0;
+      final int? nightLandings = _nightLdgController.text.isNotEmpty
+          ? int.tryParse(_nightLdgController.text)
+          : 0;
 
 
       final flightRecord = {

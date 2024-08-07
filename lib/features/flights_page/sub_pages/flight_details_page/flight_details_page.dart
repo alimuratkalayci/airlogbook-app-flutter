@@ -109,7 +109,7 @@ class FlightDetailsPage extends StatelessWidget {
             ),
             SizedBox(height: 8.0),
             Text(
-              value != null ? value.toString() : '0',
+              value != null ? value.toString() : '-',
               style: TextStyle(
                 fontSize: 16.0,
                 color: Colors.grey[700],
