@@ -1,8 +1,10 @@
+import 'package:coin_go/features/add_flight_page/add_flight_cubit.dart';
 import 'package:coin_go/root_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'features/flights_page/flights_cubit.dart';
 import 'features/welcome_page/welcome_screen.dart';
 import 'general_components/firebase_options.dart';
 import 'general_components/navigation/navigation_cubit.dart';
@@ -22,6 +24,8 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => NavigationCubit()),
+        BlocProvider(create: (context) => AddFlightCubit()),
+        BlocProvider(create: (context) => FlightCubit()),
       ],
       child: MaterialApp(
         home: StreamBuilder<User?>(
