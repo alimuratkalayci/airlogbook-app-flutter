@@ -1,13 +1,9 @@
+import 'package:coin_go/features/flights_page/sub_pages/flight_details_page/flight_details_page.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-}
+import 'flights_cubit.dart';
+import 'flights_state.dart';
 
 String formatDay(String date) {
   DateTime parsedDate = DateTime.parse(date);
@@ -19,36 +15,21 @@ String formatMonthYear(String date) {
   return DateFormat('MM-yyyy').format(parsedDate);
 }
 
-
-class MyFlightsPage extends StatelessWidget {
+class FlightsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (!snapshot.hasData) {
-            return Center(child: Text('User not logged in'));
-          }
-          final String userID = snapshot.data!.uid;
-
-          return StreamBuilder(
-            stream: FirebaseFirestore.instance
-                .collection('users')
-                .doc(userID)
-                .collection('my_flights')
-                .orderBy('date', descending: true)
-                .snapshots(),
-            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              if (!snapshot.hasData) {
-                return Center(child: CircularProgressIndicator());
-              }
-
-              var flights = snapshot.data!.docs;
-
+    return BlocProvider(
+      create: (context) => FlightCubit(),
+      child: Scaffold(
+        body: BlocBuilder<FlightCubit, FlightState>(
+          builder: (context, state) {
+            if (state is FlightLoading) {
+              return Center(child: CircularProgressIndicator());
+            } else if (state is FlightError) {
+              return Center(child: Text('Error: ${state.error}'));
+            } else if (state is FlightLoaded) {
+              var flights = state.flights;
+              final cubit = context.read<FlightCubit>();
               return ListView.builder(
                 itemCount: flights.length,
                 itemBuilder: (context, index) {
@@ -61,19 +42,31 @@ class MyFlightsPage extends StatelessWidget {
                     departure: flight['departure_airport'],
                     route: flight['route'],
                     arrival: flight['arrival_airport'],
+                    flightId: flight.id,
+                    userId: cubit.userId, // UserID'yi cubitten alıyoruz
                     onTap: () {
-                      // TODO: Implement navigation or action on tap
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FlightDetailsPage(
+                            flightId: flight.id,
+                            userId: cubit.userId,
+                          ),
+                        ),
+                      );
                     },
                   );
                 },
               );
-            },
-          );
-        },
+            }
+            return Container(); // Başlangıç durumu için placeholder
+          },
+        ),
       ),
     );
   }
 }
+
 
 class FlightCard extends StatelessWidget {
   final String date;
@@ -84,6 +77,8 @@ class FlightCard extends StatelessWidget {
   final String route;
   final String arrival;
   final VoidCallback onTap;
+  final String flightId;
+  final String userId;
 
   FlightCard({
     required this.date,
@@ -94,6 +89,8 @@ class FlightCard extends StatelessWidget {
     required this.route,
     required this.arrival,
     required this.onTap,
+    required this.flightId,
+    required this.userId,
   });
 
   @override
@@ -158,9 +155,7 @@ class FlightCard extends StatelessWidget {
               Column(
                 children: [
                   Transform.rotate(
-                    angle: 90 *
-                        3.1415926535897932 /
-                        180, // 90 dereceyi radyana çevir
+                    angle: 90 * 3.1415926535897932 / 180, // 90 dereceyi radyana çevir
                     child: Icon(
                       Icons.airplanemode_active_sharp,
                       size: 48,

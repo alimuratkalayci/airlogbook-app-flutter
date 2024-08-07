@@ -155,7 +155,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
         throw Exception('User email is null');
       }
 
-      // Parse the number fields
+
       final double? totalTime = double.tryParse(_totalTimeController.text);
       final double? nightTime = double.tryParse(_nightTimeController.text);
       final double? pic = double.tryParse(_picController.text);
@@ -181,8 +181,8 @@ class _AddFlightPageState extends State<AddFlightPage> {
         'arrival_airport': _arrivalAirportController.text,
         'hobbs_in': _hobbsInController.text.isEmpty ? int.tryParse('0') : int.tryParse(_hobbsInController.text),
         'hobbs_out': _hobbsOutController.text.isEmpty ? int.tryParse('0') : int.tryParse(_hobbsOutController.text),
-        'total_time': totalTime,  // Storing as float
-        'night_time': nightTime,  // Storing as float
+        'total_time': totalTime,
+        'night_time': nightTime,
         'pic': pic,
         'dual_rcvd': dual_rcvd,
         'solo': solo,
@@ -192,9 +192,9 @@ class _AddFlightPageState extends State<AddFlightPage> {
         'simulator': simulator,
         'ground': ground,
         'day_to': dayTakeoffs,
-        'day_ldg': dayLandings,  // Storing as number
+        'day_ldg': dayLandings,
         'night_to': nightTakeoffs,
-        'night_ldg': nightLandings,  // Storing as number
+        'night_ldg': nightLandings,
         'remarks': _remarksController.text,
       };
 
@@ -429,6 +429,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                   ),
                 ),
                 SizedBox(height: 20),
+                //TODO USE THIS TIME IN TIME PARTS
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
@@ -700,8 +701,8 @@ class _AddFlightPageState extends State<AddFlightPage> {
                 SizedBox(height: 20),
                 TextFormField(
                   controller: _remarksController,
-                  maxLines: null, // Yazı yazıldıkça yüksekliğin otomatik olarak artmasını sağlar
-                  minLines: 1, // Başlangıçta minimum 4 satır yüksekliğinde başlar
+                  maxLines: null,
+                  minLines: 1,
                   decoration: InputDecoration(
                     labelText: 'Remarks',
                     border: OutlineInputBorder(),

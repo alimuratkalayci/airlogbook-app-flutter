@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:coin_go/theme/theme.dart';
 import '../../features/chat_page/chat_page.dart';
-import '../../features/flights_page/my_flights_page.dart';
+import '../../features/flights_page/flights_page.dart';
 import '../../features/home_page/home_page.dart';
 import '../../features/settings_page/settings_page.dart';
 import 'navigation_cubit.dart';
@@ -15,7 +15,7 @@ class RootScreenUI extends StatelessWidget {
 
   final List<Widget> _pages = [
     HomePage(),
-    MyFlightsPage(),
+    FlightsPage(),
     AddFlightPage(),
     ChatPage(),
     SettingPage(),
