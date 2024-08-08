@@ -1,4 +1,3 @@
-import 'package:coin_go/features/add_flight_page/add_flight_cubit.dart';
 import 'package:coin_go/root_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,6 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => NavigationCubit()),
-        BlocProvider(create: (context) => AddFlightCubit()),
         BlocProvider(create: (context) => FlightCubit()),
       ],
       child: MaterialApp(

@@ -7,9 +7,9 @@ class NavigationState {
 
 enum NavigationItem {
   home,
-  chat,
+  flights,
   addFlight,
-  wallet,
+  analyze,
   settings,
 
 }

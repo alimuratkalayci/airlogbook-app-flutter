@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class CekilisAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
 
@@ -16,19 +15,18 @@ class CekilisAppBar extends StatelessWidget implements PreferredSizeWidget {
           style: const TextStyle(color: Colors.white),
         ),
       ),
-      /*
       actions: [
         IconButton(
+          icon: Icon(Icons.notifications, color: Colors.white),
           onPressed: () {
-            context.read<DrawerCubit>().getNavBarItem(DrawerItem.notification);
+            // Bildirim simgesine tıklama işlemi
+            // Burada bildirimlerle ilgili işlevi ekleyebilirsiniz
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Notifications clicked!')),
+            );
           },
-          icon: const Icon(
-            Icons.notifications_none,
-            color: Colors.white,
-          ),
         ),
       ],
-       */
     );
   }
 

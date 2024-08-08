@@ -3,7 +3,7 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:coin_go/theme/theme.dart';
-import '../../features/chat_page/chat_page.dart';
+import '../../features/analyze_page/analyze_page.dart';
 import '../../features/flights_page/flights_page.dart';
 import '../../features/home_page/home_page.dart';
 import '../../features/settings_page/settings_page.dart';
@@ -17,7 +17,7 @@ class RootScreenUI extends StatelessWidget {
     HomePage(),
     FlightsPage(),
     AddFlightPage(),
-    ChatPage(),
+    AnalyzePage(),
     SettingPage(),
   ];
 
@@ -28,18 +28,39 @@ class RootScreenUI extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             backgroundColor: AppTheme.darkBackgroundColor,
-            title: SafeArea(
-              child: Center(
-                child: Text(
-                  _getPageTitle(state.selectedItem),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w800,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Boş bir widget, başlığı ortalamak için
+                SizedBox(width: 48.0), // İsteğe bağlı, butonun yerini ayarlamak için kullanılabilir
+
+                Expanded(
+                  child: Center(
+                    child: SafeArea(
+                      child: Text(
+                        _getPageTitle(state.selectedItem),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-              ),
+
+                IconButton(
+                  icon: Icon(Icons.notifications, color: Colors.white),
+                  onPressed: () {
+                    // Bildirim simgesine tıklama işlemi
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Notifications clicked!')),
+                    );
+                  },
+                ),
+              ],
             ),
             elevation: 0,
+            centerTitle: false, // Başlık merkezde değil
           ),
           body: _pages[state.selectedItem.index],
           bottomNavigationBar: _buildBottomNavBar(context, state),
@@ -60,7 +81,7 @@ class RootScreenUI extends StatelessWidget {
           title: 'Flights',
         ),
         TabItem(icon: Icons.add, title: 'Add Flight'),
-        TabItem(icon: Icons.chat_bubble_outline, title: 'Chat'),
+        TabItem(icon: Icons.analytics_outlined, title: 'Analyze'),
         TabItem(icon: Icons.settings, title: 'Settings'),
       ],
       initialActiveIndex: state.selectedItem.index,
@@ -72,19 +93,18 @@ class RootScreenUI extends StatelessWidget {
     );
   }
 
-
   String _getPageTitle(NavigationItem item) {
     switch (item) {
       case NavigationItem.home:
         return 'Home';
-      case NavigationItem.chat:
-        return 'My Flights';
-      case NavigationItem.wallet:
-        return 'Wallet';
-      case NavigationItem.settings:
-        return 'Settings';
+      case NavigationItem.analyze:
+        return 'Analyze';
+      case NavigationItem.flights:
+        return 'Flights';
       case NavigationItem.addFlight:
         return 'Add Flight';
+      case NavigationItem.settings:
+        return 'Settings';
       default:
         return 'My App';
     }

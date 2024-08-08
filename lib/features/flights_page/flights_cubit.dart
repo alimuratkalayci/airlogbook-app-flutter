@@ -63,4 +63,5 @@ class FlightCubit extends Cubit<FlightState> {
       emit(FlightError(e.toString()));
     }
   }
+
 }

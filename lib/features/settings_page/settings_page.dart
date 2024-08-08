@@ -1,4 +1,4 @@
-import 'package:coin_go/features/settings_page/add_giveaway/add_giveaway_page.dart';
+import 'package:coin_go/features/settings_page/sub_pages/change_password_page/change_password_page.dart';
 import 'package:coin_go/features/sign_in_page/sign_in_page.dart';
 import 'package:coin_go/theme/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -60,7 +60,14 @@ class _SettingPageState extends State<SettingPage> {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChangePasswordPage(),
+                        ),
+                      );
+                    },
                     child: Text(
                       'Change Password',
                       style: TextStyle(color: Colors.white),
@@ -75,30 +82,7 @@ class _SettingPageState extends State<SettingPage> {
                 ),
               ],
             ),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const AddGiveawayPage()),
-                      );
-                    },
-                    child: Text(
-                      'Add Giveaway',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.darkAccentColor,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+
             Row(
               children: [
                 Expanded(

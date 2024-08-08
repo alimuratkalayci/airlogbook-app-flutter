@@ -30,6 +30,16 @@ class FlightsPage extends StatelessWidget {
             } else if (state is FlightLoaded) {
               var flights = state.flights;
               final cubit = context.read<FlightCubit>();
+              if (flights.isEmpty) {
+                return Center(
+                    child: Text(
+                  'No flights logged, tap "+" for first flight',
+                  style: TextStyle(
+                      color: Colors.deepOrange,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold),
+                ));
+              }
               return ListView.builder(
                 itemCount: flights.length,
                 itemBuilder: (context, index) {
@@ -43,7 +53,7 @@ class FlightsPage extends StatelessWidget {
                     route: flight['route'],
                     arrival: flight['arrival_airport'],
                     flightId: flight.id,
-                    userId: cubit.userId, // UserID'yi cubitten alıyoruz
+                    userId: cubit.userId,
                     onTap: () {
                       Navigator.push(
                         context,
@@ -59,14 +69,13 @@ class FlightsPage extends StatelessWidget {
                 },
               );
             }
-            return Container(); // Başlangıç durumu için placeholder
+            return Container();
           },
         ),
       ),
     );
   }
 }
-
 
 class FlightCard extends StatelessWidget {
   final String date;
@@ -128,12 +137,15 @@ class FlightCard extends StatelessWidget {
                       children: [
                         Text('$departure'),
                         if (route.isNotEmpty)
-                          Icon(Icons.arrow_forward_sharp,
-                              size: 16, color: Colors.deepOrange), // Ok işareti
+                          Icon(Icons.double_arrow_rounded,
+                              size: 16, color: Colors.deepOrange),
                         if (route.isNotEmpty) Text('$route'),
+                        if (route.isEmpty)
+                          Icon(Icons.double_arrow_rounded,
+                              size: 16, color: Colors.deepOrange),
                         if (route.isNotEmpty)
-                          Icon(Icons.arrow_forward_sharp,
-                              size: 16, color: Colors.deepOrange), // Ok işareti
+                          Icon(Icons.double_arrow_rounded,
+                              size: 16, color: Colors.deepOrange),
                         Text('$arrival'),
                       ],
                     ),
@@ -155,7 +167,9 @@ class FlightCard extends StatelessWidget {
               Column(
                 children: [
                   Transform.rotate(
-                    angle: 90 * 3.1415926535897932 / 180, // 90 dereceyi radyana çevir
+                    angle: 90 *
+                        3.1415926535897932 /
+                        180, // 90 dereceyi radyana çevir
                     child: Icon(
                       Icons.airplanemode_active_sharp,
                       size: 48,

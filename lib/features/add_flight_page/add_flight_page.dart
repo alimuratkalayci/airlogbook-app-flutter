@@ -299,8 +299,8 @@ class _AddFlightPageState extends State<AddFlightPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Flight', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                      SizedBox(height: 10),
+                      Text('Flight', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.deepOrange)),
+                      SizedBox(height: 8),
                       Row(
                         children: [
                           Expanded(
@@ -329,7 +329,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 8),
                       Row(
                         children: [
                           Text('Favorite Aircrafts'),
@@ -367,7 +367,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 8),
                       TextFormField(
                         controller: _airCraftController,
                         decoration: InputDecoration(
@@ -381,7 +381,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 8),
                       TextFormField(
                         controller: _departureAirportController,
                         decoration: InputDecoration(
@@ -395,7 +395,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 8),
                       TextFormField(
                         controller: _routeWayController,
                         decoration: InputDecoration(
@@ -406,7 +406,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 8),
                       TextFormField(
                         controller: _arrivalAirportController,
                         decoration: InputDecoration(
@@ -420,7 +420,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 8),
                       TextFormField(
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
@@ -435,7 +435,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 8),
                       TextFormField(
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
@@ -446,17 +446,20 @@ class _AddFlightPageState extends State<AddFlightPage> {
                           labelText: 'Hobbs Out',
                           border: OutlineInputBorder(),
                         ),
+
                         validator: (value) {
                           return null;
                         },
                         onChanged: (value) {
+                          setState(() {
+                          });
                           _updateTotalTime();
                         },
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 16),
                 //TODO USE THIS TIME IN TIME PARTS
                 Container(
                   decoration: BoxDecoration(
@@ -467,7 +470,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Time', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      Text('Time', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.deepOrange)),
                       SizedBox(height: 10),
                       TextFormField(
                         keyboardType: TextInputType.number,
@@ -479,6 +482,10 @@ class _AddFlightPageState extends State<AddFlightPage> {
                           labelText: 'Total Time',
                           border: OutlineInputBorder(),
                         ),
+                        onChanged: (value) {
+                          setState(() {
+                          });
+                        },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Total Time';
@@ -496,6 +503,23 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         decoration: InputDecoration(
                           labelText: 'Night Time',
                           border: OutlineInputBorder(),
+                          suffixIcon: _totalTimeController.text.isNotEmpty ?
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: 0.0),
+                              child: TextButton(
+                                onPressed: () {
+                                  double currentValue = double.tryParse(_totalTimeController.text) ?? 0.0;
+                                  _nightTimeController.text = currentValue.toString();
+                                },
+                                child: Text(
+                                  'Copy Time',
+                                  style: TextStyle(color: Colors.deepOrange),
+                                ),
+                              ),
+                            ),
+                          ) : null,
                         ),
                         validator: (value) {
                           return null;
@@ -511,6 +535,22 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         decoration: InputDecoration(
                           labelText: 'PIC',
                           border: OutlineInputBorder(),
+                          suffixIcon: _totalTimeController.text.isNotEmpty ?
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              child: TextButton(
+                                onPressed: () {
+                                  double currentValue = double.tryParse(_totalTimeController.text) ?? 0.0;
+                                  _picController.text = currentValue.toString();
+                                },
+                                child: Text(
+                                  'Copy Time',
+                                  style: TextStyle(color: Colors.deepOrange),
+                                ),
+                              ),
+                            ),
+                          ) : null,
                         ),
                         validator: (value) {
                           return null;
@@ -526,6 +566,23 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         decoration: InputDecoration(
                           labelText: 'Dual Received',
                           border: OutlineInputBorder(),
+                          suffixIcon: _totalTimeController.text.isNotEmpty ?
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              child: TextButton(
+                                onPressed: () {
+                                  double currentValue = double.tryParse(_totalTimeController.text) ?? 0.0;
+                                  _dualRcvdController.text = currentValue.toString();
+                                },
+                                child: Text(
+                                  'Copy Time',
+                                  style: TextStyle(color: Colors.deepOrange),
+                                ),
+                              ),
+                            ),
+                          ) : null,
+
                         ),
                         validator: (value) {
                           return null;
@@ -541,6 +598,22 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         decoration: InputDecoration(
                           labelText: 'Solo',
                           border: OutlineInputBorder(),
+                          suffixIcon: _totalTimeController.text.isNotEmpty ?
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              child: TextButton(
+                                onPressed: () {
+                                  double currentValue = double.tryParse(_totalTimeController.text) ?? 0.0;
+                                  _soloController.text = currentValue.toString();
+                                },
+                                child: Text(
+                                  'Copy Time',
+                                  style: TextStyle(color: Colors.deepOrange),
+                                ),
+                              ),
+                            ),
+                          ) : null,
                         ),
                         validator: (value) {
                           return null;
@@ -556,6 +629,22 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         decoration: InputDecoration(
                           labelText: 'XC',
                           border: OutlineInputBorder(),
+                          suffixIcon: _totalTimeController.text.isNotEmpty ?
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              child: TextButton(
+                                onPressed: () {
+                                  double currentValue = double.tryParse(_totalTimeController.text) ?? 0.0;
+                                  _xcController.text = currentValue.toString();
+                                },
+                                child: Text(
+                                  'Copy Time',
+                                  style: TextStyle(color: Colors.deepOrange),
+                                ),
+                              ),
+                            ),
+                          ) : null,
                         ),
                         validator: (value) {
                           return null;
@@ -571,6 +660,22 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         decoration: InputDecoration(
                           labelText: 'Sim Inst',
                           border: OutlineInputBorder(),
+                          suffixIcon: _totalTimeController.text.isNotEmpty ?
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              child: TextButton(
+                                onPressed: () {
+                                  double currentValue = double.tryParse(_totalTimeController.text) ?? 0.0;
+                                  _simInstController.text = currentValue.toString();
+                                },
+                                child: Text(
+                                  'Copy Time',
+                                  style: TextStyle(color: Colors.deepOrange),
+                                ),
+                              ),
+                            ),
+                          ) : null,
                         ),
                         validator: (value) {
                           return null;
@@ -586,6 +691,22 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         decoration: InputDecoration(
                           labelText: 'Actual Inst',
                           border: OutlineInputBorder(),
+                          suffixIcon: _totalTimeController.text.isNotEmpty ?
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              child: TextButton(
+                                onPressed: () {
+                                  double currentValue = double.tryParse(_totalTimeController.text) ?? 0.0;
+                                  _actualInstController.text = currentValue.toString();
+                                },
+                                child: Text(
+                                  'Copy Time',
+                                  style: TextStyle(color: Colors.deepOrange),
+                                ),
+                              ),
+                            ),
+                          ) : null,
                         ),
                         validator: (value) {
                           return null;
@@ -601,6 +722,22 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         decoration: InputDecoration(
                           labelText: 'Simulator',
                           border: OutlineInputBorder(),
+                          suffixIcon: _totalTimeController.text.isNotEmpty ?
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              child: TextButton(
+                                onPressed: () {
+                                  double currentValue = double.tryParse(_totalTimeController.text) ?? 0.0;
+                                  _simulatorController.text = currentValue.toString();
+                                },
+                                child: Text(
+                                  'Copy Time',
+                                  style: TextStyle(color: Colors.deepOrange),
+                                ),
+                              ),
+                            ),
+                          ) : null,
                         ),
                         validator: (value) {
                           return null;
@@ -616,6 +753,22 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         decoration: InputDecoration(
                           labelText: 'Ground',
                           border: OutlineInputBorder(),
+                          suffixIcon: _totalTimeController.text.isNotEmpty ?
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              child: TextButton(
+                                onPressed: () {
+                                  double currentValue = double.tryParse(_totalTimeController.text) ?? 0.0;
+                                  _groundController.text = currentValue.toString();
+                                },
+                                child: Text(
+                                  'Copy Time',
+                                  style: TextStyle(color: Colors.deepOrange),
+                                ),
+                              ),
+                            ),
+                          ) : null,
                         ),
                         validator: (value) {
                           return null;
@@ -634,7 +787,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Landings', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      Text('Landings', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.deepOrange)),
                       SizedBox(height: 10),
                       TextFormField(
                         keyboardType: TextInputType.number,
@@ -742,7 +895,13 @@ class _AddFlightPageState extends State<AddFlightPage> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: _saveFlightRecord,
-                        child: Text('Add Flight Record'),
+                        child: Text('Add Flight Record',style: TextStyle(color: Colors.deepOrange,fontWeight: FontWeight.bold),),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -757,3 +916,4 @@ class _AddFlightPageState extends State<AddFlightPage> {
     );
   }
 }
+
