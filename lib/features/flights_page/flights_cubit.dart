@@ -64,4 +64,30 @@ class FlightCubit extends Cubit<FlightState> {
     }
   }
 
+  void deleteFlight(String flightId) async {
+    emit(FlightLoading());
+    try {
+      if (userId.isNotEmpty) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userId)
+            .collection('my_flights')
+            .doc(flightId)
+            .delete();
+
+        fetchFlights();
+        emit(FlightDeleted());
+      } else {
+        emit(FlightError('User not logged in.'));
+      }
+    } catch (e) {
+      emit(FlightError(e.toString()));
+    }
+  }
+
+  void updateUserId() {
+    userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    fetchFlights(); // Yeni kullanıcı ile uçuşları tekrar getir
+  }
+
 }

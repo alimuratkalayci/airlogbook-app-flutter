@@ -1,7 +1,10 @@
-import 'package:coin_go/features/flights_page/sub_pages/flight_details_page/flight_details_page.dart';
+import 'package:coin_go/features/flights_page/sub_pages/flight_details_page/flight_details_update_page/flight_details_update_page.dart';
+import 'package:coin_go/features/flights_page/sub_pages/flight_details_page/flight_details_show_page/flight_details_show_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
+import 'components/show_detele_modal_bottom_sheet.dart';
 import 'flights_cubit.dart';
 import 'flights_state.dart';
 
@@ -15,63 +18,79 @@ String formatMonthYear(String date) {
   return DateFormat('MM-yyyy').format(parsedDate);
 }
 
-class FlightsPage extends StatelessWidget {
+class FlightsPage extends StatefulWidget {
+  @override
+  State<FlightsPage> createState() => _FlightsPageState();
+}
+
+class _FlightsPageState extends State<FlightsPage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<FlightCubit>().updateUserId();
+    context.read<FlightCubit>().fetchFlights();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => FlightCubit(),
-      child: Scaffold(
-        body: BlocBuilder<FlightCubit, FlightState>(
-          builder: (context, state) {
-            if (state is FlightLoading) {
-              return Center(child: CircularProgressIndicator());
-            } else if (state is FlightError) {
-              return Center(child: Text('Error: ${state.error}'));
-            } else if (state is FlightLoaded) {
-              var flights = state.flights;
-              final cubit = context.read<FlightCubit>();
-              if (flights.isEmpty) {
-                return Center(
-                    child: Text(
-                  'No flights logged, tap "+" for first flight',
-                  style: TextStyle(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: BlocBuilder<FlightCubit, FlightState>(
+        builder: (context, state) {
+          if (state is FlightLoading) {
+            return Center(child: CircularProgressIndicator());
+          } else if (state is FlightError) {
+            return Center(child: Text('Hata: ${state.error}'));
+          } else if (state is FlightLoaded) {
+            var flights = state.flights;
+            final cubit = context.read<FlightCubit>();
+            if (flights.isEmpty) {
+              return Center(
+                child: Text(
+                  'No flights logged, tap "+" for first flight',                  style: TextStyle(
                       color: Colors.deepOrange,
                       fontSize: 24,
                       fontWeight: FontWeight.bold),
-                ));
-              }
-              return ListView.builder(
-                itemCount: flights.length,
-                itemBuilder: (context, index) {
-                  var flight = flights[index];
-                  return FlightCard(
-                    date: flight['date'],
-                    total_time: flight['total_time'],
-                    aircraft_id: flight['aircraft_id'],
-                    aircraft_type: flight['aircraft_type'],
-                    departure: flight['departure_airport'],
-                    route: flight['route'],
-                    arrival: flight['arrival_airport'],
-                    flightId: flight.id,
-                    userId: cubit.userId,
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => FlightDetailsPage(
-                            flightId: flight.id,
-                            userId: cubit.userId,
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
+                ),
               );
             }
-            return Container();
-          },
-        ),
+            return ListView.builder(
+              itemCount: flights.length,
+              itemBuilder: (context, index) {
+                var flight = flights[index];
+                return FlightCard(
+                  date: flight['date'],
+                  total_time: flight['total_time'],
+                  aircraft_id: flight['aircraft_id'],
+                  aircraft_type: flight['aircraft_type'],
+                  departure: flight['departure_airport'],
+                  route: flight['route'],
+                  arrival: flight['arrival_airport'],
+                  flightId: flight.id,
+                  userId: cubit.userId,
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => FlightDetailsShowPage(
+                          flightId: flight.id,
+                          userId: cubit.userId,
+                        ),
+                      ),
+                    );
+                  },
+                  onDelete: () async {
+                    final result = await showDeleteConfirmationBottomSheet(context, flight.id);
+                    if (result == 'deleted') {
+                      context.read<FlightCubit>().deleteFlight(flight.id);
+                    }
+                  },
+                );
+              },
+            );
+          }
+          return Container();
+        },
       ),
     );
   }
@@ -88,6 +107,7 @@ class FlightCard extends StatelessWidget {
   final VoidCallback onTap;
   final String flightId;
   final String userId;
+  final VoidCallback onDelete;
 
   FlightCard({
     required this.date,
@@ -100,16 +120,50 @@ class FlightCard extends StatelessWidget {
     required this.onTap,
     required this.flightId,
     required this.userId,
+    required this.onDelete,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.fromLTRB(8, 8, 8, 0),
+    return Slidable(
+      endActionPane: ActionPane(
+        motion: DrawerMotion(),
+        children: [
+          SlidableAction(
+            onPressed: (result) async {
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => FlightDetailsUpdatePage(
+                    flightId: flightId,
+                    userId: userId,
+                  ),
+                ),
+              );
+              if (result == 'updated') {
+                context.read<FlightCubit>().fetchFlights();
+              }
+            },
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.deepOrange,
+            icon: Icons.update,
+            label: 'Güncelle',
+          ),
+          SlidableAction(
+            onPressed: (context) async {
+              onDelete();
+            },
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.deepOrange,
+            icon: Icons.delete,
+            label: 'Sil',
+          ),
+        ],
+      ),
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
           child: Row(
             children: [
               Column(
@@ -129,9 +183,7 @@ class FlightCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
-                      height: 10,
-                    ),
+                    SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -149,9 +201,7 @@ class FlightCard extends StatelessWidget {
                         Text('$arrival'),
                       ],
                     ),
-                    SizedBox(
-                      height: 16,
-                    ),
+                    SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -167,9 +217,7 @@ class FlightCard extends StatelessWidget {
               Column(
                 children: [
                   Transform.rotate(
-                    angle: 90 *
-                        3.1415926535897932 /
-                        180, // 90 dereceyi radyana çevir
+                    angle: 90 * 3.1415926535897932 / 180,
                     child: Icon(
                       Icons.airplanemode_active_sharp,
                       size: 48,

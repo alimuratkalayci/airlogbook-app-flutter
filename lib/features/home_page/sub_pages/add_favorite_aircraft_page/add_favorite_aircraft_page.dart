@@ -117,7 +117,7 @@ class _AddFavoriteAircraftPageState extends State<AddFavoriteAircraftPage> {
                   borderSide: BorderSide(color: Colors.deepOrange), // Odaklanılmış kenarlık rengi
                 ),
                 fillColor: Colors.grey[800], // Arka plan rengi
-                filled: true, // Arka plan renginin uygulanabilmesi için true olmalı
+                filled: true,
               ),
               style: TextStyle(color: Colors.white), // Metin rengi
               onChanged: (value) {

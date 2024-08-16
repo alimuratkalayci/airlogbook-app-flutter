@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class FlightDetailsPage extends StatelessWidget {
+class FlightDetailsShowPage extends StatelessWidget {
   final String flightId;
   final String userId;
 
-  FlightDetailsPage({required this.flightId, required this.userId});
+  FlightDetailsShowPage({required this.flightId, required this.userId});
 
   @override
   Widget build(BuildContext context) {
