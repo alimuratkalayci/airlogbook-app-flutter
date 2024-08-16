@@ -12,7 +12,6 @@ String formatDay(String date) {
   DateTime parsedDate = DateTime.parse(date);
   return DateFormat('dd').format(parsedDate);
 }
-
 String formatMonthYear(String date) {
   DateTime parsedDate = DateTime.parse(date);
   return DateFormat('MM-yyyy').format(parsedDate);
