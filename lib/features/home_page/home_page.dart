@@ -109,7 +109,7 @@ class _HomePageState extends State<HomePage> {
                           child: GestureDetector(
                             onTap: () {
                               print('tıklandı');
-                              // TODO: SONRA EKLE
+
                               /* Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) => const SignUpPage()),

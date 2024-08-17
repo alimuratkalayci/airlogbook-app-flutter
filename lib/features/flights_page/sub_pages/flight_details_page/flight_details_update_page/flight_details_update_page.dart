@@ -63,6 +63,7 @@ class _FlightDetailsUpdatePageState extends State<FlightDetailsUpdatePage> {
                 buildEditableCard('Actual Instrument', 'actual_inst', isDouble: true),
                 buildEditableCard('Simulator', 'simulator', isDouble: true),
                 buildEditableCard('Ground', 'ground', isDouble: true),
+                buildEditableCard('Instrument Approach', 'instrument_approach', isInt: true),
                 buildEditableCard('Day Takeoffs', 'day_to', isInt: true),
                 buildEditableCard('Day Landings', 'day_ldg', isInt: true),
                 buildEditableCard('Night Takeoffs', 'night_to', isInt: true),

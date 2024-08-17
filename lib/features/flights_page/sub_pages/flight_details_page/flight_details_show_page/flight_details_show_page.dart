@@ -52,6 +52,7 @@ class FlightDetailsShowPage extends StatelessWidget {
               buildDetailCard('Actual Instrument', flightData['actual_inst']),
               buildDetailCard('Simulator', flightData['simulator']),
               buildDetailCard('Ground', flightData['ground']),
+              buildDetailCard('Instrument Approach', flightData['instrument_approach']),
               buildDetailCard('Day Takeoffs', flightData['day_to']),
               buildDetailCard('Day Landings', flightData['day_ldg']),
               buildDetailCard('Night Takeoffs', flightData['night_to']),

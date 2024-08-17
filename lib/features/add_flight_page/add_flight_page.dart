@@ -466,7 +466,6 @@ class _AddFlightPageState extends State<AddFlightPage> {
                   ),
                 ),
                 SizedBox(height: 16),
-                //TODO USE THIS TIME IN TIME PARTS
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
@@ -814,7 +813,6 @@ class _AddFlightPageState extends State<AddFlightPage> {
                     children: [
                       Text('Landings', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.deepOrange)),
                       SizedBox(height: 10),
-                      //TODO LANDINGS NEEDS TO UPDATE FOR TAKEOFFS
                       TextFormField(
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
@@ -829,6 +827,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                             onPressed: () {
                               int currentValue = int.tryParse(_dayToController.text) ?? 0;
                               _dayToController.text = (currentValue + 1).toString();
+                              _dayLdgController.text = (currentValue + 1).toString();
                             },
                           ),
                         ),
@@ -851,6 +850,8 @@ class _AddFlightPageState extends State<AddFlightPage> {
                             onPressed: () {
                               int currentValue = int.tryParse(_dayLdgController.text) ?? 0;
                               _dayLdgController.text = (currentValue + 1).toString();
+                              _dayToController.text = (currentValue + 1).toString();
+
                             },
                           ),
                         ),
@@ -873,6 +874,8 @@ class _AddFlightPageState extends State<AddFlightPage> {
                             onPressed: () {
                               int currentValue = int.tryParse(_nightToController.text) ?? 0;
                               _nightToController.text = (currentValue + 1).toString();
+                              _nightLdgController.text = (currentValue + 1).toString();
+
                             },
                           ),
                         ),
@@ -895,6 +898,8 @@ class _AddFlightPageState extends State<AddFlightPage> {
                             onPressed: () {
                               int currentValue = int.tryParse(_nightLdgController.text) ?? 0;
                               _nightLdgController.text = (currentValue + 1).toString();
+                              _nightToController.text = (currentValue + 1).toString();
+
                             },
                           ),
                         ),

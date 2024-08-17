@@ -12,7 +12,8 @@ class _AnalyzePageState extends State<AnalyzePage> {
   final _dateFormat = DateFormat('yyyy-MM-dd');
   DateTime? _startDate;
   DateTime? _endDate;
-  String _selectedPeriod = 'All Entries';
+  DateTime? _firstFlightDate;
+  DateTime? _lastFlightDate;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
     return Scaffold(
       body: Column(
         children: [
-          _buildDateRangePicker(),
+          _buildDateRangePicker(userId),
           Expanded(
             child: FutureBuilder<QuerySnapshot>(
               future: _fetchFlightData(userId),
@@ -110,72 +111,119 @@ class _AnalyzePageState extends State<AnalyzePage> {
     );
   }
 
-  Widget _buildDateRangePicker() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(48,8,48,0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: DropdownButton<String>(
-              isExpanded: mounted,
-              value: _selectedPeriod,
-              items: <String>[
-                'Last 1 Day',
-                'Last 7 Days',
-                'Last 1 Month',
-                'Last 3 Months',
-                'Last 6 Months',
-                'All Entries'
-              ].map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() {
-                  _selectedPeriod = newValue!;
-                  _setDateRange();
-                });
-              },
-            ),
+  Widget _buildDateRangePicker(String userId) {
+    return FutureBuilder<DocumentSnapshot>(
+      future: _getFirstAndLastFlightDate(userId),
+      builder: (context, snapshot) {
+        if (snapshot.hasData && snapshot.data != null) {
+          var data = snapshot.data!.data() as Map<String, dynamic>;
+          _firstFlightDate = DateTime.parse(data['firstFlightDate']);
+          _lastFlightDate = DateTime.parse(data['lastFlightDate']);
+        }
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16,16,16,0),
+                  child: InkWell(
+                    onTap: () => _pickDate(context, true),
+                    child: InputDecorator(
+                      decoration: InputDecoration(
+                        labelText: 'Start Date',
+                        labelStyle: TextStyle(
+                          color: Colors.deepOrange,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18
+                        ),
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.zero,
+                        suffixIcon: Icon(
+                          Icons.calendar_today,
+                          color: Colors.black,
+                        ),
+                      ),
+                      child: Text(
+                        _startDate != null
+                            ? _dateFormat.format(_startDate!)
+                            : 'All Entries',
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(16,16,16,0),
+                  child: InkWell(
+                    onTap: () => _pickDate(context, false),
+                    child: InputDecorator(
+                      decoration: InputDecoration(
+                        labelText: 'End Date',
+                        labelStyle: TextStyle(
+                            color: Colors.deepOrange,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18
+                        ),
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.zero,
+                        suffixIcon: Icon(
+                          Icons.calendar_today,
+                          color: Colors.black,
+                        ),
+                      ),
+                      child: Text(
+                        _endDate != null
+                            ? _dateFormat.format(_endDate!)
+                            : 'All Entries',
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 
-  void _setDateRange() {
-    final now = DateTime.now();
-    switch (_selectedPeriod) {
-      case 'Last 1 Day':
-        _startDate = now.subtract(Duration(days: 1));
-        _endDate = now;
-        break;
-      case 'Last 7 Days':
-        _startDate = now.subtract(Duration(days: 7));
-        _endDate = now;
-        break;
-      case 'Last 1 Month':
-        _startDate = now.subtract(Duration(days: 30));
-        _endDate = now;
-        break;
-      case 'Last 3 Months':
-        _startDate = now.subtract(Duration(days: 90));
-        _endDate = now;
-        break;
-      case 'Last 6 Months':
-        _startDate = now.subtract(Duration(days: 180));
-        _endDate = now;
-        break;
-      case 'All Entries':
-        _startDate = null;
-        _endDate = null;
-        break;
-      default:
-        _startDate = null;
-        _endDate = null;
+  Future<void> _pickDate(BuildContext context, bool isStartDate) async {
+    DateTime initialDate = isStartDate
+        ? (_startDate ?? _firstFlightDate ?? DateTime.now())
+        : (_endDate ?? _lastFlightDate ?? DateTime.now());
+
+    DateTime firstDate = isStartDate
+        ? (_firstFlightDate ?? DateTime(2000))
+        : (_startDate ?? _firstFlightDate ?? DateTime(2000));
+
+    DateTime lastDate = isStartDate
+        ? (_endDate ?? DateTime.now())
+        : (_lastFlightDate ?? DateTime.now());
+
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: firstDate,
+      lastDate: lastDate,
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        if (isStartDate) {
+          _startDate = pickedDate;
+        } else {
+          _endDate = pickedDate;
+        }
+      });
     }
   }
 
@@ -196,7 +244,32 @@ class _AnalyzePageState extends State<AnalyzePage> {
     return await query.get();
   }
 
+  Future<DocumentSnapshot> _getFirstAndLastFlightDate(String userId) async {
+    var flights = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .collection('my_flights')
+        .orderBy('date')
+        .get();
 
+    var firstFlight = flights.docs.first;
+    var lastFlight = flights.docs.last;
+
+    var firstFlightDate = firstFlight['date'];
+    var lastFlightDate = lastFlight['date'];
+
+    return FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .set({
+      'firstFlightDate': firstFlightDate,
+      'lastFlightDate': lastFlightDate,
+    }, SetOptions(merge: true))
+        .then((_) => FirebaseFirestore.instance
+        .collection('users')
+        .doc(userId)
+        .get());
+  }
 
   Widget buildSummaryCard(String title, double value, double totalHours) {
     double percentage = (totalHours > 0) ? (value / totalHours) : 0.0;
