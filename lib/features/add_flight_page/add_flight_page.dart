@@ -26,6 +26,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
   final _actualInstController = TextEditingController();
   final _simulatorController = TextEditingController();
   final _groundController = TextEditingController();
+  final _instrumentApproachController = TextEditingController();
   final _dayToController = TextEditingController();
   final _dayLdgController = TextEditingController();
   final _nightToController = TextEditingController();
@@ -186,6 +187,9 @@ class _AddFlightPageState extends State<AddFlightPage> {
           ? double.tryParse(_groundController.text)
           : 0.0;
 
+      final int? intrumentApproach = _instrumentApproachController.text.isNotEmpty
+          ? int.tryParse(_instrumentApproachController.text)
+          : 0;
       final int? dayTakeoffs = _dayToController.text.isNotEmpty
           ? int.tryParse(_dayToController.text)
           : 0;
@@ -219,6 +223,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
         'actual_inst': actual_inst,
         'simulator': simulator,
         'ground': ground,
+        'instrument_approach': intrumentApproach,
         'day_to': dayTakeoffs,
         'day_ldg': dayLandings,
         'night_to': nightTakeoffs,
@@ -255,6 +260,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
       _actualInstController.clear();
       _simulatorController.clear();
       _groundController.clear();
+      _instrumentApproachController.clear();
       _dayToController.clear();
       _dayLdgController.clear();
       _nightToController.clear();
@@ -487,9 +493,6 @@ class _AddFlightPageState extends State<AddFlightPage> {
                           });
                         },
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter Total Time';
-                          }
                           return null;
                         },
                       ),
@@ -774,6 +777,28 @@ class _AddFlightPageState extends State<AddFlightPage> {
                           return null;
                         },
                       ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        controller: _instrumentApproachController,
+                        decoration: InputDecoration(
+                          labelText: 'Instrument Approach',
+                          border: OutlineInputBorder(),
+                          suffixIcon: IconButton(
+                            icon: Icon(Icons.add,color: Colors.deepOrange),
+                            onPressed: () {
+                              int currentValue = int.tryParse(_instrumentApproachController.text) ?? 0;
+                              _instrumentApproachController.text = (currentValue + 1).toString();
+                            },
+                          ),
+                        ),
+                        validator: (value) {
+                          return null;
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -789,6 +814,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                     children: [
                       Text('Landings', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.deepOrange)),
                       SizedBox(height: 10),
+                      //TODO LANDINGS NEEDS TO UPDATE FOR TAKEOFFS
                       TextFormField(
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[

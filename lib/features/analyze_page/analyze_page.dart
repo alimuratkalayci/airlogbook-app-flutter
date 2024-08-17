@@ -53,6 +53,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
                 double totalActualInst = 0;
                 double totalSimulator = 0;
                 double totalGround = 0;
+                int totalInstrumentApproach = 0;
                 int totalDayTakeoffs = 0;
                 int totalDayLandings = 0;
                 int totalNightTakeoffs = 0;
@@ -71,6 +72,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
                   totalActualInst += (data['actual_inst'] as num?)?.toDouble() ?? 0.0;
                   totalSimulator += (data['simulator'] as num?)?.toDouble() ?? 0.0;
                   totalGround += (data['ground'] as num?)?.toDouble() ?? 0.0;
+                  totalInstrumentApproach += (data['instrument_approach'] as int?) ?? 0;
                   totalDayTakeoffs += (data['day_to'] as int?) ?? 0;
                   totalDayLandings += (data['day_ldg'] as int?) ?? 0;
                   totalNightTakeoffs += (data['night_to'] as int?) ?? 0;
@@ -91,6 +93,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
                       buildSummaryCard('Total Actual Instrument', totalActualInst, totalHours),
                       buildSummaryCard('Total Simulator', totalSimulator, totalHours),
                       buildSummaryCard('Total Ground Time', totalGround, totalHours),
+                      buildSummaryCardInt('Total Instrument Approach', totalInstrumentApproach),
                       buildSummaryCardInt('Total Day Takeoffs', totalDayTakeoffs),
                       buildSummaryCardInt('Total Day Landings', totalDayLandings),
                       buildSummaryCardInt('Total Night Takeoffs', totalNightTakeoffs),

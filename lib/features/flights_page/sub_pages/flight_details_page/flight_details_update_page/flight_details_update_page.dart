@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 
 class FlightDetailsUpdatePage extends StatefulWidget {
   final String flightId;
@@ -44,28 +45,28 @@ class _FlightDetailsUpdatePageState extends State<FlightDetailsUpdatePage> {
             child: ListView(
               padding: EdgeInsets.all(16.0),
               children: [
-                buildEditableCard('Date', 'date'),
-                buildEditableCard('Aircraft Type', 'aircraft_type'),
+                buildNonEditableCard('Date', 'date'),
+                buildNonEditableCard('Aircraft Type', 'aircraft_type'),
                 buildEditableCard('Aircraft ID', 'aircraft_id'),
                 buildEditableCard('Departure Airport', 'departure_airport'),
                 buildEditableCard('Route', 'route'),
                 buildEditableCard('Arrival Airport', 'arrival_airport'),
-                buildEditableCard('Hobbs In', 'hobbs_in'),
-                buildEditableCard('Hobbs Out', 'hobbs_out'),
-                buildEditableCard('Total Time', 'total_time'),
-                buildEditableCard('Night Time', 'night_time'),
-                buildEditableCard('PIC', 'pic'),
-                buildEditableCard('Dual Received', 'dual_rcvd'),
+                buildEditableCard('Hobbs In', 'hobbs_in', isDouble: true),
+                buildEditableCard('Hobbs Out', 'hobbs_out', isDouble: true),
+                buildEditableCard('Total Time', 'total_time', isDouble: true),
+                buildEditableCard('Night Time', 'night_time', isDouble: true),
+                buildEditableCard('PIC', 'pic', isDouble: true),
+                buildEditableCard('Dual Received', 'dual_rcvd', isDouble: true),
                 buildEditableCard('Solo', 'solo'),
-                buildEditableCard('XC', 'xc'),
-                buildEditableCard('Simulated Instrument', 'sim_inst'),
-                buildEditableCard('Actual Instrument', 'actual_inst'),
-                buildEditableCard('Simulator', 'simulator'),
-                buildEditableCard('Ground', 'ground'),
-                buildEditableCard('Day Takeoffs', 'day_to'),
-                buildEditableCard('Day Landings', 'day_ldg'),
-                buildEditableCard('Night Takeoffs', 'night_to'),
-                buildEditableCard('Night Landings', 'night_ldg'),
+                buildEditableCard('XC', 'xc', isDouble: true),
+                buildEditableCard('Simulated Instrument', 'sim_inst', isDouble: true),
+                buildEditableCard('Actual Instrument', 'actual_inst', isDouble: true),
+                buildEditableCard('Simulator', 'simulator', isDouble: true),
+                buildEditableCard('Ground', 'ground', isDouble: true),
+                buildEditableCard('Day Takeoffs', 'day_to', isInt: true),
+                buildEditableCard('Day Landings', 'day_ldg', isInt: true),
+                buildEditableCard('Night Takeoffs', 'night_to', isInt: true),
+                buildEditableCard('Night Landings', 'night_ldg', isInt: true),
                 buildRemarksCard('Remarks', 'remarks'),
                 SizedBox(height: 20.0),
                 ElevatedButton(
@@ -75,9 +76,9 @@ class _FlightDetailsUpdatePageState extends State<FlightDetailsUpdatePage> {
                       updateFlightDetails();
                     }
                   },
-                  child: Text('Update Flight'),
+                  child: Text('Update Flight',style: TextStyle(color: Colors.deepOrange,fontWeight: FontWeight.bold),),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepOrange,
+                    backgroundColor: Colors.white,
                   ),
                 ),
               ],
@@ -88,7 +89,44 @@ class _FlightDetailsUpdatePageState extends State<FlightDetailsUpdatePage> {
     );
   }
 
-  Widget buildEditableCard(String title, String field) {
+  Widget buildEditableCard(String title, String field, {bool isDouble = false, bool isInt = false}) {
+    return Card(
+      margin: EdgeInsets.symmetric(vertical: 8.0),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: TextFormField(
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+          ],
+          initialValue: flightData[field] != null ? flightData[field].toString() : '',
+          decoration: InputDecoration(
+            labelText: title,
+            labelStyle: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          onChanged: (newValue) {
+            if (isDouble) {
+              flightData[field] = double.tryParse(newValue);
+            } else if (isInt) {
+              flightData[field] = int.tryParse(newValue);
+            } else {
+              flightData[field] = newValue;
+            }
+          },
+          validator: (value) {
+            if (isDouble) {
+              return double.tryParse(value ?? '') != null ? null : 'Enter a valid number';
+            } else if (isInt) {
+              return int.tryParse(value ?? '') != null ? null : 'Enter a valid integer';
+            }
+            return null;
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget buildNonEditableCard(String title, String field) {
     return Card(
       margin: EdgeInsets.symmetric(vertical: 8.0),
       child: Padding(
@@ -99,9 +137,7 @@ class _FlightDetailsUpdatePageState extends State<FlightDetailsUpdatePage> {
             labelText: title,
             labelStyle: TextStyle(fontWeight: FontWeight.bold),
           ),
-          onChanged: (newValue) {
-            flightData[field] = newValue; // Directly update the map
-          },
+          enabled: false,
         ),
       ),
     );
@@ -151,5 +187,4 @@ class _FlightDetailsUpdatePageState extends State<FlightDetailsUpdatePage> {
       Navigator.pop(context, 'error');
     }
   }
-
 }
