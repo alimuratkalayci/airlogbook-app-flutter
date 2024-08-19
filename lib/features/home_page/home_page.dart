@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.darkBackgroundColor,
+      backgroundColor: AppTheme.BackgroundColor,
       body: ListView(
         children: [
           Column(
@@ -58,11 +58,11 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Text(
                         'Welcome to Pilot Logbook',
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: AppTheme.TextColorBlack),
                       ),
                       Text(
-                        ' $userName',
-                        style: TextStyle(color: Colors.deepOrange,fontSize: 16,fontWeight: FontWeight.bold),
+                        ' $userName'.toUpperCase(),
+                        style: TextStyle(color: Colors.deepOrange,fontWeight: FontWeight.bold),
                       ),
                     ],
                   ),
@@ -82,9 +82,9 @@ class _HomePageState extends State<HomePage> {
                             ),
                           );
                         },
-                        child: Text('Add Favorite Aircraft',style: TextStyle(color: Colors.black),),
+                        child: Text('Add Favorite Aircraft',style: TextStyle(color: AppTheme.TextColorWhite),),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
+                          backgroundColor: AppTheme.AccentColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
                           ),

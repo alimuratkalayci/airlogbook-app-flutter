@@ -28,7 +28,7 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
-    Color backgroundColor =  AppTheme.darkBackgroundColor;
+    Color backgroundColor =  AppTheme.BackgroundColor;
 
 
     return Scaffold(
@@ -47,7 +47,7 @@ class _SettingPageState extends State<SettingPage> {
                       style: TextStyle(color: Colors.white),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.darkAccentColor,
+                      backgroundColor: AppTheme.AccentColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
@@ -73,7 +73,7 @@ class _SettingPageState extends State<SettingPage> {
                       style: TextStyle(color: Colors.white),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.darkAccentColor,
+                      backgroundColor: AppTheme.AccentColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
@@ -100,7 +100,7 @@ class _SettingPageState extends State<SettingPage> {
                       style: TextStyle(color: Colors.white),
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.darkAccentColor,
+                      backgroundColor: AppTheme.AccentColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),

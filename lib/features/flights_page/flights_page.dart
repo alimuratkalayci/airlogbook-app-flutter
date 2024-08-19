@@ -1,5 +1,6 @@
 import 'package:coin_go/features/flights_page/sub_pages/flight_details_page/flight_details_update_page/flight_details_update_page.dart';
 import 'package:coin_go/features/flights_page/sub_pages/flight_details_page/flight_details_show_page/flight_details_show_page.dart';
+import 'package:coin_go/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -33,13 +34,13 @@ class _FlightsPageState extends State<FlightsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppTheme.BackgroundColor,
       body: BlocBuilder<FlightCubit, FlightState>(
         builder: (context, state) {
           if (state is FlightLoading) {
             return Center(child: CircularProgressIndicator());
           } else if (state is FlightError) {
-            return Center(child: Text('Hata: ${state.error}'));
+            return Center(child: Text('Error: ${state.error}'));
           } else if (state is FlightLoaded) {
             var flights = state.flights;
             final cubit = context.read<FlightCubit>();
@@ -126,6 +127,7 @@ class FlightCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Slidable(
       endActionPane: ActionPane(
+
         motion: DrawerMotion(),
         children: [
           SlidableAction(
@@ -143,19 +145,19 @@ class FlightCard extends StatelessWidget {
                 context.read<FlightCubit>().fetchFlights();
               }
             },
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.deepOrange,
+            backgroundColor: AppTheme.BackgroundColor,
+            foregroundColor: AppTheme.AccentColor,
             icon: Icons.update,
-            label: 'Güncelle',
+            label: 'Update',
           ),
           SlidableAction(
             onPressed: (context) async {
               onDelete();
             },
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.deepOrange,
+            backgroundColor: AppTheme.BackgroundColor,
+            foregroundColor: AppTheme.AccentColor,
             icon: Icons.delete,
-            label: 'Sil',
+            label: 'Delete',
           ),
         ],
       ),
@@ -176,55 +178,63 @@ class FlightCard extends StatelessWidget {
                   Text(formatMonthYear(date), style: TextStyle(fontSize: 16)),
                 ],
               ),
-              SizedBox(width: 16),
+              SizedBox(width: 32),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text('$departure'),
-                        if (route.isNotEmpty)
-                          Icon(Icons.double_arrow_rounded,
-                              size: 16, color: Colors.deepOrange),
-                        if (route.isNotEmpty) Text('$route'),
-                        if (route.isEmpty)
-                          Icon(Icons.double_arrow_rounded,
-                              size: 16, color: Colors.deepOrange),
-                        if (route.isNotEmpty)
-                          Icon(Icons.double_arrow_rounded,
-                              size: 16, color: Colors.deepOrange),
+                        Image.asset(
+                          'assets/images/direct-flight.png',
+                          width: 48,
+                          height: 48,
+                        ),
                         Text('$arrival'),
                       ],
                     ),
-                    SizedBox(height: 16),
+
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Time $total_time'),
-                        Text('$aircraft_id'),
-                        Text('$aircraft_type'),
+                        Text('$route'),
                       ],
                     ),
                   ],
                 ),
               ),
-              SizedBox(width: 16),
+              SizedBox(width: 32),
               Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Transform.rotate(
-                    angle: 90 * 3.1415926535897932 / 180,
-                    child: Icon(
-                      Icons.airplanemode_active_sharp,
-                      size: 48,
-                      color: Colors.deepOrange,
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(Icons.access_time_outlined,color: Colors.deepOrange,size: 16,),
+                      Text('$total_time hours'),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(Icons.featured_play_list_outlined,color: Colors.deepOrange,size: 16,),
+                      Text('$aircraft_id'),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(Icons.airplanemode_on,color: Colors.deepOrange,size: 16,),
+                      Text('$aircraft_type'),
+                    ],
                   ),
                 ],
               ),
+
             ],
           ),
         ),

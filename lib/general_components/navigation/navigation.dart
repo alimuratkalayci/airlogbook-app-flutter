@@ -1,12 +1,12 @@
-import 'package:coin_go/features/add_flight_page/add_flight_page.dart';
-import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:coin_go/features/add_flight_page/add_flight_page.dart';
+import 'package:coin_go/features/analyze_page/analyze_page.dart';
+import 'package:coin_go/features/flights_page/flights_page.dart';
+import 'package:coin_go/features/home_page/home_page.dart';
+import 'package:coin_go/features/settings_page/settings_page.dart';
 import 'package:coin_go/theme/theme.dart';
-import '../../features/analyze_page/analyze_page.dart';
-import '../../features/flights_page/flights_page.dart';
-import '../../features/home_page/home_page.dart';
-import '../../features/settings_page/settings_page.dart';
 import 'navigation_cubit.dart';
 import 'navigation_state.dart';
 
@@ -21,18 +21,38 @@ class RootScreenUI extends StatelessWidget {
     SettingPage(),
   ];
 
+  final List<TabItem> _bottomNavItems = [
+    TabItem(icon: Icons.home, title: 'Home'),
+    TabItem(icon: Icons.flight_takeoff, title: 'My Flights'),
+    TabItem(icon: Icons.add, title: 'Add Flight'),
+    TabItem(icon: Icons.analytics_outlined, title: 'Analyze'),
+    TabItem(icon: Icons.settings, title: 'Settings'),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NavigationCubit, NavigationState>(
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            backgroundColor: AppTheme.darkBackgroundColor,
+            backgroundColor: AppTheme.AccentColor,
+            automaticallyImplyLeading: false,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // Boş bir widget, başlığı ortalamak için
-                SizedBox(width: 48.0), // İsteğe bağlı, butonun yerini ayarlamak için kullanılabilir
+
+                AbsorbPointer(
+                  absorbing: true,
+                  child: IconButton(
+                    icon: Icon(Icons.notifications, color: Colors.transparent),
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Notifications clicked!')),
+                      );
+                    },
+                  ),
+                ),
+
 
                 Expanded(
                   child: Center(
@@ -40,8 +60,8 @@ class RootScreenUI extends StatelessWidget {
                       child: Text(
                         _getPageTitle(state.selectedItem),
                         style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w800,
+                          color: AppTheme.TextColorWhite,
+                          fontWeight: FontWeight.w900,
                         ),
                       ),
                     ),
@@ -49,9 +69,9 @@ class RootScreenUI extends StatelessWidget {
                 ),
 
                 IconButton(
-                  icon: Icon(Icons.notifications, color: Colors.white),
+                  icon: Icon(Icons.notifications, color: AppTheme.TextColorWhite,
+                  ),
                   onPressed: () {
-                    // Bildirim simgesine tıklama işlemi
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Notifications clicked!')),
                     );
@@ -60,36 +80,26 @@ class RootScreenUI extends StatelessWidget {
               ],
             ),
             elevation: 0,
-            centerTitle: false, // Başlık merkezde değil
+            centerTitle: true,
           ),
           body: _pages[state.selectedItem.index],
-          bottomNavigationBar: _buildBottomNavBar(context, state),
+          bottomNavigationBar: Container(
+            color: AppTheme.BackgroundColor,
+            padding: EdgeInsets.only(right: 16,left: 16,bottom: 16,top: 8),
+            child: BottomBarFloating(
+              borderRadius: BorderRadius.circular(24),
+              items: _bottomNavItems,
+              backgroundColor: AppTheme.AccentColor,
+              color: AppTheme.TextColorWhite,
+              colorSelected: AppTheme.DeepOrange,
+              indexSelected: state.selectedItem.index,
+              onTap: (int index) {
+                context.read<NavigationCubit>().selectItem(NavigationItem.values[index]);
+              },
+            ),
+          ),
         );
       },
-    );
-  }
-
-  Widget _buildBottomNavBar(BuildContext context, NavigationState state) {
-    return ConvexAppBar(
-      backgroundColor: AppTheme.darkBackgroundColor,
-      style: TabStyle.fixedCircle,
-      items: [
-        TabItem(icon: Icons.home, title: 'Home'),
-        TabItem(
-          icon: Image.asset('assets/icons/flights1.png'),
-          activeIcon: Image.asset('assets/icons/flights2.png'),
-          title: 'Flights',
-        ),
-        TabItem(icon: Icons.add, title: 'Add Flight'),
-        TabItem(icon: Icons.analytics_outlined, title: 'Analyze'),
-        TabItem(icon: Icons.settings, title: 'Settings'),
-      ],
-      initialActiveIndex: state.selectedItem.index,
-      onTap: (int index) {
-        context.read<NavigationCubit>().selectItem(NavigationItem.values[index]);
-      },
-      activeColor: Colors.deepOrange,
-      color: Colors.white,
     );
   }
 

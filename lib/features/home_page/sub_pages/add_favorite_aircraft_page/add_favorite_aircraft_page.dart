@@ -36,7 +36,7 @@ class _AddFavoriteAircraftPageState extends State<AddFavoriteAircraftPage> {
   void _fetchAircraftTypes() async {
     QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection('aircraft_types')
-        .orderBy('name') // A'dan Z'ye sıralama
+        .orderBy('name')
         .get();
     setState(() {
       _aircraftTypes = snapshot.docs;
@@ -92,108 +92,126 @@ class _AddFavoriteAircraftPageState extends State<AddFavoriteAircraftPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.darkBackgroundColor,
+      backgroundColor: AppTheme.BackgroundColor,
       appBar: AppBar(
-        foregroundColor: Colors.deepOrange,
-        backgroundColor: AppTheme.darkBackgroundColor,
+        foregroundColor: AppTheme.TextColorWhite,
+        backgroundColor: AppTheme.AccentColor,
         title: Text('Add Favorite Aircraft'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                labelText: 'Search Aircraft Types',
-                labelStyle: TextStyle(color: Colors.white), // Etiket rengi
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white), // Kenarlık rengi
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white), // Etkin kenarlık rengi
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.deepOrange), // Odaklanılmış kenarlık rengi
-                ),
-                fillColor: Colors.grey[800], // Arka plan rengi
-                filled: true,
-              ),
-              style: TextStyle(color: Colors.white), // Metin rengi
-              onChanged: (value) {
-                _filterAircraftTypes(value);
-              },
-            ),
-            SizedBox(height: 16),
-            Wrap(
-              spacing: 8.0,
-              children: _selectedAircraftTypes.map((type) {
-                return Chip(
-                  label: Text(type),
-                  onDeleted: () {
-                    _removeAircraftType(type);
+      body: Column(
+        children: [
+          Container(
+            color: AppTheme.BackgroundColor,
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(children: [
+                TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    labelText: 'Search Aircraft Types',
+                    labelStyle: TextStyle(color: AppTheme.DeepOrange), // Etiket rengi
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide(color: AppTheme.AccentColor,width: 2), // Kenarlık rengi
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide(color: AppTheme.AccentColor,width: 2), // Etkin kenarlık rengi
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide(color: AppTheme.AccentColor,width: 2), // Odaklanılmış kenarlık rengi
+                    ),
+                    fillColor: AppTheme.BackgroundColor, // Arka plan rengi
+                    filled: true,
+                  ),
+                  style: TextStyle(color: AppTheme.DeepOrange), // Metin rengi
+                  onChanged: (value) {
+                    _filterAircraftTypes(value);
                   },
-                );
-              }).toList(),
-            ),
-            SizedBox(height: 16),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _filteredAircraftTypes.length,
-                itemBuilder: (context, index) {
-                  String name = _filteredAircraftTypes[index]['name'];
-                  return Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-                    child: ListTile(
-                      tileColor: Colors.grey[900], // Arka plan rengi
-                      leading: Icon(Icons.airplanemode_active, color: Colors.deepOrange), // İkon
-                      title: Text(
-                        name,
-                        style: TextStyle(
-                          color: Colors.white, // Yazı rengi
-                          fontSize: 18, // Yazı boyutu
-                          fontWeight: FontWeight.bold, // Yazı kalınlığı
-                        ),
-                      ),
-                      trailing: Icon(
-                          _selectedAircraftTypes.contains(name)
-                              ? Icons.check_circle
-                              : Icons.add, color: Colors.deepOrange), // Sağdaki ikon
-                      onTap: () {
-                        if (_selectedAircraftTypes.contains(name)) {
-                          _removeAircraftType(name);
-                        } else {
-                          _addAircraftType(name);
-                        }
+                ),
+                SizedBox(height: 16,),
+                Wrap(
+                  spacing: 8.0,
+                  children: _selectedAircraftTypes.map((type) {
+                    return Chip(
+                      deleteIconColor: AppTheme.TextColorWhite,
+                      backgroundColor: AppTheme.AccentColor,
+                      label: Text(type,style: TextStyle(color: AppTheme.TextColorWhite),),
+                      onDeleted: () {
+                        _removeAircraftType(type);
                       },
-                      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8), // İç boşluk
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10), // Köşe yuvarlatma
+                    );
+                  }).toList(),
+                ),
+              ],),
+            ),
+          ),
+          
+          Expanded(
+            child: ListView.builder(
+              itemCount: _filteredAircraftTypes.length,
+              itemBuilder: (context, index) {
+                String name = _filteredAircraftTypes[index]['name'];
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+                  child: ListTile(
+                    tileColor: AppTheme.BackgroundColor, // Arka plan rengi
+                    leading: Icon(Icons.airplanemode_active, color: AppTheme.DeepOrange), // İkon
+                    title: Text(
+                      name,
+                      style: TextStyle(
+                        color: AppTheme.AccentColor, // Yazı rengi
+                        fontSize: 18, // Yazı boyutu
+                        fontWeight: FontWeight.bold, // Yazı kalınlığı
                       ),
                     ),
-                  );
-                },
-              ),
+                    trailing: Icon(
+                        _selectedAircraftTypes.contains(name)
+                            ? Icons.check_circle
+                            : Icons.add, color: AppTheme.DeepOrange), // Sağdaki ikon
+                    onTap: () {
+                      if (_selectedAircraftTypes.contains(name)) {
+                        _removeAircraftType(name);
+                      } else {
+                        _addAircraftType(name);
+                      }
+                    },
+                    contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8), // İç boşluk
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(color: AppTheme.AccentColor,width: 2),
+                      borderRadius: BorderRadius.circular(16), // Köşe yuvarlatma
+                    ),
+                  ),
+                );
+              },
             ),
-            SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: _saveFavoriteAircraftTypes,
-                    child: Text('Save', style: TextStyle(color: Colors.deepOrange)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
+          ),
+          SizedBox(height: 16),
+          Container(
+            color: AppTheme.BackgroundColor,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _saveFavoriteAircraftTypes,
+                      child: Text('Save', style: TextStyle(color: AppTheme.TextColorWhite)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.AccentColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
