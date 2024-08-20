@@ -1,3 +1,4 @@
+import 'package:coin_go/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -126,23 +127,33 @@ class _AnalyzePageState extends State<AnalyzePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16,16,16,0),
-                  child: InkWell(
-                    onTap: () => _pickDate(context, true),
+                child: InkWell(
+                  onTap: () => _pickDate(context, true),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: AppTheme.AccentColor,
+                      borderRadius: BorderRadius.circular(16.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 4.0,
+                          offset: Offset(2, 2),
+                        ),
+                      ],
+                    ),
                     child: InputDecorator(
                       decoration: InputDecoration(
                         labelText: 'Start Date',
                         labelStyle: TextStyle(
-                          color: Colors.deepOrange,
+                          color: AppTheme.TextColorWhite,
                           fontWeight: FontWeight.bold,
-                          fontSize: 18
+                          fontSize: 18,
                         ),
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.zero,
+                        contentPadding: EdgeInsets.all(16.0),
                         suffixIcon: Icon(
                           Icons.calendar_today,
-                          color: Colors.black,
+                          color: AppTheme.TextColorWhite,
                         ),
                       ),
                       child: Text(
@@ -150,31 +161,42 @@ class _AnalyzePageState extends State<AnalyzePage> {
                             ? _dateFormat.format(_startDate!)
                             : 'All Entries',
                         style: TextStyle(
-                          color: Colors.black,
+                          color: AppTheme.TextColorWhite,
                         ),
                       ),
                     ),
                   ),
                 ),
               ),
+              SizedBox(width: 16,),
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(16,16,16,0),
-                  child: InkWell(
-                    onTap: () => _pickDate(context, false),
+                child: InkWell(
+                  onTap: () => _pickDate(context, false),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: AppTheme.AccentColor, // Arka plan rengi
+                      borderRadius: BorderRadius.circular(16.0), // Kenarların yuvarlatılması
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 4.0,
+                          offset: Offset(2, 2),
+                        ),
+                      ],
+                    ),
                     child: InputDecorator(
                       decoration: InputDecoration(
                         labelText: 'End Date',
                         labelStyle: TextStyle(
-                            color: Colors.deepOrange,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18
+                          color: AppTheme.TextColorWhite,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
                         ),
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.zero,
+                        contentPadding: EdgeInsets.all(16.0),
                         suffixIcon: Icon(
                           Icons.calendar_today,
-                          color: Colors.black,
+                          color: AppTheme.TextColorWhite,
                         ),
                       ),
                       child: Text(
@@ -182,7 +204,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
                             ? _dateFormat.format(_endDate!)
                             : 'All Entries',
                         style: TextStyle(
-                          color: Colors.black,
+                          color: AppTheme.TextColorWhite,
                         ),
                       ),
                     ),
@@ -192,6 +214,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
             ],
           ),
         );
+
       },
     );
   }
@@ -275,6 +298,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
     double percentage = (totalHours > 0) ? (value / totalHours) : 0.0;
 
     return Card(
+      color: AppTheme.AccentColor,
       margin: EdgeInsets.symmetric(vertical: 8.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -287,6 +311,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
                 Text(
                   title,
                   style: TextStyle(
+                    color: AppTheme.TextColorWhite,
                     fontSize: 16.0,
                     fontWeight: FontWeight.bold,
                   ),
@@ -294,8 +319,8 @@ class _AnalyzePageState extends State<AnalyzePage> {
                 Text(
                   value.toStringAsFixed(2),
                   style: TextStyle(
+                    color: AppTheme.TextColorWhite,
                     fontSize: 16.0,
-                    color: Colors.deepOrange,
                   ),
                 ),
               ],
@@ -305,7 +330,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
               height: 8,
               child: LinearProgressIndicator(
                 value: percentage,
-
+                borderRadius: BorderRadius.circular(16),
                 backgroundColor: Colors.white,
                 color: Colors.deepOrange,
               ),
@@ -318,6 +343,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
 
   Widget buildSummaryCardInt(String title, int value) {
     return Card(
+      color: AppTheme.AccentColor,
       margin: EdgeInsets.symmetric(vertical: 8.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -327,6 +353,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
             Text(
               title,
               style: TextStyle(
+                color: AppTheme.TextColorWhite,
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,
               ),
@@ -334,8 +361,8 @@ class _AnalyzePageState extends State<AnalyzePage> {
             Text(
               value.toString(),
               style: TextStyle(
+                color: AppTheme.TextColorWhite,
                 fontSize: 16.0,
-                color: Colors.deepOrange,
               ),
             ),
           ],

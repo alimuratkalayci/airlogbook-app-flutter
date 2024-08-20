@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 
+import '../../../../../theme/theme.dart';
+
 class FlightDetailsUpdatePage extends StatefulWidget {
   final String flightId;
   final String userId;
@@ -19,8 +21,10 @@ class _FlightDetailsUpdatePageState extends State<FlightDetailsUpdatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.BackgroundColor,
       appBar: AppBar(
-        foregroundColor: Colors.deepOrange,
+        backgroundColor: AppTheme.AccentColor,
+        foregroundColor: AppTheme.TextColorWhite,
         title: Text('Flight Details'),
       ),
       body: FutureBuilder<DocumentSnapshot>(
@@ -42,45 +46,62 @@ class _FlightDetailsUpdatePageState extends State<FlightDetailsUpdatePage> {
 
           return Form(
             key: _formKey,
-            child: ListView(
-              padding: EdgeInsets.all(16.0),
+            child: Column(
               children: [
-                buildNonEditableCard('Date', 'date'),
-                buildNonEditableCard('Aircraft Type', 'aircraft_type'),
-                buildEditableCard('Aircraft ID', 'aircraft_id'),
-                buildEditableCard('Departure Airport', 'departure_airport'),
-                buildEditableCard('Route', 'route'),
-                buildEditableCard('Arrival Airport', 'arrival_airport'),
-                buildEditableCard('Hobbs In', 'hobbs_in', isDouble: true),
-                buildEditableCard('Hobbs Out', 'hobbs_out', isDouble: true),
-                buildEditableCard('Total Time', 'total_time', isDouble: true),
-                buildEditableCard('Night Time', 'night_time', isDouble: true),
-                buildEditableCard('PIC', 'pic', isDouble: true),
-                buildEditableCard('Dual Received', 'dual_rcvd', isDouble: true),
-                buildEditableCard('Solo', 'solo'),
-                buildEditableCard('XC', 'xc', isDouble: true),
-                buildEditableCard('Simulated Instrument', 'sim_inst', isDouble: true),
-                buildEditableCard('Actual Instrument', 'actual_inst', isDouble: true),
-                buildEditableCard('Simulator', 'simulator', isDouble: true),
-                buildEditableCard('Ground', 'ground', isDouble: true),
-                buildEditableCard('Instrument Approach', 'instrument_approach', isInt: true),
-                buildEditableCard('Day Takeoffs', 'day_to', isInt: true),
-                buildEditableCard('Day Landings', 'day_ldg', isInt: true),
-                buildEditableCard('Night Takeoffs', 'night_to', isInt: true),
-                buildEditableCard('Night Landings', 'night_ldg', isInt: true),
-                buildRemarksCard('Remarks', 'remarks'),
-                SizedBox(height: 20.0),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      updateFlightDetails();
-                    }
-                  },
-                  child: Text('Update Flight',style: TextStyle(color: Colors.deepOrange,fontWeight: FontWeight.bold),),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
+                Expanded(
+                  child: ListView(
+                    padding: EdgeInsets.all(16.0),
+                    children: [
+                      buildNonEditableCard('Date', 'date'),
+                      buildNonEditableCard('Aircraft Type', 'aircraft_type'),
+                      buildEditableCard('Aircraft ID', 'aircraft_id'),
+                      buildEditableCard('Departure Airport', 'departure_airport'),
+                      buildEditableCard('Route', 'route'),
+                      buildEditableCard('Arrival Airport', 'arrival_airport'),
+                      buildEditableCard('Hobbs In', 'hobbs_in', isDouble: true),
+                      buildEditableCard('Hobbs Out', 'hobbs_out', isDouble: true),
+                      buildEditableCard('Total Time', 'total_time', isDouble: true),
+                      buildEditableCard('Night Time', 'night_time', isDouble: true),
+                      buildEditableCard('PIC', 'pic', isDouble: true),
+                      buildEditableCard('Dual Received', 'dual_rcvd', isDouble: true),
+                      buildEditableCard('Solo', 'solo'),
+                      buildEditableCard('XC', 'xc', isDouble: true),
+                      buildEditableCard('Simulated Instrument', 'sim_inst', isDouble: true),
+                      buildEditableCard('Actual Instrument', 'actual_inst', isDouble: true),
+                      buildEditableCard('Simulator', 'simulator', isDouble: true),
+                      buildEditableCard('Ground', 'ground', isDouble: true),
+                      buildEditableCard('Instrument Approach', 'instrument_approach', isInt: true),
+                      buildEditableCard('Day Takeoffs', 'day_to', isInt: true),
+                      buildEditableCard('Day Landings', 'day_ldg', isInt: true),
+                      buildEditableCard('Night Takeoffs', 'night_to', isInt: true),
+                      buildEditableCard('Night Landings', 'night_ldg', isInt: true),
+                      buildRemarksCard('Remarks', 'remarks'),
+                    ],
                   ),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16,8,16,8),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              _formKey.currentState!.save();
+                              updateFlightDetails();
+                            }
+                          },
+                          child: Text('Update Flight',style: TextStyle(color: AppTheme.TextColorWhite,fontWeight: FontWeight.bold),),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.AccentColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -92,10 +113,12 @@ class _FlightDetailsUpdatePageState extends State<FlightDetailsUpdatePage> {
 
   Widget buildEditableCard(String title, String field, {bool isDouble = false, bool isInt = false}) {
     return Card(
+      color: AppTheme.AccentColor,
       margin: EdgeInsets.symmetric(vertical: 8.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: TextFormField(
+          style: TextStyle(color: AppTheme.TextColorWhite),
           keyboardType: TextInputType.number,
           inputFormatters: <TextInputFormatter>[
             FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
@@ -103,7 +126,7 @@ class _FlightDetailsUpdatePageState extends State<FlightDetailsUpdatePage> {
           initialValue: flightData[field] != null ? flightData[field].toString() : '',
           decoration: InputDecoration(
             labelText: title,
-            labelStyle: TextStyle(fontWeight: FontWeight.bold),
+            labelStyle: TextStyle(fontWeight: FontWeight.bold,color: AppTheme.TextColorWhite),
           ),
           onChanged: (newValue) {
             if (isDouble) {
@@ -129,14 +152,18 @@ class _FlightDetailsUpdatePageState extends State<FlightDetailsUpdatePage> {
 
   Widget buildNonEditableCard(String title, String field) {
     return Card(
+      color: AppTheme.AccentColor,
       margin: EdgeInsets.symmetric(vertical: 8.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: TextFormField(
+          style: TextStyle(
+            color: AppTheme.TextColorWhite,
+          ),
           initialValue: flightData[field] != null ? flightData[field].toString() : '',
           decoration: InputDecoration(
             labelText: title,
-            labelStyle: TextStyle(fontWeight: FontWeight.bold),
+            labelStyle: TextStyle(fontWeight: FontWeight.bold,color: AppTheme.TextColorWhite),
           ),
           enabled: false,
         ),
@@ -146,14 +173,16 @@ class _FlightDetailsUpdatePageState extends State<FlightDetailsUpdatePage> {
 
   Widget buildRemarksCard(String title, String field) {
     return Card(
+      color: AppTheme.AccentColor,
       margin: EdgeInsets.symmetric(vertical: 8.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: TextFormField(
+          style: TextStyle(color: AppTheme.TextColorWhite),
           initialValue: flightData[field] != null ? flightData[field].toString() : '',
           decoration: InputDecoration(
             labelText: title,
-            labelStyle: TextStyle(fontWeight: FontWeight.bold),
+            labelStyle: TextStyle(fontWeight: FontWeight.bold,color: AppTheme.TextColorWhite),
           ),
           maxLines: null,
           onChanged: (newValue) {

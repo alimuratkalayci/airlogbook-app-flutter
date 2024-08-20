@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import '../../theme/theme.dart';
 import '../sign_in_page/sign_in_page.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -15,7 +16,6 @@ class WelcomeScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const Spacer(flex: 2),
             Flexible(
               flex: 4,
               child: Lottie.network(
@@ -25,15 +25,15 @@ class WelcomeScreen extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            const Spacer(flex: 3),
+            const Spacer(flex: 10),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
               child: Text(
-                "Welcome to our log book app",
+                "Welcome to AIR Logbook",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: Color(0xff28397f),
+                  color: AppTheme.AccentColor,
                 ),
               ),
             ),
@@ -48,7 +48,7 @@ class WelcomeScreen extends StatelessWidget {
                       .textTheme
                       .bodyLarge!
                       .color!
-                      .withOpacity(0.64),
+                      .withOpacity(0.7),
                 ),
               ),
             ),
@@ -66,14 +66,14 @@ class WelcomeScreen extends StatelessWidget {
                     Text(
                       "Skip",
                       style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                        color: Color(0xff28397f),
+                        color: AppTheme.AccentColor,
                       ),
                     ),
                     const SizedBox(width: 8),
                     Icon(
                       Icons.arrow_forward_ios,
                       size: 16,
-                      color: Color(0xff28397f),
+                      color: AppTheme.AccentColor,
                     )
                   ],
                 ),

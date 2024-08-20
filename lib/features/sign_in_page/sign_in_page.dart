@@ -2,7 +2,7 @@ import 'package:coin_go/features/sign_up_page/sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../root_screen.dart';
-
+import '../../theme/theme.dart';
 
 class SignInPage extends StatefulWidget {
   SignInPage({Key? key}) : super(key: key);
@@ -21,17 +21,17 @@ class _SignInPageState extends State<SignInPage> {
   void _signInWithEmailAndPassword(BuildContext context) async {
     if (isValidEmail) {
       try {
-        await _auth.signInWithEmailAndPassword(email: email, password: password);
+        await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
 
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => RootScreen()),
         );
-
-
       } catch (e) {
         print('Giriş hatası: $e');
-        showErrorMessage(context, 'Login failed. Please check your credentials.');
+        showErrorMessage(
+            context, 'Login failed. Please check your credentials.');
       }
     }
   }
@@ -48,121 +48,170 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'E-mail',
-                labelStyle: TextStyle(color: Color(0xff28397f)),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff28397f)),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff28397f)),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff28397f)),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              style: TextStyle(color: Color(0xff28397f)),
-              cursorColor: Color(0xff28397f),
-              onChanged: (value) {
-                setState(() {
-                  email = value;
-                  isValidEmail = isValidEmailFormat(email);
-                });
-              },
-            ),
-            if (!isValidEmail)
+      backgroundColor: AppTheme.BackgroundColor,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
               Padding(
-                padding: const EdgeInsets.only(top: 4.0),
-                child: Text(
-                  'Please enter a valid email.',
-                  style: TextStyle(color: Colors.red),
-                ),
-              ),
-            SizedBox(
-              height: 8,
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Password',
-                labelStyle: TextStyle(color: Color(0xff28397f)),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff28397f)),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff28397f)),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff28397f)),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              style: TextStyle(color: Color(0xff28397f)),
-              cursorColor: Color(0xff28397f),
-              obscureText: true,
-              onChanged: (value) {
-                password = value;
-              },
-            ),
-            SizedBox(
-              height: 8,
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      _signInWithEmailAndPassword(context);
-                    },
-                    child: Text(
-                      'Sign In',
-                      style: TextStyle(color: Colors.white),
+                padding: const EdgeInsets.all(16.0),
+                child: Center(
+                  child: Text(
+                    'AIR LOGBOOK',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: AppTheme.AccentColor,
+                      fontSize: 24,
+                      fontFamily: 'Georgia',
                     ),
-                    style: ButtonStyle(
-                      backgroundColor:
-                      WidgetStateProperty.all(Color(0xff28397f)),
-                      shape: WidgetStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              8.0), // Burada border radius'u ayarlayabilirsiniz
+                  ),
+                ),
+              ),
+              SizedBox(height: 16,),
+              Image.asset(
+                'assets/images/sign_in_up_logo.png',
+                width: 220,
+                height: 200,
+                fit: BoxFit.cover,
+              ),
+              SizedBox(height: 32,),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'E-mail',
+                  labelStyle: TextStyle(color: AppTheme.AccentColor),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: AppTheme.AccentColor,
+                      width: 2.0,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: AppTheme.AccentColor,
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: AppTheme.AccentColor,
+                      width: 2.0,
+                    ),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                ),
+                style: TextStyle(color: Color(0xff28397f)),
+                cursorColor: Color(0xff28397f),
+                onChanged: (value) {
+                  setState(() {
+                    email = value;
+                    isValidEmail = isValidEmailFormat(email);
+                  });
+                },
+              ),
+              if (!isValidEmail)
+                Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: Text(
+                    'Please enter a valid email.',
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
+              SizedBox(
+                height: 8,
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  labelStyle: TextStyle(color: AppTheme.AccentColor),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: AppTheme.AccentColor,
+                      width: 2.0,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: AppTheme.AccentColor,
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: AppTheme.AccentColor,
+                      width: 2.0,
+                    ),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                ),
+                style: TextStyle(color: Color(0xff28397f)),
+                cursorColor: Color(0xff28397f),
+                obscureText: true,
+                onChanged: (value) {
+                  password = value;
+                },
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        _signInWithEmailAndPassword(context);
+                      },
+                      child: Text(
+                        'Sign In',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.AccentColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Don't have an account?",style: TextStyle(fontWeight: FontWeight.w700),),
-                SizedBox(
-                  width: 8,
-                ),
-                GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const SignUpPage()),
-                      );
-                    },
-                    child: Text("Sign Up",style: TextStyle(fontWeight: FontWeight.w700,color: Color(0xff28397f)),)),
-              ],
-            ),
-          ],
+                ],
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Don't have an account?",
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SignUpPage()),
+                        );
+                      },
+                      child: Text(
+                        "Sign Up",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.AccentColor),
+                      )),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

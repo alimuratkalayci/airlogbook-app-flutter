@@ -1,3 +1,4 @@
+import 'package:coin_go/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -10,8 +11,10 @@ class FlightDetailsShowPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.BackgroundColor,
       appBar: AppBar(
-        foregroundColor: Colors.deepOrange,
+        backgroundColor: AppTheme.AccentColor,
+        foregroundColor: AppTheme.TextColorWhite,
         title: Text('Flight Details'),
       ),
       body: FutureBuilder<DocumentSnapshot>(
@@ -67,6 +70,7 @@ class FlightDetailsShowPage extends StatelessWidget {
 
   Widget buildDetailCard(String title, dynamic value) {
     return Card(
+      color: AppTheme.AccentColor,
       margin: EdgeInsets.symmetric(vertical: 8.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -76,6 +80,7 @@ class FlightDetailsShowPage extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
+                color: AppTheme.TextColorWhite,
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,
               ),
@@ -84,7 +89,7 @@ class FlightDetailsShowPage extends StatelessWidget {
               value != null ? value.toString() : '0',
               style: TextStyle(
                 fontSize: 16.0,
-                color: Colors.deepOrange,
+                color: AppTheme.TextColorWhite,
               ),
             ),
           ],
@@ -95,6 +100,7 @@ class FlightDetailsShowPage extends StatelessWidget {
 
   Widget buildRemarksCard(String title, dynamic value) {
     return Card(
+      color: AppTheme.AccentColor,
       margin: EdgeInsets.symmetric(vertical: 8.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -104,6 +110,7 @@ class FlightDetailsShowPage extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
+                color: AppTheme.TextColorWhite,
                 fontSize: 16.0,
                 fontWeight: FontWeight.bold,
               ),
@@ -113,7 +120,7 @@ class FlightDetailsShowPage extends StatelessWidget {
               value != null ? value.toString() : '-',
               style: TextStyle(
                 fontSize: 16.0,
-                color: Colors.grey[700],
+                color: AppTheme.TextColorWhite,
               ),
               softWrap: true,
             ),

@@ -105,7 +105,8 @@ class _AddFavoriteAircraftPageState extends State<AddFavoriteAircraftPage> {
             width: double.infinity,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Column(children: [
+              child: Column(
+                children: [
                 TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
@@ -132,19 +133,28 @@ class _AddFavoriteAircraftPageState extends State<AddFavoriteAircraftPage> {
                   },
                 ),
                 SizedBox(height: 16,),
-                Wrap(
-                  spacing: 8.0,
-                  children: _selectedAircraftTypes.map((type) {
-                    return Chip(
-                      deleteIconColor: AppTheme.TextColorWhite,
-                      backgroundColor: AppTheme.AccentColor,
-                      label: Text(type,style: TextStyle(color: AppTheme.TextColorWhite),),
-                      onDeleted: () {
-                        _removeAircraftType(type);
-                      },
-                    );
-                  }).toList(),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal, // Yatay kaydırma yönü
+                  child: Row(
+                    children: _selectedAircraftTypes.map((type) {
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 8.0), // Sağ boşluk için padding
+                        child: Chip(
+                          deleteIconColor: AppTheme.TextColorWhite,
+                          backgroundColor: AppTheme.AccentColor,
+                          label: Text(
+                            type,
+                            style: TextStyle(color: AppTheme.TextColorWhite),
+                          ),
+                          onDeleted: () {
+                            _removeAircraftType(type);
+                          },
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 ),
+
               ],),
             ),
           ),
@@ -188,11 +198,11 @@ class _AddFavoriteAircraftPageState extends State<AddFavoriteAircraftPage> {
               },
             ),
           ),
-          SizedBox(height: 16),
+
           Container(
             color: AppTheme.BackgroundColor,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.fromLTRB(16,8,16,8),
               child: Row(
                 children: [
                   Expanded(

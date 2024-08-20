@@ -116,7 +116,6 @@ class _AddFlightPageState extends State<AddFlightPage> {
     }
   }
 
-
   void _presentDatePicker() {
     showDatePicker(
       context: context,
@@ -133,7 +132,6 @@ class _AddFlightPageState extends State<AddFlightPage> {
       });
     });
   }
-
 
   Future<void> _saveFlightRecord() async {
     final FirebaseAuth auth = FirebaseAuth.instance;
@@ -189,9 +187,10 @@ class _AddFlightPageState extends State<AddFlightPage> {
           ? double.tryParse(_groundController.text)
           : 0.0;
 
-      final int? intrumentApproach = _instrumentApproachController.text.isNotEmpty
-          ? int.tryParse(_instrumentApproachController.text)
-          : 0;
+      final int? intrumentApproach =
+          _instrumentApproachController.text.isNotEmpty
+              ? int.tryParse(_instrumentApproachController.text)
+              : 0;
       final int? dayTakeoffs = _dayToController.text.isNotEmpty
           ? int.tryParse(_dayToController.text)
           : 0;
@@ -205,7 +204,6 @@ class _AddFlightPageState extends State<AddFlightPage> {
           ? int.tryParse(_nightLdgController.text)
           : 0;
 
-
       final flightRecord = {
         'date': _dateController.text,
         'aircraft_type': selectedAircraftType,
@@ -213,8 +211,12 @@ class _AddFlightPageState extends State<AddFlightPage> {
         'departure_airport': _departureAirportController.text,
         'route': _routeWayController.text,
         'arrival_airport': _arrivalAirportController.text,
-        'hobbs_in': _hobbsInController.text.isEmpty ? int.tryParse('0') : int.tryParse(_hobbsInController.text),
-        'hobbs_out': _hobbsOutController.text.isEmpty ? int.tryParse('0') : int.tryParse(_hobbsOutController.text),
+        'hobbs_in': _hobbsInController.text.isEmpty
+            ? int.tryParse('0')
+            : int.tryParse(_hobbsInController.text),
+        'hobbs_out': _hobbsOutController.text.isEmpty
+            ? int.tryParse('0')
+            : int.tryParse(_hobbsOutController.text),
         'total_time': totalTime,
         'night_time': nightTime,
         'pic': pic,
@@ -321,9 +323,6 @@ class _AddFlightPageState extends State<AddFlightPage> {
     );
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -335,7 +334,8 @@ class _AddFlightPageState extends State<AddFlightPage> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 8,right: 8,top: 8,bottom: 8),
+                  padding: const EdgeInsets.only(
+                      left: 8, right: 8, top: 8, bottom: 8),
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
@@ -346,21 +346,31 @@ class _AddFlightPageState extends State<AddFlightPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Flight', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: AppTheme.TextColorWhite)),
+                        Text('Flight',
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: AppTheme.TextColorWhite)),
                         SizedBox(height: 8),
                         Row(
                           children: [
                             Expanded(
                               child: TextFormField(
                                 controller: _dateController,
+                                style:
+                                    TextStyle(color: AppTheme.TextColorWhite),
                                 decoration: InputDecoration(
                                   focusColor: AppTheme.TextColorWhite,
                                   labelText: 'Date',
-                                  labelStyle: TextStyle(color: AppTheme.TextColorWhite),
+                                  labelStyle:
+                                      TextStyle(color: AppTheme.TextColorWhite),
                                   hintText: _selectedDate == null
                                       ? 'No Date Chosen!'
-                                      : _dateFormat.format(_selectedDate!).toString(),
-                                  hintStyle: TextStyle(color: AppTheme.TextColorWhite),
+                                      : _dateFormat
+                                          .format(_selectedDate!)
+                                          .toString(),
+                                  hintStyle:
+                                      TextStyle(color: AppTheme.TextColorWhite),
                                   border: InputBorder.none,
                                 ),
                                 readOnly: true,
@@ -383,70 +393,89 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         SizedBox(height: 8),
                         Row(
                           children: [
-                            Text('Favorite Aircrafts',style: TextStyle(color: AppTheme.TextColorWhite),),
-                            SizedBox(width: 32,),
+                            Text(
+                              'Favorite Aircrafts',
+                              style: TextStyle(color: AppTheme.TextColorWhite),
+                            ),
+                            SizedBox(
+                              width: 16,
+                            ),
                             Expanded(
                               child: isLoading
                                   ? CircularProgressIndicator()
                                   : errorMessage.isNotEmpty
-                                  ? Text(errorMessage, style: TextStyle(color: Colors.red))
-                                  : DropdownButtonFormField<String>(
-                                dropdownColor: AppTheme.AccentColor,
-                                iconEnabledColor: AppTheme.TextColorWhite,
-                                iconSize: 24,
-                                elevation: 16,
-                                style: TextStyle(
-                                  color: AppTheme.TextColorWhite,
-                                  fontSize: 16,
-                                ),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    borderSide: BorderSide(
-                                      color: Colors.white,
-                                      width: 2.0, //
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    borderSide: BorderSide(
-                                      color: Colors.white,
-                                      width: 2.0,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    borderSide: BorderSide(
-                                      color: AppTheme.AccentColor,
-                                      width: 2.0,
-                                    ),
-                                  ),
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-                                ),
-                                hint: Text(
-                                  'Aircraft Types',
-                                  style: TextStyle(color: AppTheme.TextColorWhite),
-                                ),
-                                value: selectedAircraftType,
-                                onChanged: (String? newValue) {
-                                  setState(() {
-                                    selectedAircraftType = newValue;
-                                  });
-                                },
-                                items: aircraftTypes.map<DropdownMenuItem<String>>((String value) {
-                                  return DropdownMenuItem<String>(
-                                    value: value,
-                                    child: Text(value, style: TextStyle(color: AppTheme.TextColorWhite)),
-                                  );
-                                }).toList(),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Select an aircraft type';
-                                  }
-                                  return null;
-                                },
-                              ),
-
+                                      ? Text(errorMessage,
+                                          style: TextStyle(color: Colors.red))
+                                      : DropdownButtonFormField<String>(
+                                          dropdownColor: AppTheme.AccentColor,
+                                          iconEnabledColor:
+                                              AppTheme.TextColorWhite,
+                                          iconSize: 24,
+                                          elevation: 16,
+                                          style: TextStyle(
+                                            color: AppTheme.TextColorWhite,
+                                            fontSize: 16,
+                                          ),
+                                          decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                              borderSide: BorderSide(
+                                                color: Colors.white,
+                                                width: 2.0, //
+                                              ),
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                              borderSide: BorderSide(
+                                                color: Colors.white,
+                                                width: 2.0,
+                                              ),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                              borderSide: BorderSide(
+                                                color: AppTheme.AccentColor,
+                                                width: 2.0,
+                                              ),
+                                            ),
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    horizontal: 16.0,
+                                                    vertical: 12.0),
+                                          ),
+                                          hint: Text(
+                                            'Aircraft Types',
+                                            style: TextStyle(
+                                                color: AppTheme.TextColorWhite),
+                                          ),
+                                          value: selectedAircraftType,
+                                          onChanged: (String? newValue) {
+                                            setState(() {
+                                              selectedAircraftType = newValue;
+                                            });
+                                          },
+                                          items: aircraftTypes
+                                              .map<DropdownMenuItem<String>>(
+                                                  (String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(value,
+                                                  style: TextStyle(
+                                                      color: AppTheme
+                                                          .TextColorWhite)),
+                                            );
+                                          }).toList(),
+                                          validator: (value) {
+                                            if (value == null ||
+                                                value.isEmpty) {
+                                              return 'Select an aircraft type';
+                                            }
+                                            return null;
+                                          },
+                                        ),
                             ),
                           ],
                         ),
@@ -468,7 +497,8 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         SizedBox(height: 8),
                         TextFormField(
                           controller: _departureAirportController,
-                          decoration: customInputDecoration('Departure Airport'),
+                          decoration:
+                              customInputDecoration('Departure Airport'),
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16.0,
@@ -511,7 +541,8 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         TextFormField(
                           keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9.]')),
                           ],
                           controller: _hobbsInController,
                           decoration: customInputDecoration('Hobbs In'),
@@ -527,7 +558,8 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         TextFormField(
                           keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9.]')),
                           ],
                           controller: _hobbsOutController,
                           decoration: customInputDecoration('Hobbs Out'),
@@ -539,8 +571,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                             return null;
                           },
                           onChanged: (value) {
-                            setState(() {
-                            });
+                            setState(() {});
                             _updateTotalTime();
                           },
                         ),
@@ -548,7 +579,6 @@ class _AddFlightPageState extends State<AddFlightPage> {
                     ),
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -561,12 +591,17 @@ class _AddFlightPageState extends State<AddFlightPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Time', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: AppTheme.TextColorWhite)),
+                        Text('Time',
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: AppTheme.TextColorWhite)),
                         SizedBox(height: 10),
                         TextFormField(
                           keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9.]')),
                           ],
                           controller: _totalTimeController,
                           decoration: customInputDecoration('Total Time'),
@@ -575,8 +610,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                             fontSize: 16.0,
                           ),
                           onChanged: (value) {
-                            setState(() {
-                            });
+                            setState(() {});
                           },
                           validator: (value) {
                             return null;
@@ -587,60 +621,72 @@ class _AddFlightPageState extends State<AddFlightPage> {
                           style: TextStyle(color: AppTheme.TextColorWhite),
                           keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9.]')),
                           ],
                           controller: _nightTimeController,
-                          decoration: customInputDecoration('Night Time').copyWith(
+                          decoration:
+                              customInputDecoration('Night Time').copyWith(
                             suffixIcon: _totalTimeController.text.isNotEmpty
                                 ? Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Container(
-                                margin: EdgeInsets.symmetric(vertical: 0.0),
-                                child: TextButton(
-                                  onPressed: () {
-                                    double currentValue = double.tryParse(_totalTimeController.text) ?? 0.0;
-                                    _nightTimeController.text = currentValue.toString();
-                                  },
-                                  child: Text(
-                                    'Copy Time',
-                                    style: TextStyle(color: AppTheme.TextColorWhite),
-                                  ),
-                                ),
-                              ),
-                            )
+                                    padding: const EdgeInsets.all(8),
+                                    child: Container(
+                                      margin:
+                                          EdgeInsets.symmetric(vertical: 0.0),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          double currentValue = double.tryParse(
+                                                  _totalTimeController.text) ??
+                                              0.0;
+                                          _nightTimeController.text =
+                                              currentValue.toString();
+                                        },
+                                        child: Text(
+                                          'Copy Time',
+                                          style: TextStyle(
+                                              color: AppTheme.TextColorWhite),
+                                        ),
+                                      ),
+                                    ),
+                                  )
                                 : null,
                           ),
                           validator: (value) {
                             return null;
                           },
                         ),
-
                         SizedBox(height: 10),
                         TextFormField(
                           keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9.]')),
                           ],
                           controller: _picController,
                           style: TextStyle(color: AppTheme.TextColorWhite),
                           decoration: customInputDecoration('PIC').copyWith(
                             suffixIcon: _totalTimeController.text.isNotEmpty
                                 ? Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Container(
-                                margin: EdgeInsets.symmetric(vertical: 0.0),
-                                child: TextButton(
-                                  onPressed: () {
-                                    double currentValue = double.tryParse(_totalTimeController.text) ?? 0.0;
-                                    _picController.text = currentValue.toString();
-                                  },
-                                  child: Text(
-                                    'Copy Time',
-                                    style: TextStyle(color: AppTheme.TextColorWhite),
-                                  ),
-                                ),
-                              ),
-                            )
+                                    padding: const EdgeInsets.all(8),
+                                    child: Container(
+                                      margin:
+                                          EdgeInsets.symmetric(vertical: 0.0),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          double currentValue = double.tryParse(
+                                                  _totalTimeController.text) ??
+                                              0.0;
+                                          _picController.text =
+                                              currentValue.toString();
+                                        },
+                                        child: Text(
+                                          'Copy Time',
+                                          style: TextStyle(
+                                              color: AppTheme.TextColorWhite),
+                                        ),
+                                      ),
+                                    ),
+                                  )
                                 : null,
                           ),
                           validator: (value) {
@@ -651,28 +697,35 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         TextFormField(
                           keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9.]')),
                           ],
                           controller: _dualRcvdController,
                           style: TextStyle(color: AppTheme.TextColorWhite),
-                          decoration: customInputDecoration('Dual Received').copyWith(
+                          decoration:
+                              customInputDecoration('Dual Received').copyWith(
                             suffixIcon: _totalTimeController.text.isNotEmpty
                                 ? Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Container(
-                                margin: EdgeInsets.symmetric(vertical: 0.0),
-                                child: TextButton(
-                                  onPressed: () {
-                                    double currentValue = double.tryParse(_totalTimeController.text) ?? 0.0;
-                                    _dualRcvdController.text = currentValue.toString();
-                                  },
-                                  child: Text(
-                                    'Copy Time',
-                                    style: TextStyle(color: AppTheme.TextColorWhite),
-                                  ),
-                                ),
-                              ),
-                            )
+                                    padding: const EdgeInsets.all(8),
+                                    child: Container(
+                                      margin:
+                                          EdgeInsets.symmetric(vertical: 0.0),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          double currentValue = double.tryParse(
+                                                  _totalTimeController.text) ??
+                                              0.0;
+                                          _dualRcvdController.text =
+                                              currentValue.toString();
+                                        },
+                                        child: Text(
+                                          'Copy Time',
+                                          style: TextStyle(
+                                              color: AppTheme.TextColorWhite),
+                                        ),
+                                      ),
+                                    ),
+                                  )
                                 : null,
                           ),
                           validator: (value) {
@@ -683,28 +736,34 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         TextFormField(
                           keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9.]')),
                           ],
                           controller: _soloController,
                           style: TextStyle(color: AppTheme.TextColorWhite),
                           decoration: customInputDecoration('Solo').copyWith(
                             suffixIcon: _totalTimeController.text.isNotEmpty
                                 ? Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Container(
-                                margin: EdgeInsets.symmetric(vertical: 0.0),
-                                child: TextButton(
-                                  onPressed: () {
-                                    double currentValue = double.tryParse(_totalTimeController.text) ?? 0.0;
-                                    _soloController.text = currentValue.toString();
-                                  },
-                                  child: Text(
-                                    'Copy Time',
-                                    style: TextStyle(color: AppTheme.TextColorWhite),
-                                  ),
-                                ),
-                              ),
-                            )
+                                    padding: const EdgeInsets.all(8),
+                                    child: Container(
+                                      margin:
+                                          EdgeInsets.symmetric(vertical: 0.0),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          double currentValue = double.tryParse(
+                                                  _totalTimeController.text) ??
+                                              0.0;
+                                          _soloController.text =
+                                              currentValue.toString();
+                                        },
+                                        child: Text(
+                                          'Copy Time',
+                                          style: TextStyle(
+                                              color: AppTheme.TextColorWhite),
+                                        ),
+                                      ),
+                                    ),
+                                  )
                                 : null,
                           ),
                           validator: (value) {
@@ -715,28 +774,34 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         TextFormField(
                           keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9.]')),
                           ],
                           controller: _xcController,
                           style: TextStyle(color: AppTheme.TextColorWhite),
                           decoration: customInputDecoration('XC').copyWith(
                             suffixIcon: _totalTimeController.text.isNotEmpty
                                 ? Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Container(
-                                margin: EdgeInsets.symmetric(vertical: 0.0),
-                                child: TextButton(
-                                  onPressed: () {
-                                    double currentValue = double.tryParse(_totalTimeController.text) ?? 0.0;
-                                    _xcController.text = currentValue.toString();
-                                  },
-                                  child: Text(
-                                    'Copy Time',
-                                    style: TextStyle(color: AppTheme.TextColorWhite),
-                                  ),
-                                ),
-                              ),
-                            )
+                                    padding: const EdgeInsets.all(8),
+                                    child: Container(
+                                      margin:
+                                          EdgeInsets.symmetric(vertical: 0.0),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          double currentValue = double.tryParse(
+                                                  _totalTimeController.text) ??
+                                              0.0;
+                                          _xcController.text =
+                                              currentValue.toString();
+                                        },
+                                        child: Text(
+                                          'Copy Time',
+                                          style: TextStyle(
+                                              color: AppTheme.TextColorWhite),
+                                        ),
+                                      ),
+                                    ),
+                                  )
                                 : null,
                           ),
                           validator: (value) {
@@ -747,28 +812,35 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         TextFormField(
                           keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9.]')),
                           ],
                           controller: _simInstController,
                           style: TextStyle(color: AppTheme.TextColorWhite),
-                          decoration: customInputDecoration('Sim Inst').copyWith(
+                          decoration:
+                              customInputDecoration('Sim Inst').copyWith(
                             suffixIcon: _totalTimeController.text.isNotEmpty
                                 ? Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Container(
-                                margin: EdgeInsets.symmetric(vertical: 0.0),
-                                child: TextButton(
-                                  onPressed: () {
-                                    double currentValue = double.tryParse(_totalTimeController.text) ?? 0.0;
-                                    _simInstController.text = currentValue.toString();
-                                  },
-                                  child: Text(
-                                    'Copy Time',
-                                    style: TextStyle(color: AppTheme.TextColorWhite),
-                                  ),
-                                ),
-                              ),
-                            )
+                                    padding: const EdgeInsets.all(8),
+                                    child: Container(
+                                      margin:
+                                          EdgeInsets.symmetric(vertical: 0.0),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          double currentValue = double.tryParse(
+                                                  _totalTimeController.text) ??
+                                              0.0;
+                                          _simInstController.text =
+                                              currentValue.toString();
+                                        },
+                                        child: Text(
+                                          'Copy Time',
+                                          style: TextStyle(
+                                              color: AppTheme.TextColorWhite),
+                                        ),
+                                      ),
+                                    ),
+                                  )
                                 : null,
                           ),
                           validator: (value) {
@@ -779,28 +851,35 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         TextFormField(
                           keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9.]')),
                           ],
                           controller: _actualInstController,
                           style: TextStyle(color: AppTheme.TextColorWhite),
-                          decoration: customInputDecoration('Actual Inst').copyWith(
+                          decoration:
+                              customInputDecoration('Actual Inst').copyWith(
                             suffixIcon: _totalTimeController.text.isNotEmpty
                                 ? Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Container(
-                                margin: EdgeInsets.symmetric(vertical: 0.0),
-                                child: TextButton(
-                                  onPressed: () {
-                                    double currentValue = double.tryParse(_totalTimeController.text) ?? 0.0;
-                                    _actualInstController.text = currentValue.toString();
-                                  },
-                                  child: Text(
-                                    'Copy Time',
-                                    style: TextStyle(color: AppTheme.TextColorWhite),
-                                  ),
-                                ),
-                              ),
-                            )
+                                    padding: const EdgeInsets.all(8),
+                                    child: Container(
+                                      margin:
+                                          EdgeInsets.symmetric(vertical: 0.0),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          double currentValue = double.tryParse(
+                                                  _totalTimeController.text) ??
+                                              0.0;
+                                          _actualInstController.text =
+                                              currentValue.toString();
+                                        },
+                                        child: Text(
+                                          'Copy Time',
+                                          style: TextStyle(
+                                              color: AppTheme.TextColorWhite),
+                                        ),
+                                      ),
+                                    ),
+                                  )
                                 : null,
                           ),
                           validator: (value) {
@@ -811,28 +890,35 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         TextFormField(
                           keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9.]')),
                           ],
                           controller: _simulatorController,
                           style: TextStyle(color: AppTheme.TextColorWhite),
-                          decoration: customInputDecoration('Simulator').copyWith(
+                          decoration:
+                              customInputDecoration('Simulator').copyWith(
                             suffixIcon: _totalTimeController.text.isNotEmpty
                                 ? Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Container(
-                                margin: EdgeInsets.symmetric(vertical: 0.0),
-                                child: TextButton(
-                                  onPressed: () {
-                                    double currentValue = double.tryParse(_totalTimeController.text) ?? 0.0;
-                                    _simulatorController.text = currentValue.toString();
-                                  },
-                                  child: Text(
-                                    'Copy Time',
-                                    style: TextStyle(color: AppTheme.TextColorWhite),
-                                  ),
-                                ),
-                              ),
-                            )
+                                    padding: const EdgeInsets.all(8),
+                                    child: Container(
+                                      margin:
+                                          EdgeInsets.symmetric(vertical: 0.0),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          double currentValue = double.tryParse(
+                                                  _totalTimeController.text) ??
+                                              0.0;
+                                          _simulatorController.text =
+                                              currentValue.toString();
+                                        },
+                                        child: Text(
+                                          'Copy Time',
+                                          style: TextStyle(
+                                              color: AppTheme.TextColorWhite),
+                                        ),
+                                      ),
+                                    ),
+                                  )
                                 : null,
                           ),
                           validator: (value) {
@@ -843,28 +929,34 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         TextFormField(
                           keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'[0-9.]')),
                           ],
                           controller: _groundController,
                           style: TextStyle(color: AppTheme.TextColorWhite),
                           decoration: customInputDecoration('Ground').copyWith(
                             suffixIcon: _totalTimeController.text.isNotEmpty
                                 ? Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: Container(
-                                margin: EdgeInsets.symmetric(vertical: 0.0),
-                                child: TextButton(
-                                  onPressed: () {
-                                    double currentValue = double.tryParse(_totalTimeController.text) ?? 0.0;
-                                    _groundController.text = currentValue.toString();
-                                  },
-                                  child: Text(
-                                    'Copy Time',
-                                    style: TextStyle(color: AppTheme.TextColorWhite),
-                                  ),
-                                ),
-                              ),
-                            )
+                                    padding: const EdgeInsets.all(8),
+                                    child: Container(
+                                      margin:
+                                          EdgeInsets.symmetric(vertical: 0.0),
+                                      child: TextButton(
+                                        onPressed: () {
+                                          double currentValue = double.tryParse(
+                                                  _totalTimeController.text) ??
+                                              0.0;
+                                          _groundController.text =
+                                              currentValue.toString();
+                                        },
+                                        child: Text(
+                                          'Copy Time',
+                                          style: TextStyle(
+                                              color: AppTheme.TextColorWhite),
+                                        ),
+                                      ),
+                                    ),
+                                  )
                                 : null,
                           ),
                           validator: (value) {
@@ -879,12 +971,17 @@ class _AddFlightPageState extends State<AddFlightPage> {
                           ],
                           controller: _instrumentApproachController,
                           style: TextStyle(color: Colors.white),
-                          decoration: customInputDecoration('Instrument Approach').copyWith(
+                          decoration:
+                              customInputDecoration('Instrument Approach')
+                                  .copyWith(
                             suffixIcon: IconButton(
                               icon: Icon(Icons.add, color: Colors.deepOrange),
                               onPressed: () {
-                                int currentValue = int.tryParse(_instrumentApproachController.text) ?? 0;
-                                _instrumentApproachController.text = (currentValue + 1).toString();
+                                int currentValue = int.tryParse(
+                                        _instrumentApproachController.text) ??
+                                    0;
+                                _instrumentApproachController.text =
+                                    (currentValue + 1).toString();
                               },
                             ),
                           ),
@@ -892,12 +989,10 @@ class _AddFlightPageState extends State<AddFlightPage> {
                             return null;
                           },
                         ),
-
                       ],
                     ),
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -910,7 +1005,11 @@ class _AddFlightPageState extends State<AddFlightPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Landings', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: AppTheme.TextColorWhite)),
+                        Text('Landings',
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: AppTheme.TextColorWhite)),
                         SizedBox(height: 10),
                         TextFormField(
                           keyboardType: TextInputType.number,
@@ -919,13 +1018,17 @@ class _AddFlightPageState extends State<AddFlightPage> {
                           ],
                           controller: _dayToController,
                           style: TextStyle(color: Colors.white),
-                          decoration: customInputDecoration('Day Takeoffs').copyWith(
+                          decoration:
+                              customInputDecoration('Day Takeoffs').copyWith(
                             suffixIcon: IconButton(
                               icon: Icon(Icons.add, color: Colors.deepOrange),
                               onPressed: () {
-                                int currentValue = int.tryParse(_dayToController.text) ?? 0;
-                                _dayToController.text = (currentValue + 1).toString();
-                                _dayLdgController.text = (currentValue + 1).toString();
+                                int currentValue =
+                                    int.tryParse(_dayToController.text) ?? 0;
+                                _dayToController.text =
+                                    (currentValue + 1).toString();
+                                _dayLdgController.text =
+                                    (currentValue + 1).toString();
                               },
                             ),
                           ),
@@ -933,7 +1036,6 @@ class _AddFlightPageState extends State<AddFlightPage> {
                             return null;
                           },
                         ),
-
                         SizedBox(height: 10),
                         TextFormField(
                           keyboardType: TextInputType.number,
@@ -942,13 +1044,17 @@ class _AddFlightPageState extends State<AddFlightPage> {
                           ],
                           controller: _dayLdgController,
                           style: TextStyle(color: Colors.white),
-                          decoration: customInputDecoration('Day Landings').copyWith(
+                          decoration:
+                              customInputDecoration('Day Landings').copyWith(
                             suffixIcon: IconButton(
                               icon: Icon(Icons.add, color: Colors.deepOrange),
                               onPressed: () {
-                                int currentValue = int.tryParse(_dayLdgController.text) ?? 0;
-                                _dayLdgController.text = (currentValue + 1).toString();
-                                _dayToController.text = (currentValue + 1).toString();
+                                int currentValue =
+                                    int.tryParse(_dayLdgController.text) ?? 0;
+                                _dayLdgController.text =
+                                    (currentValue + 1).toString();
+                                _dayToController.text =
+                                    (currentValue + 1).toString();
                               },
                             ),
                           ),
@@ -956,7 +1062,6 @@ class _AddFlightPageState extends State<AddFlightPage> {
                             return null;
                           },
                         ),
-
                         SizedBox(height: 10),
                         TextFormField(
                           keyboardType: TextInputType.number,
@@ -965,13 +1070,17 @@ class _AddFlightPageState extends State<AddFlightPage> {
                           ],
                           controller: _nightToController,
                           style: TextStyle(color: Colors.white),
-                          decoration: customInputDecoration('Night Takeoffs').copyWith(
+                          decoration:
+                              customInputDecoration('Night Takeoffs').copyWith(
                             suffixIcon: IconButton(
                               icon: Icon(Icons.add, color: Colors.deepOrange),
                               onPressed: () {
-                                int currentValue = int.tryParse(_nightToController.text) ?? 0;
-                                _nightToController.text = (currentValue + 1).toString();
-                                _nightLdgController.text = (currentValue + 1).toString();
+                                int currentValue =
+                                    int.tryParse(_nightToController.text) ?? 0;
+                                _nightToController.text =
+                                    (currentValue + 1).toString();
+                                _nightLdgController.text =
+                                    (currentValue + 1).toString();
                               },
                             ),
                           ),
@@ -987,13 +1096,17 @@ class _AddFlightPageState extends State<AddFlightPage> {
                           ],
                           controller: _nightLdgController,
                           style: TextStyle(color: Colors.white),
-                          decoration: customInputDecoration('Night Landings').copyWith(
+                          decoration:
+                              customInputDecoration('Night Landings').copyWith(
                             suffixIcon: IconButton(
                               icon: Icon(Icons.add, color: Colors.deepOrange),
                               onPressed: () {
-                                int currentValue = int.tryParse(_nightLdgController.text) ?? 0;
-                                _nightLdgController.text = (currentValue + 1).toString();
-                                _nightToController.text = (currentValue + 1).toString();
+                                int currentValue =
+                                    int.tryParse(_nightLdgController.text) ?? 0;
+                                _nightLdgController.text =
+                                    (currentValue + 1).toString();
+                                _nightToController.text =
+                                    (currentValue + 1).toString();
                               },
                             ),
                           ),
@@ -1001,12 +1114,10 @@ class _AddFlightPageState extends State<AddFlightPage> {
                             return null;
                           },
                         ),
-
                       ],
                     ),
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
@@ -1020,14 +1131,19 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('Remarks', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: AppTheme.TextColorWhite)),
+                          Text('Remarks',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppTheme.TextColorWhite)),
                           SizedBox(height: 10),
                           TextFormField(
                             controller: _remarksController,
                             maxLines: null,
                             minLines: 1,
                             style: TextStyle(color: Colors.white),
-                            decoration: customInputDecoration('Remarks').copyWith(
+                            decoration:
+                                customInputDecoration('Remarks').copyWith(
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                                 borderSide: BorderSide(
@@ -1049,19 +1165,19 @@ class _AddFlightPageState extends State<AddFlightPage> {
                                   width: 2.0,
                                 ),
                               ),
-                              contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0), // İçerik dolgu alanı
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 16.0,
+                                  vertical: 12.0), // İçerik dolgu alanı
                             ),
                             validator: (value) {
                               return null;
                             },
                           ),
-
                         ],
                       ),
                     ),
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
@@ -1069,7 +1185,12 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: _saveFlightRecord,
-                          child: Text('Add Flight Record',style: TextStyle(color: AppTheme.TextColorWhite,fontWeight: FontWeight.bold),),
+                          child: Text(
+                            'Add Flight Record',
+                            style: TextStyle(
+                                color: AppTheme.TextColorWhite,
+                                fontWeight: FontWeight.bold),
+                          ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppTheme.AccentColor,
                             shape: RoundedRectangleBorder(
@@ -1081,7 +1202,6 @@ class _AddFlightPageState extends State<AddFlightPage> {
                     ],
                   ),
                 ),
-
               ],
             ),
           ),
@@ -1091,4 +1211,3 @@ class _AddFlightPageState extends State<AddFlightPage> {
   }
 }
 // 1064 kod vardı
-

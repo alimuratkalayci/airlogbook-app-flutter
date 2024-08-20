@@ -178,7 +178,7 @@ class FlightCard extends StatelessWidget {
                   Text(formatMonthYear(date), style: TextStyle(fontSize: 16)),
                 ],
               ),
-              SizedBox(width: 32),
+              SizedBox(width: 8),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,29 +206,30 @@ class FlightCard extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(width: 32),
+              SizedBox(width: 8),
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Icon(Icons.access_time_outlined,color: Colors.deepOrange,size: 16,),
-                      Text('$total_time hours'),
+                      Text('TIME ',style: TextStyle(color: AppTheme.DeepOrange,fontWeight: FontWeight.bold),),
+                      Text('$total_time'),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(Icons.featured_play_list_outlined,color: Colors.deepOrange,size: 16,),
+                      Text('ID ',style: TextStyle(color: AppTheme.DeepOrange,fontWeight: FontWeight.bold),),
                       Text('$aircraft_id'),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(Icons.airplanemode_on,color: Colors.deepOrange,size: 16,),
+                      Text('TYPE ',style: TextStyle(color: AppTheme.DeepOrange,fontWeight: FontWeight.bold),),
                       Text('$aircraft_type'),
                     ],
                   ),

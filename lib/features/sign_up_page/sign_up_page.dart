@@ -3,6 +3,8 @@ import 'package:coin_go/features/sign_in_page/sign_in_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../theme/theme.dart';
+
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
 
@@ -19,22 +21,20 @@ class _SignUpPageState extends State<SignUpPage> {
 
   bool passwordsMatch = true;
   bool usernameAvailable = true;
-  bool _isProcessing = false; // Dönme efekti için
+  bool _isProcessing = false;
   bool _isButtonDisabled = false;
 
   void _signUp(BuildContext context) async {
     if (passwordController.text == confirmPasswordController.text) {
       try {
-        // Kullanıcı adının benzersiz olup olmadığını kontrol et
         final usernameExists = await _checkUsernameExists(usernameController.text);
         if (usernameExists) {
           setState(() {
-            usernameAvailable = false; // Kullanıcı adı zaten kullanımda
+            usernameAvailable = false;
           });
           return;
         }
 
-        // Kayıt işlemi
         setState(() {
           _isProcessing = true;
           _isButtonDisabled = true;
@@ -45,7 +45,6 @@ class _SignUpPageState extends State<SignUpPage> {
           password: passwordController.text,
         );
 
-        // Kullanıcı bilgilerini Firestore'a kaydet
         await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
           'username': usernameController.text,
           'email': emailController.text,
@@ -53,7 +52,6 @@ class _SignUpPageState extends State<SignUpPage> {
           'favorite_types': [],
         });
 
-        // Kayıt başarılıysa Sign In sayfasına yönlendirme
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => SignInPage()),
@@ -68,12 +66,7 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
         );
-
-        print('User ID: ${userCredential.user!.uid}');
       } catch (e) {
-        print('Kayıt hatası: $e');
-
-        // Hata durumunu işleme
         String errorMessage = 'An error occurred during registration.';
         if (e is FirebaseAuthException) {
           if (e.code == 'email-already-in-use') {
@@ -100,7 +93,6 @@ class _SignUpPageState extends State<SignUpPage> {
         });
       }
     } else {
-      // Şifreler uyuşmuyorsa uyarı göster
       setState(() {
         passwordsMatch = false;
       });
@@ -108,7 +100,6 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Future<bool> _checkUsernameExists(String username) async {
-    // Firestore'da username koleksiyonunda bu username var mı diye kontrol et
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('users')
         .where('username', isEqualTo: username)
@@ -120,7 +111,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   void dispose() {
-    // Clean up controllers when the widget is disposed
     usernameController.dispose();
     emailController.dispose();
     passwordController.dispose();
@@ -131,143 +121,182 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppTheme.BackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text('Sign Up'),
+        iconTheme: IconThemeData(color: AppTheme.TextColorWhite),
+        backgroundColor: AppTheme.AccentColor,
+        title: Text(
+          'Sign Up',
+          style: TextStyle(color: AppTheme.TextColorWhite),
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Spacer(flex: 1,),
-            TextField(
-              controller: usernameController,
-              decoration: InputDecoration(
-                labelText: 'Username',
-                labelStyle: TextStyle(color: Color(0xff28397f), letterSpacing: 5),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff28397f)),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff28397f)),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff28397f)),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-            ),
-            if (!usernameAvailable)
-              Text(
-                'Username is already taken!',
-                style: TextStyle(color: Colors.red),
-              ),
-            SizedBox(height: 8,),
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(
-                labelText: 'E-mail',
-                labelStyle: TextStyle(color: Color(0xff28397f), letterSpacing: 5),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff28397f)),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff28397f)),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff28397f)),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-            ),
-            SizedBox(height: 8,),
-            TextField(
-              controller: passwordController,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                labelStyle: TextStyle(color: Color(0xff28397f), letterSpacing: 5),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff28397f)),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff28397f)),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff28397f)),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              obscureText: true,
-            ),
-            SizedBox(height: 8,),
-            TextField(
-              controller: confirmPasswordController,
-              decoration: InputDecoration(
-                labelText: 'Repeat Password',
-                labelStyle: TextStyle(color: Color(0xff28397f), letterSpacing: 5),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff28397f)),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff28397f)),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Color(0xff28397f)),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              obscureText: true,
-            ),
-            if (!passwordsMatch)
-              Text(
-                'Passwords do not match!',
-                style: TextStyle(color: Colors.red),
-              ),
-            SizedBox(height: 8),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: _isButtonDisabled ? null : () => _signUp(context),
-                    child: _isProcessing
-                        ? SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      ),
-                    )
-                        : Text(
-                      'Sign Up',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    style: ButtonStyle(
-                      backgroundColor: _isButtonDisabled
-                          ? WidgetStateProperty.all(Colors.grey)
-                          : WidgetStateProperty.all(Color(0xff28397f)),
-                      shape: WidgetStateProperty.all(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextField(
+                style: TextStyle(color: AppTheme.AccentColor),
+                controller: usernameController,
+                decoration: InputDecoration(
+                  labelText: 'Username',
+                  labelStyle: TextStyle(color: AppTheme.AccentColor),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: AppTheme.AccentColor,
+                      width: 2.0,
                     ),
                   ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: AppTheme.AccentColor,
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: AppTheme.AccentColor,
+                      width: 2.0,
+                    ),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                 ),
-              ],
-            ),
-            Spacer(flex: 2,),
-
-          ],
+              ),
+              if (!usernameAvailable)
+                Text(
+                  'Username is already taken!',
+                  style: TextStyle(color: Colors.red),
+                ),
+              SizedBox(height: 8),
+              TextField(
+                controller: emailController,
+                decoration: InputDecoration(
+                  labelText: 'E-mail',
+                  labelStyle: TextStyle(color: AppTheme.AccentColor),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: AppTheme.AccentColor,
+                      width: 2.0,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: AppTheme.AccentColor,
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: AppTheme.AccentColor,
+                      width: 2.0,
+                    ),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                ),
+              ),
+              SizedBox(height: 8),
+              TextField(
+                controller: passwordController,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  labelStyle: TextStyle(color: AppTheme.AccentColor),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: AppTheme.AccentColor,
+                      width: 2.0,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: AppTheme.AccentColor,
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: AppTheme.AccentColor,
+                      width: 2.0,
+                    ),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                ),
+                obscureText: true,
+              ),
+              SizedBox(height: 8),
+              TextField(
+                controller: confirmPasswordController,
+                decoration: InputDecoration(
+                  labelText: 'Repeat Password',
+                  labelStyle: TextStyle(color: AppTheme.AccentColor),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: AppTheme.AccentColor,
+                      width: 2.0,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: AppTheme.AccentColor,
+                      width: 2.0,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide(
+                      color: AppTheme.AccentColor,
+                      width: 2.0,
+                    ),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                ),
+                obscureText: true,
+              ),
+              if (!passwordsMatch)
+                Text(
+                  'Passwords do not match!',
+                  style: TextStyle(color: Colors.red),
+                ),
+              SizedBox(height: 8),
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: _isButtonDisabled ? null : () => _signUp(context),
+                      child: _isProcessing
+                          ? SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                        ),
+                      )
+                          : Text(
+                        'Sign Up',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.AccentColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
