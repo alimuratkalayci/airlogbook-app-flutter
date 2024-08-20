@@ -57,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Welcome to Pilot Logbook',
+                        'Welcome to Air Logbook',
                         style: TextStyle(color: AppTheme.TextColorBlack),
                       ),
                       Text(
