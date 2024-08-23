@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
+import '../../general_components/google_ads/google_ads.dart';
 import 'components/show_detele_modal_bottom_sheet.dart';
 import 'flights_cubit.dart';
 import 'flights_state.dart';
@@ -13,6 +14,7 @@ String formatDay(String date) {
   DateTime parsedDate = DateTime.parse(date);
   return DateFormat('dd').format(parsedDate);
 }
+
 String formatMonthYear(String date) {
   DateTime parsedDate = DateTime.parse(date);
   return DateFormat('MM-yyyy').format(parsedDate);
@@ -35,66 +37,81 @@ class _FlightsPageState extends State<FlightsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.BackgroundColor,
-      body: BlocBuilder<FlightCubit, FlightState>(
-        builder: (context, state) {
-          if (state is FlightLoading) {
-            return Center(child: CircularProgressIndicator());
-          } else if (state is FlightError) {
-            return Center(child: Text('Error: ${state.error}'));
-          } else if (state is FlightLoaded) {
-            var flights = state.flights;
-            final cubit = context.read<FlightCubit>();
-            if (flights.isEmpty) {
-              return Center(
-                child: Text(
-                  'No flights logged, tap "+" for first flight',                  style: TextStyle(
-                      color: Colors.deepOrange,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold),
-                ),
-              );
-            }
-            return ListView.builder(
-              itemCount: flights.length,
-              itemBuilder: (context, index) {
-                var flight = flights[index];
-                return FlightCard(
-                  date: flight['date'],
-                  total_time: flight['total_time'],
-                  aircraft_id: flight['aircraft_id'],
-                  aircraft_type: flight['aircraft_type'],
-                  departure: flight['departure_airport'],
-                  route: flight['route'],
-                  arrival: flight['arrival_airport'],
-                  flightId: flight.id,
-                  userId: cubit.userId,
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FlightDetailsShowPage(
-                          flightId: flight.id,
-                          userId: cubit.userId,
-                        ),
+      body: Stack(
+        children: [
+          BlocBuilder<FlightCubit, FlightState>(
+            builder: (context, state) {
+              if (state is FlightLoading) {
+                return Center(child: CircularProgressIndicator());
+              } else if (state is FlightError) {
+                return Center(child: Text('Error: ${state.error}'));
+              } else if (state is FlightLoaded) {
+                var flights = state.flights;
+                final cubit = context.read<FlightCubit>();
+                if (flights.isEmpty) {
+                  return Center(
+                    child: Text(
+                      'No flights logged, tap "+" for first flight',
+                      style: TextStyle(
+                        color: Colors.deepOrange,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
                       ),
+                    ),
+                  );
+                }
+                return ListView.builder(
+                  itemCount: flights.length,
+                  itemBuilder: (context, index) {
+                    var flight = flights[index];
+                    return FlightCard(
+                      date: flight['date'],
+                      total_time: flight['total_time'],
+                      aircraft_id: flight['aircraft_id'],
+                      aircraft_type: flight['aircraft_type'],
+                      departure: flight['departure_airport'],
+                      route: flight['route'],
+                      arrival: flight['arrival_airport'],
+                      flightId: flight.id,
+                      userId: cubit.userId,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FlightDetailsShowPage(
+                              flightId: flight.id,
+                              userId: cubit.userId,
+                            ),
+                          ),
+                        );
+                      },
+                      onDelete: () async {
+                        final result = await showDeleteConfirmationBottomSheet(context, flight.id);
+                        if (result == 'deleted') {
+                          context.read<FlightCubit>().deleteFlight(flight.id);
+                        }
+                      },
                     );
                   },
-                  onDelete: () async {
-                    final result = await showDeleteConfirmationBottomSheet(context, flight.id);
-                    if (result == 'deleted') {
-                      context.read<FlightCubit>().deleteFlight(flight.id);
-                    }
-                  },
                 );
-              },
-            );
-          }
-          return Container();
-        },
+              }
+              return Container();
+            },
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              child: GoogleAds.getBannerAdWidget(),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
+
 
 class FlightCard extends StatelessWidget {
   final String date;
@@ -127,7 +144,6 @@ class FlightCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Slidable(
       endActionPane: ActionPane(
-
         motion: DrawerMotion(),
         children: [
           SlidableAction(
@@ -196,7 +212,6 @@ class FlightCard extends StatelessWidget {
                         Text('$arrival'),
                       ],
                     ),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -215,27 +230,41 @@ class FlightCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text('TIME ',style: TextStyle(color: AppTheme.DeepOrange,fontWeight: FontWeight.bold),),
+                      Text(
+                        'TIME ',
+                        style: TextStyle(
+                            color: AppTheme.DeepOrange,
+                            fontWeight: FontWeight.bold),
+                      ),
                       Text('$total_time'),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('ID ',style: TextStyle(color: AppTheme.DeepOrange,fontWeight: FontWeight.bold),),
+                      Text(
+                        'ID ',
+                        style: TextStyle(
+                            color: AppTheme.DeepOrange,
+                            fontWeight: FontWeight.bold),
+                      ),
                       Text('$aircraft_id'),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('TYPE ',style: TextStyle(color: AppTheme.DeepOrange,fontWeight: FontWeight.bold),),
+                      Text(
+                        'TYPE ',
+                        style: TextStyle(
+                            color: AppTheme.DeepOrange,
+                            fontWeight: FontWeight.bold),
+                      ),
                       Text('$aircraft_type'),
                     ],
                   ),
                 ],
               ),
-
             ],
           ),
         ),

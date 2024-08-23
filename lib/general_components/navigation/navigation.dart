@@ -41,28 +41,16 @@ class RootScreenUI extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
 
-                AbsorbPointer(
-                  absorbing: true,
-                  child: IconButton(
-                    icon: Icon(Icons.notifications, color: Colors.transparent),
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Notifications clicked!')),
-                      );
-                    },
-                  ),
-                ),
+
 
 
                 Expanded(
-                  child: Center(
-                    child: SafeArea(
-                      child: Text(
-                        _getPageTitle(state.selectedItem),
-                        style: const TextStyle(
-                          color: AppTheme.TextColorWhite,
-                          fontWeight: FontWeight.w900,
-                        ),
+                  child: SafeArea(
+                    child: Text(
+                      _getPageTitle(state.selectedItem),
+                      style: const TextStyle(
+                        color: AppTheme.TextColorWhite,
+                        fontWeight: FontWeight.w900,
                       ),
                     ),
                   ),
@@ -85,9 +73,7 @@ class RootScreenUI extends StatelessWidget {
           body: _pages[state.selectedItem.index],
           bottomNavigationBar: Container(
             color: AppTheme.BackgroundColor,
-            padding: EdgeInsets.only(right: 16,left: 16,bottom: 16,top: 8),
             child: BottomBarFloating(
-              borderRadius: BorderRadius.circular(24),
               items: _bottomNavItems,
               backgroundColor: AppTheme.AccentColor,
               color: AppTheme.TextColorWhite,

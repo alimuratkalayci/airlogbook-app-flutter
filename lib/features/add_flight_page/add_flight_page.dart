@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
+import '../../general_components/google_ads/google_ads.dart';
 import '../../theme/theme.dart';
 
 class AddFlightPage extends StatefulWidget {
@@ -326,886 +327,899 @@ class _AddFlightPageState extends State<AddFlightPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 8, right: 8, top: 8, bottom: 8),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(16),
-                      color: AppTheme.AccentColor,
-                    ),
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Flight',
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: AppTheme.TextColorWhite)),
-                        SizedBox(height: 8),
-                        Row(
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 8, right: 8, top: 8, bottom: 8),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(16),
+                          color: AppTheme.AccentColor,
+                        ),
+                        padding: EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(
-                              child: TextFormField(
-                                controller: _dateController,
-                                style:
-                                    TextStyle(color: AppTheme.TextColorWhite),
-                                decoration: InputDecoration(
-                                  focusColor: AppTheme.TextColorWhite,
-                                  labelText: 'Date',
-                                  labelStyle:
-                                      TextStyle(color: AppTheme.TextColorWhite),
-                                  hintText: _selectedDate == null
-                                      ? 'No Date Chosen!'
-                                      : _dateFormat
-                                          .format(_selectedDate!)
-                                          .toString(),
-                                  hintStyle:
-                                      TextStyle(color: AppTheme.TextColorWhite),
-                                  border: InputBorder.none,
+                            Text('Flight',
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppTheme.TextColorWhite)),
+                            SizedBox(height: 8),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: TextFormField(
+                                    controller: _dateController,
+                                    style:
+                                        TextStyle(color: AppTheme.TextColorWhite),
+                                    decoration: InputDecoration(
+                                      focusColor: AppTheme.TextColorWhite,
+                                      labelText: 'Date',
+                                      labelStyle:
+                                          TextStyle(color: AppTheme.TextColorWhite),
+                                      hintText: _selectedDate == null
+                                          ? 'No Date Chosen!'
+                                          : _dateFormat
+                                              .format(_selectedDate!)
+                                              .toString(),
+                                      hintStyle:
+                                          TextStyle(color: AppTheme.TextColorWhite),
+                                      border: InputBorder.none,
+                                    ),
+                                    readOnly: true,
+                                    onTap: _presentDatePicker,
+                                    validator: (value) {
+                                      if (_selectedDate == null) {
+                                        return 'Please pick a date';
+                                      }
+                                      return null;
+                                    },
+                                  ),
                                 ),
-                                readOnly: true,
-                                onTap: _presentDatePicker,
+                                IconButton(
+                                  color: AppTheme.TextColorWhite,
+                                  icon: Icon(Icons.calendar_today),
+                                  onPressed: _presentDatePicker,
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 8),
+                            Row(
+                              children: [
+                                Text(
+                                  'Favorite Aircrafts',
+                                  style: TextStyle(color: AppTheme.TextColorWhite),
+                                ),
+                                SizedBox(
+                                  width: 16,
+                                ),
+                                Expanded(
+                                  child: isLoading
+                                      ? CircularProgressIndicator()
+                                      : errorMessage.isNotEmpty
+                                          ? Text(errorMessage,
+                                              style: TextStyle(color: Colors.red))
+                                          : DropdownButtonFormField<String>(
+                                              dropdownColor: AppTheme.AccentColor,
+                                              iconEnabledColor:
+                                                  AppTheme.TextColorWhite,
+                                              iconSize: 24,
+                                              elevation: 16,
+                                              style: TextStyle(
+                                                color: AppTheme.TextColorWhite,
+                                                fontSize: 16,
+                                              ),
+                                              decoration: InputDecoration(
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8.0),
+                                                  borderSide: BorderSide(
+                                                    color: Colors.white,
+                                                    width: 2.0, //
+                                                  ),
+                                                ),
+                                                enabledBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8.0),
+                                                  borderSide: BorderSide(
+                                                    color: Colors.white,
+                                                    width: 2.0,
+                                                  ),
+                                                ),
+                                                focusedBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8.0),
+                                                  borderSide: BorderSide(
+                                                    color: AppTheme.AccentColor,
+                                                    width: 2.0,
+                                                  ),
+                                                ),
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        horizontal: 16.0,
+                                                        vertical: 12.0),
+                                              ),
+                                              hint: Text(
+                                                'Aircraft Types',
+                                                style: TextStyle(
+                                                    color: AppTheme.TextColorWhite),
+                                              ),
+                                              value: selectedAircraftType,
+                                              onChanged: (String? newValue) {
+                                                setState(() {
+                                                  selectedAircraftType = newValue;
+                                                });
+                                              },
+                                              items: aircraftTypes
+                                                  .map<DropdownMenuItem<String>>(
+                                                      (String value) {
+                                                return DropdownMenuItem<String>(
+                                                  value: value,
+                                                  child: Text(value,
+                                                      style: TextStyle(
+                                                          color: AppTheme
+                                                              .TextColorWhite)),
+                                                );
+                                              }).toList(),
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    value.isEmpty) {
+                                                  return 'Select an aircraft type';
+                                                }
+                                                return null;
+                                              },
+                                            ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 8),
+                            TextFormField(
+                              controller: _airCraftController,
+                              decoration: customInputDecoration('Aircraft ID'),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.0,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter Aircraft ID';
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 8),
+                            TextFormField(
+                              controller: _departureAirportController,
+                              decoration:
+                                  customInputDecoration('Departure Airport'),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.0,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter Departure Airport';
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 8),
+                            TextFormField(
+                              controller: _routeWayController,
+                              decoration: customInputDecoration('Route'),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.0,
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 8),
+                            TextFormField(
+                              controller: _arrivalAirportController,
+                              decoration: customInputDecoration('Arrival Airport'),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.0,
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter Arrival Airport';
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 8),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'[0-9.]')),
+                              ],
+                              controller: _hobbsInController,
+                              decoration: customInputDecoration('Hobbs In'),
+                              style: TextStyle(
+                                color: Colors.white, // Yazı rengi
+                                fontSize: 16.0, // Yazı boyutu
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 8),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'[0-9.]')),
+                              ],
+                              controller: _hobbsOutController,
+                              decoration: customInputDecoration('Hobbs Out'),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.0,
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                              onChanged: (value) {
+                                setState(() {});
+                                _updateTotalTime();
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(16),
+                          color: AppTheme.AccentColor,
+                        ),
+                        padding: EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Time',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppTheme.TextColorWhite)),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'[0-9.]')),
+                              ],
+                              controller: _totalTimeController,
+                              decoration: customInputDecoration('Total Time'),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16.0,
+                              ),
+                              onChanged: (value) {
+                                setState(() {});
+                              },
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              style: TextStyle(color: AppTheme.TextColorWhite),
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'[0-9.]')),
+                              ],
+                              controller: _nightTimeController,
+                              decoration:
+                                  customInputDecoration('Night Time').copyWith(
+                                suffixIcon: _totalTimeController.text.isNotEmpty
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(8),
+                                        child: Container(
+                                          margin:
+                                              EdgeInsets.symmetric(vertical: 0.0),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              double currentValue = double.tryParse(
+                                                      _totalTimeController.text) ??
+                                                  0.0;
+                                              _nightTimeController.text =
+                                                  currentValue.toString();
+                                            },
+                                            child: Text(
+                                              'Copy Time',
+                                              style: TextStyle(
+                                                  color: AppTheme.TextColorWhite),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : null,
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'[0-9.]')),
+                              ],
+                              controller: _picController,
+                              style: TextStyle(color: AppTheme.TextColorWhite),
+                              decoration: customInputDecoration('PIC').copyWith(
+                                suffixIcon: _totalTimeController.text.isNotEmpty
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(8),
+                                        child: Container(
+                                          margin:
+                                              EdgeInsets.symmetric(vertical: 0.0),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              double currentValue = double.tryParse(
+                                                      _totalTimeController.text) ??
+                                                  0.0;
+                                              _picController.text =
+                                                  currentValue.toString();
+                                            },
+                                            child: Text(
+                                              'Copy Time',
+                                              style: TextStyle(
+                                                  color: AppTheme.TextColorWhite),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : null,
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'[0-9.]')),
+                              ],
+                              controller: _dualRcvdController,
+                              style: TextStyle(color: AppTheme.TextColorWhite),
+                              decoration:
+                                  customInputDecoration('Dual Received').copyWith(
+                                suffixIcon: _totalTimeController.text.isNotEmpty
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(8),
+                                        child: Container(
+                                          margin:
+                                              EdgeInsets.symmetric(vertical: 0.0),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              double currentValue = double.tryParse(
+                                                      _totalTimeController.text) ??
+                                                  0.0;
+                                              _dualRcvdController.text =
+                                                  currentValue.toString();
+                                            },
+                                            child: Text(
+                                              'Copy Time',
+                                              style: TextStyle(
+                                                  color: AppTheme.TextColorWhite),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : null,
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'[0-9.]')),
+                              ],
+                              controller: _soloController,
+                              style: TextStyle(color: AppTheme.TextColorWhite),
+                              decoration: customInputDecoration('Solo').copyWith(
+                                suffixIcon: _totalTimeController.text.isNotEmpty
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(8),
+                                        child: Container(
+                                          margin:
+                                              EdgeInsets.symmetric(vertical: 0.0),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              double currentValue = double.tryParse(
+                                                      _totalTimeController.text) ??
+                                                  0.0;
+                                              _soloController.text =
+                                                  currentValue.toString();
+                                            },
+                                            child: Text(
+                                              'Copy Time',
+                                              style: TextStyle(
+                                                  color: AppTheme.TextColorWhite),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : null,
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'[0-9.]')),
+                              ],
+                              controller: _xcController,
+                              style: TextStyle(color: AppTheme.TextColorWhite),
+                              decoration: customInputDecoration('XC').copyWith(
+                                suffixIcon: _totalTimeController.text.isNotEmpty
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(8),
+                                        child: Container(
+                                          margin:
+                                              EdgeInsets.symmetric(vertical: 0.0),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              double currentValue = double.tryParse(
+                                                      _totalTimeController.text) ??
+                                                  0.0;
+                                              _xcController.text =
+                                                  currentValue.toString();
+                                            },
+                                            child: Text(
+                                              'Copy Time',
+                                              style: TextStyle(
+                                                  color: AppTheme.TextColorWhite),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : null,
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'[0-9.]')),
+                              ],
+                              controller: _simInstController,
+                              style: TextStyle(color: AppTheme.TextColorWhite),
+                              decoration:
+                                  customInputDecoration('Sim Inst').copyWith(
+                                suffixIcon: _totalTimeController.text.isNotEmpty
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(8),
+                                        child: Container(
+                                          margin:
+                                              EdgeInsets.symmetric(vertical: 0.0),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              double currentValue = double.tryParse(
+                                                      _totalTimeController.text) ??
+                                                  0.0;
+                                              _simInstController.text =
+                                                  currentValue.toString();
+                                            },
+                                            child: Text(
+                                              'Copy Time',
+                                              style: TextStyle(
+                                                  color: AppTheme.TextColorWhite),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : null,
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'[0-9.]')),
+                              ],
+                              controller: _actualInstController,
+                              style: TextStyle(color: AppTheme.TextColorWhite),
+                              decoration:
+                                  customInputDecoration('Actual Inst').copyWith(
+                                suffixIcon: _totalTimeController.text.isNotEmpty
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(8),
+                                        child: Container(
+                                          margin:
+                                              EdgeInsets.symmetric(vertical: 0.0),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              double currentValue = double.tryParse(
+                                                      _totalTimeController.text) ??
+                                                  0.0;
+                                              _actualInstController.text =
+                                                  currentValue.toString();
+                                            },
+                                            child: Text(
+                                              'Copy Time',
+                                              style: TextStyle(
+                                                  color: AppTheme.TextColorWhite),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : null,
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'[0-9.]')),
+                              ],
+                              controller: _simulatorController,
+                              style: TextStyle(color: AppTheme.TextColorWhite),
+                              decoration:
+                                  customInputDecoration('Simulator').copyWith(
+                                suffixIcon: _totalTimeController.text.isNotEmpty
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(8),
+                                        child: Container(
+                                          margin:
+                                              EdgeInsets.symmetric(vertical: 0.0),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              double currentValue = double.tryParse(
+                                                      _totalTimeController.text) ??
+                                                  0.0;
+                                              _simulatorController.text =
+                                                  currentValue.toString();
+                                            },
+                                            child: Text(
+                                              'Copy Time',
+                                              style: TextStyle(
+                                                  color: AppTheme.TextColorWhite),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : null,
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'[0-9.]')),
+                              ],
+                              controller: _groundController,
+                              style: TextStyle(color: AppTheme.TextColorWhite),
+                              decoration: customInputDecoration('Ground').copyWith(
+                                suffixIcon: _totalTimeController.text.isNotEmpty
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(8),
+                                        child: Container(
+                                          margin:
+                                              EdgeInsets.symmetric(vertical: 0.0),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              double currentValue = double.tryParse(
+                                                      _totalTimeController.text) ??
+                                                  0.0;
+                                              _groundController.text =
+                                                  currentValue.toString();
+                                            },
+                                            child: Text(
+                                              'Copy Time',
+                                              style: TextStyle(
+                                                  color: AppTheme.TextColorWhite),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : null,
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                              controller: _instrumentApproachController,
+                              style: TextStyle(color: Colors.white),
+                              decoration:
+                                  customInputDecoration('Instrument Approach')
+                                      .copyWith(
+                                suffixIcon: IconButton(
+                                  icon: Icon(Icons.add, color: Colors.deepOrange),
+                                  onPressed: () {
+                                    int currentValue = int.tryParse(
+                                            _instrumentApproachController.text) ??
+                                        0;
+                                    _instrumentApproachController.text =
+                                        (currentValue + 1).toString();
+                                  },
+                                ),
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(16),
+                          color: AppTheme.AccentColor,
+                        ),
+                        padding: EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Landings',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppTheme.TextColorWhite)),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                              controller: _dayToController,
+                              style: TextStyle(color: Colors.white),
+                              decoration:
+                                  customInputDecoration('Day Takeoffs').copyWith(
+                                suffixIcon: IconButton(
+                                  icon: Icon(Icons.add, color: Colors.deepOrange),
+                                  onPressed: () {
+                                    int currentValue =
+                                        int.tryParse(_dayToController.text) ?? 0;
+                                    _dayToController.text =
+                                        (currentValue + 1).toString();
+                                    _dayLdgController.text =
+                                        (currentValue + 1).toString();
+                                  },
+                                ),
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                              controller: _dayLdgController,
+                              style: TextStyle(color: Colors.white),
+                              decoration:
+                                  customInputDecoration('Day Landings').copyWith(
+                                suffixIcon: IconButton(
+                                  icon: Icon(Icons.add, color: Colors.deepOrange),
+                                  onPressed: () {
+                                    int currentValue =
+                                        int.tryParse(_dayLdgController.text) ?? 0;
+                                    _dayLdgController.text =
+                                        (currentValue + 1).toString();
+                                    _dayToController.text =
+                                        (currentValue + 1).toString();
+                                  },
+                                ),
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                              controller: _nightToController,
+                              style: TextStyle(color: Colors.white),
+                              decoration:
+                                  customInputDecoration('Night Takeoffs').copyWith(
+                                suffixIcon: IconButton(
+                                  icon: Icon(Icons.add, color: Colors.deepOrange),
+                                  onPressed: () {
+                                    int currentValue =
+                                        int.tryParse(_nightToController.text) ?? 0;
+                                    _nightToController.text =
+                                        (currentValue + 1).toString();
+                                    _nightLdgController.text =
+                                        (currentValue + 1).toString();
+                                  },
+                                ),
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly,
+                              ],
+                              controller: _nightLdgController,
+                              style: TextStyle(color: Colors.white),
+                              decoration:
+                                  customInputDecoration('Night Landings').copyWith(
+                                suffixIcon: IconButton(
+                                  icon: Icon(Icons.add, color: Colors.deepOrange),
+                                  onPressed: () {
+                                    int currentValue =
+                                        int.tryParse(_nightLdgController.text) ?? 0;
+                                    _nightLdgController.text =
+                                        (currentValue + 1).toString();
+                                    _nightToController.text =
+                                        (currentValue + 1).toString();
+                                  },
+                                ),
+                              ),
+                              validator: (value) {
+                                return null;
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(16),
+                          color: AppTheme.AccentColor,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Remarks',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppTheme.TextColorWhite)),
+                              SizedBox(height: 10),
+                              TextFormField(
+                                controller: _remarksController,
+                                maxLines: null,
+                                minLines: 1,
+                                style: TextStyle(color: Colors.white),
+                                decoration:
+                                    customInputDecoration('Remarks').copyWith(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    borderSide: BorderSide(
+                                      color: Colors.white,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    borderSide: BorderSide(
+                                      color: Colors.white,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    borderSide: BorderSide(
+                                      color: Colors.white,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 16.0,
+                                      vertical: 12.0), // İçerik dolgu alanı
+                                ),
                                 validator: (value) {
-                                  if (_selectedDate == null) {
-                                    return 'Please pick a date';
-                                  }
                                   return null;
                                 },
                               ),
-                            ),
-                            IconButton(
-                              color: AppTheme.TextColorWhite,
-                              icon: Icon(Icons.calendar_today),
-                              onPressed: _presentDatePicker,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                        Row(
-                          children: [
-                            Text(
-                              'Favorite Aircrafts',
-                              style: TextStyle(color: AppTheme.TextColorWhite),
-                            ),
-                            SizedBox(
-                              width: 16,
-                            ),
-                            Expanded(
-                              child: isLoading
-                                  ? CircularProgressIndicator()
-                                  : errorMessage.isNotEmpty
-                                      ? Text(errorMessage,
-                                          style: TextStyle(color: Colors.red))
-                                      : DropdownButtonFormField<String>(
-                                          dropdownColor: AppTheme.AccentColor,
-                                          iconEnabledColor:
-                                              AppTheme.TextColorWhite,
-                                          iconSize: 24,
-                                          elevation: 16,
-                                          style: TextStyle(
-                                            color: AppTheme.TextColorWhite,
-                                            fontSize: 16,
-                                          ),
-                                          decoration: InputDecoration(
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                              borderSide: BorderSide(
-                                                color: Colors.white,
-                                                width: 2.0, //
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                              borderSide: BorderSide(
-                                                color: Colors.white,
-                                                width: 2.0,
-                                              ),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(8.0),
-                                              borderSide: BorderSide(
-                                                color: AppTheme.AccentColor,
-                                                width: 2.0,
-                                              ),
-                                            ),
-                                            contentPadding:
-                                                EdgeInsets.symmetric(
-                                                    horizontal: 16.0,
-                                                    vertical: 12.0),
-                                          ),
-                                          hint: Text(
-                                            'Aircraft Types',
-                                            style: TextStyle(
-                                                color: AppTheme.TextColorWhite),
-                                          ),
-                                          value: selectedAircraftType,
-                                          onChanged: (String? newValue) {
-                                            setState(() {
-                                              selectedAircraftType = newValue;
-                                            });
-                                          },
-                                          items: aircraftTypes
-                                              .map<DropdownMenuItem<String>>(
-                                                  (String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(value,
-                                                  style: TextStyle(
-                                                      color: AppTheme
-                                                          .TextColorWhite)),
-                                            );
-                                          }).toList(),
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value.isEmpty) {
-                                              return 'Select an aircraft type';
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 8),
-                        TextFormField(
-                          controller: _airCraftController,
-                          decoration: customInputDecoration('Aircraft ID'),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
+                            ],
                           ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter Aircraft ID';
-                            }
-                            return null;
-                          },
                         ),
-                        SizedBox(height: 8),
-                        TextFormField(
-                          controller: _departureAirportController,
-                          decoration:
-                              customInputDecoration('Departure Airport'),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter Departure Airport';
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 8),
-                        TextFormField(
-                          controller: _routeWayController,
-                          decoration: customInputDecoration('Route'),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                          ),
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 8),
-                        TextFormField(
-                          controller: _arrivalAirportController,
-                          decoration: customInputDecoration('Arrival Airport'),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter Arrival Airport';
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 8),
-                        TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'[0-9.]')),
-                          ],
-                          controller: _hobbsInController,
-                          decoration: customInputDecoration('Hobbs In'),
-                          style: TextStyle(
-                            color: Colors.white, // Yazı rengi
-                            fontSize: 16.0, // Yazı boyutu
-                          ),
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 8),
-                        TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'[0-9.]')),
-                          ],
-                          controller: _hobbsOutController,
-                          decoration: customInputDecoration('Hobbs Out'),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                          ),
-                          validator: (value) {
-                            return null;
-                          },
-                          onChanged: (value) {
-                            setState(() {});
-                            _updateTotalTime();
-                          },
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(16),
-                      color: AppTheme.AccentColor,
-                    ),
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Time',
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: AppTheme.TextColorWhite)),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'[0-9.]')),
-                          ],
-                          controller: _totalTimeController,
-                          decoration: customInputDecoration('Total Time'),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
-                          ),
-                          onChanged: (value) {
-                            setState(() {});
-                          },
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          style: TextStyle(color: AppTheme.TextColorWhite),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'[0-9.]')),
-                          ],
-                          controller: _nightTimeController,
-                          decoration:
-                              customInputDecoration('Night Time').copyWith(
-                            suffixIcon: _totalTimeController.text.isNotEmpty
-                                ? Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Container(
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 0.0),
-                                      child: TextButton(
-                                        onPressed: () {
-                                          double currentValue = double.tryParse(
-                                                  _totalTimeController.text) ??
-                                              0.0;
-                                          _nightTimeController.text =
-                                              currentValue.toString();
-                                        },
-                                        child: Text(
-                                          'Copy Time',
-                                          style: TextStyle(
-                                              color: AppTheme.TextColorWhite),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                : null,
-                          ),
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'[0-9.]')),
-                          ],
-                          controller: _picController,
-                          style: TextStyle(color: AppTheme.TextColorWhite),
-                          decoration: customInputDecoration('PIC').copyWith(
-                            suffixIcon: _totalTimeController.text.isNotEmpty
-                                ? Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Container(
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 0.0),
-                                      child: TextButton(
-                                        onPressed: () {
-                                          double currentValue = double.tryParse(
-                                                  _totalTimeController.text) ??
-                                              0.0;
-                                          _picController.text =
-                                              currentValue.toString();
-                                        },
-                                        child: Text(
-                                          'Copy Time',
-                                          style: TextStyle(
-                                              color: AppTheme.TextColorWhite),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                : null,
-                          ),
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'[0-9.]')),
-                          ],
-                          controller: _dualRcvdController,
-                          style: TextStyle(color: AppTheme.TextColorWhite),
-                          decoration:
-                              customInputDecoration('Dual Received').copyWith(
-                            suffixIcon: _totalTimeController.text.isNotEmpty
-                                ? Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Container(
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 0.0),
-                                      child: TextButton(
-                                        onPressed: () {
-                                          double currentValue = double.tryParse(
-                                                  _totalTimeController.text) ??
-                                              0.0;
-                                          _dualRcvdController.text =
-                                              currentValue.toString();
-                                        },
-                                        child: Text(
-                                          'Copy Time',
-                                          style: TextStyle(
-                                              color: AppTheme.TextColorWhite),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                : null,
-                          ),
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'[0-9.]')),
-                          ],
-                          controller: _soloController,
-                          style: TextStyle(color: AppTheme.TextColorWhite),
-                          decoration: customInputDecoration('Solo').copyWith(
-                            suffixIcon: _totalTimeController.text.isNotEmpty
-                                ? Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Container(
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 0.0),
-                                      child: TextButton(
-                                        onPressed: () {
-                                          double currentValue = double.tryParse(
-                                                  _totalTimeController.text) ??
-                                              0.0;
-                                          _soloController.text =
-                                              currentValue.toString();
-                                        },
-                                        child: Text(
-                                          'Copy Time',
-                                          style: TextStyle(
-                                              color: AppTheme.TextColorWhite),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                : null,
-                          ),
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'[0-9.]')),
-                          ],
-                          controller: _xcController,
-                          style: TextStyle(color: AppTheme.TextColorWhite),
-                          decoration: customInputDecoration('XC').copyWith(
-                            suffixIcon: _totalTimeController.text.isNotEmpty
-                                ? Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Container(
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 0.0),
-                                      child: TextButton(
-                                        onPressed: () {
-                                          double currentValue = double.tryParse(
-                                                  _totalTimeController.text) ??
-                                              0.0;
-                                          _xcController.text =
-                                              currentValue.toString();
-                                        },
-                                        child: Text(
-                                          'Copy Time',
-                                          style: TextStyle(
-                                              color: AppTheme.TextColorWhite),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                : null,
-                          ),
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'[0-9.]')),
-                          ],
-                          controller: _simInstController,
-                          style: TextStyle(color: AppTheme.TextColorWhite),
-                          decoration:
-                              customInputDecoration('Sim Inst').copyWith(
-                            suffixIcon: _totalTimeController.text.isNotEmpty
-                                ? Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Container(
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 0.0),
-                                      child: TextButton(
-                                        onPressed: () {
-                                          double currentValue = double.tryParse(
-                                                  _totalTimeController.text) ??
-                                              0.0;
-                                          _simInstController.text =
-                                              currentValue.toString();
-                                        },
-                                        child: Text(
-                                          'Copy Time',
-                                          style: TextStyle(
-                                              color: AppTheme.TextColorWhite),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                : null,
-                          ),
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'[0-9.]')),
-                          ],
-                          controller: _actualInstController,
-                          style: TextStyle(color: AppTheme.TextColorWhite),
-                          decoration:
-                              customInputDecoration('Actual Inst').copyWith(
-                            suffixIcon: _totalTimeController.text.isNotEmpty
-                                ? Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Container(
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 0.0),
-                                      child: TextButton(
-                                        onPressed: () {
-                                          double currentValue = double.tryParse(
-                                                  _totalTimeController.text) ??
-                                              0.0;
-                                          _actualInstController.text =
-                                              currentValue.toString();
-                                        },
-                                        child: Text(
-                                          'Copy Time',
-                                          style: TextStyle(
-                                              color: AppTheme.TextColorWhite),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                : null,
-                          ),
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'[0-9.]')),
-                          ],
-                          controller: _simulatorController,
-                          style: TextStyle(color: AppTheme.TextColorWhite),
-                          decoration:
-                              customInputDecoration('Simulator').copyWith(
-                            suffixIcon: _totalTimeController.text.isNotEmpty
-                                ? Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Container(
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 0.0),
-                                      child: TextButton(
-                                        onPressed: () {
-                                          double currentValue = double.tryParse(
-                                                  _totalTimeController.text) ??
-                                              0.0;
-                                          _simulatorController.text =
-                                              currentValue.toString();
-                                        },
-                                        child: Text(
-                                          'Copy Time',
-                                          style: TextStyle(
-                                              color: AppTheme.TextColorWhite),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                : null,
-                          ),
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'[0-9.]')),
-                          ],
-                          controller: _groundController,
-                          style: TextStyle(color: AppTheme.TextColorWhite),
-                          decoration: customInputDecoration('Ground').copyWith(
-                            suffixIcon: _totalTimeController.text.isNotEmpty
-                                ? Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: Container(
-                                      margin:
-                                          EdgeInsets.symmetric(vertical: 0.0),
-                                      child: TextButton(
-                                        onPressed: () {
-                                          double currentValue = double.tryParse(
-                                                  _totalTimeController.text) ??
-                                              0.0;
-                                          _groundController.text =
-                                              currentValue.toString();
-                                        },
-                                        child: Text(
-                                          'Copy Time',
-                                          style: TextStyle(
-                                              color: AppTheme.TextColorWhite),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                : null,
-                          ),
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          controller: _instrumentApproachController,
-                          style: TextStyle(color: Colors.white),
-                          decoration:
-                              customInputDecoration('Instrument Approach')
-                                  .copyWith(
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.add, color: Colors.deepOrange),
-                              onPressed: () {
-                                int currentValue = int.tryParse(
-                                        _instrumentApproachController.text) ??
-                                    0;
-                                _instrumentApproachController.text =
-                                    (currentValue + 1).toString();
-                              },
-                            ),
-                          ),
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(16),
-                      color: AppTheme.AccentColor,
-                    ),
-                    padding: EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Landings',
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: AppTheme.TextColorWhite)),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          controller: _dayToController,
-                          style: TextStyle(color: Colors.white),
-                          decoration:
-                              customInputDecoration('Day Takeoffs').copyWith(
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.add, color: Colors.deepOrange),
-                              onPressed: () {
-                                int currentValue =
-                                    int.tryParse(_dayToController.text) ?? 0;
-                                _dayToController.text =
-                                    (currentValue + 1).toString();
-                                _dayLdgController.text =
-                                    (currentValue + 1).toString();
-                              },
-                            ),
-                          ),
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          controller: _dayLdgController,
-                          style: TextStyle(color: Colors.white),
-                          decoration:
-                              customInputDecoration('Day Landings').copyWith(
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.add, color: Colors.deepOrange),
-                              onPressed: () {
-                                int currentValue =
-                                    int.tryParse(_dayLdgController.text) ?? 0;
-                                _dayLdgController.text =
-                                    (currentValue + 1).toString();
-                                _dayToController.text =
-                                    (currentValue + 1).toString();
-                              },
-                            ),
-                          ),
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          controller: _nightToController,
-                          style: TextStyle(color: Colors.white),
-                          decoration:
-                              customInputDecoration('Night Takeoffs').copyWith(
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.add, color: Colors.deepOrange),
-                              onPressed: () {
-                                int currentValue =
-                                    int.tryParse(_nightToController.text) ?? 0;
-                                _nightToController.text =
-                                    (currentValue + 1).toString();
-                                _nightLdgController.text =
-                                    (currentValue + 1).toString();
-                              },
-                            ),
-                          ),
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 10),
-                        TextFormField(
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly,
-                          ],
-                          controller: _nightLdgController,
-                          style: TextStyle(color: Colors.white),
-                          decoration:
-                              customInputDecoration('Night Landings').copyWith(
-                            suffixIcon: IconButton(
-                              icon: Icon(Icons.add, color: Colors.deepOrange),
-                              onPressed: () {
-                                int currentValue =
-                                    int.tryParse(_nightLdgController.text) ?? 0;
-                                _nightLdgController.text =
-                                    (currentValue + 1).toString();
-                                _nightToController.text =
-                                    (currentValue + 1).toString();
-                              },
-                            ),
-                          ),
-                          validator: (value) {
-                            return null;
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(16),
-                      color: AppTheme.AccentColor,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
                         children: [
-                          Text('Remarks',
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppTheme.TextColorWhite)),
-                          SizedBox(height: 10),
-                          TextFormField(
-                            controller: _remarksController,
-                            maxLines: null,
-                            minLines: 1,
-                            style: TextStyle(color: Colors.white),
-                            decoration:
-                                customInputDecoration('Remarks').copyWith(
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                                borderSide: BorderSide(
-                                  color: Colors.white,
-                                  width: 2.0,
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: _saveFlightRecord,
+                              child: Text(
+                                'Add Flight Record',
+                                style: TextStyle(
+                                    color: AppTheme.TextColorWhite,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppTheme.AccentColor,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
                                 ),
                               ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                                borderSide: BorderSide(
-                                  color: Colors.white,
-                                  width: 2.0,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                                borderSide: BorderSide(
-                                  color: Colors.white,
-                                  width: 2.0,
-                                ),
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 16.0,
-                                  vertical: 12.0), // İçerik dolgu alanı
                             ),
-                            validator: (value) {
-                              return null;
-                            },
                           ),
                         ],
                       ),
                     ),
-                  ),
+                    SizedBox(height: 48,),
+                  ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: ElevatedButton(
-                          onPressed: _saveFlightRecord,
-                          child: Text(
-                            'Add Flight Record',
-                            style: TextStyle(
-                                color: AppTheme.TextColorWhite,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: AppTheme.AccentColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
-        ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(
+              child: GoogleAds.getBannerAdWidget(),
+            ),
+          ),
+        ],
       ),
     );
   }

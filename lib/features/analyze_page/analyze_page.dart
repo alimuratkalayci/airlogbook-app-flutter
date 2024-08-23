@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 
+import '../../general_components/google_ads/google_ads.dart';
+
 class AnalyzePage extends StatefulWidget {
   @override
   _AnalyzePageState createState() => _AnalyzePageState();
@@ -65,45 +67,60 @@ class _AnalyzePageState extends State<AnalyzePage> {
                   var data = flight.data() as Map<String, dynamic>;
 
                   totalHours += (data['total_time'] as num?)?.toDouble() ?? 0.0;
-                  totalNightTime += (data['night_time'] as num?)?.toDouble() ?? 0.0;
+                  totalNightTime +=
+                      (data['night_time'] as num?)?.toDouble() ?? 0.0;
                   totalPIC += (data['pic'] as num?)?.toDouble() ?? 0.0;
-                  totalDualReceived += (data['dual_rcvd'] as num?)?.toDouble() ?? 0.0;
+                  totalDualReceived +=
+                      (data['dual_rcvd'] as num?)?.toDouble() ?? 0.0;
                   totalSolo += (data['solo'] as num?)?.toDouble() ?? 0.0;
                   totalXC += (data['xc'] as num?)?.toDouble() ?? 0.0;
                   totalSimInst += (data['sim_inst'] as num?)?.toDouble() ?? 0.0;
-                  totalActualInst += (data['actual_inst'] as num?)?.toDouble() ?? 0.0;
-                  totalSimulator += (data['simulator'] as num?)?.toDouble() ?? 0.0;
+                  totalActualInst +=
+                      (data['actual_inst'] as num?)?.toDouble() ?? 0.0;
+                  totalSimulator +=
+                      (data['simulator'] as num?)?.toDouble() ?? 0.0;
                   totalGround += (data['ground'] as num?)?.toDouble() ?? 0.0;
-                  totalInstrumentApproach += (data['instrument_approach'] as int?) ?? 0;
+                  totalInstrumentApproach +=
+                      (data['instrument_approach'] as int?) ?? 0;
                   totalDayTakeoffs += (data['day_to'] as int?) ?? 0;
                   totalDayLandings += (data['day_ldg'] as int?) ?? 0;
                   totalNightTakeoffs += (data['night_to'] as int?) ?? 0;
                   totalNightLandings += (data['night_ldg'] as int?) ?? 0;
                 }
 
-                return Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: ListView(
-                    children: [
-                      buildSummaryCard('Total Flight Hours', totalHours, totalHours),
-                      buildSummaryCard('Total Night Time', totalNightTime, totalHours),
-                      buildSummaryCard('Total PIC', totalPIC, totalHours),
-                      buildSummaryCard('Total Dual Received', totalDualReceived, totalHours),
-                      buildSummaryCard('Total Solo', totalSolo, totalHours),
-                      buildSummaryCard('Total XC', totalXC, totalHours),
-                      buildSummaryCard('Total Simulated Instrument', totalSimInst, totalHours),
-                      buildSummaryCard('Total Actual Instrument', totalActualInst, totalHours),
-                      buildSummaryCard('Total Simulator', totalSimulator, totalHours),
-                      buildSummaryCard('Total Ground Time', totalGround, totalHours),
-                      buildSummaryCardInt('Total Instrument Approach', totalInstrumentApproach),
-                      buildSummaryCardInt('Total Day Takeoffs', totalDayTakeoffs),
-                      buildSummaryCardInt('Total Day Landings', totalDayLandings),
-                      buildSummaryCardInt('Total Night Takeoffs', totalNightTakeoffs),
-                      buildSummaryCardInt('Total Night Landings', totalNightLandings),
-                      SizedBox(height: 16,),
-                    ],
+                return Stack(children: [
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: ListView(
+                      padding: EdgeInsets.only(bottom: 48), // Reklamın yeri için alt boşluk bırakır
+                      children: [
+                        buildSummaryCard('Total Flight Hours', totalHours, totalHours),
+                        buildSummaryCard('Total Night Time', totalNightTime, totalHours),
+                        buildSummaryCard('Total PIC', totalPIC, totalHours),
+                        buildSummaryCard('Total Dual Received', totalDualReceived, totalHours),
+                        buildSummaryCard('Total Solo', totalSolo, totalHours),
+                        buildSummaryCard('Total XC', totalXC, totalHours),
+                        buildSummaryCard('Total Simulated Instrument', totalSimInst, totalHours),
+                        buildSummaryCard('Total Actual Instrument', totalActualInst, totalHours),
+                        buildSummaryCard('Total Simulator', totalSimulator, totalHours),
+                        buildSummaryCard('Total Ground Time', totalGround, totalHours),
+                        buildSummaryCardInt('Total Instrument Approach', totalInstrumentApproach),
+                        buildSummaryCardInt('Total Day Takeoffs', totalDayTakeoffs),
+                        buildSummaryCardInt('Total Day Landings', totalDayLandings),
+                        buildSummaryCardInt('Total Night Takeoffs', totalNightTakeoffs),
+                        buildSummaryCardInt('Total Night Landings', totalNightLandings),
+                      ],
+                    ),
                   ),
-                );
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      child: GoogleAds.getBannerAdWidget(),
+                    ),
+                  ),
+                ]);
               },
             ),
           ),
@@ -168,14 +185,17 @@ class _AnalyzePageState extends State<AnalyzePage> {
                   ),
                 ),
               ),
-              SizedBox(width: 16,),
+              SizedBox(
+                width: 16,
+              ),
               Expanded(
                 child: InkWell(
                   onTap: () => _pickDate(context, false),
                   child: Container(
                     decoration: BoxDecoration(
                       color: AppTheme.AccentColor, // Arka plan rengi
-                      borderRadius: BorderRadius.circular(16.0), // Kenarların yuvarlatılması
+                      borderRadius: BorderRadius.circular(
+                          16.0), // Kenarların yuvarlatılması
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black26,
@@ -214,7 +234,6 @@ class _AnalyzePageState extends State<AnalyzePage> {
             ],
           ),
         );
-
       },
     );
   }
@@ -260,7 +279,8 @@ class _AnalyzePageState extends State<AnalyzePage> {
       String startDateStr = _dateFormat.format(_startDate!);
       String endDateStr = _dateFormat.format(_endDate!);
 
-      query = query.where('date', isGreaterThanOrEqualTo: startDateStr)
+      query = query
+          .where('date', isGreaterThanOrEqualTo: startDateStr)
           .where('date', isLessThanOrEqualTo: endDateStr);
     }
 
@@ -281,17 +301,11 @@ class _AnalyzePageState extends State<AnalyzePage> {
     var firstFlightDate = firstFlight['date'];
     var lastFlightDate = lastFlight['date'];
 
-    return FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .set({
+    return FirebaseFirestore.instance.collection('users').doc(userId).set({
       'firstFlightDate': firstFlightDate,
       'lastFlightDate': lastFlightDate,
-    }, SetOptions(merge: true))
-        .then((_) => FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .get());
+    }, SetOptions(merge: true)).then((_) =>
+        FirebaseFirestore.instance.collection('users').doc(userId).get());
   }
 
   Widget buildSummaryCard(String title, double value, double totalHours) {
