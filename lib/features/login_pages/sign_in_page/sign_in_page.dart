@@ -1,9 +1,9 @@
-import 'package:coin_go/features/entering_pages/forgot_password_page/forgot_password_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../../root_screen.dart';
 import '../../../theme/theme.dart';
 
+import '../forgot_password_page/forgot_password_page.dart';
 import '../sign_up_page/sign_up_page.dart';
 
 class SignInPage extends StatefulWidget {
