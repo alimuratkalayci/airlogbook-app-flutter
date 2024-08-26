@@ -18,6 +18,9 @@ class AuthService {
     // Kullanıcının cihaz kimliğini Firestore'da sakla
     await _userDevicesCollection.doc(uid).set({'device_id': 'current_device_id'});
   }
+  Future<void> resetPassword(String email) async {
+    await _auth.sendPasswordResetEmail(email: email);
+  }
 
   Future<void> signOut() async {
     // Oturumu açık olan kullanıcının kimliğini al

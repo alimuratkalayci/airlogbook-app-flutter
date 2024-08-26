@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import '../../theme/theme.dart';
+import '../../../theme/theme.dart';
 import '../sign_in_page/sign_in_page.dart';
 
 class WelcomeScreen extends StatelessWidget {

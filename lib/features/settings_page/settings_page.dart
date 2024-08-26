@@ -1,10 +1,9 @@
 import 'package:coin_go/features/settings_page/sub_pages/change_password_page/change_password_page.dart';
-import 'package:coin_go/features/sign_in_page/sign_in_page.dart';
 import 'package:coin_go/theme/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import '../../general_components/google_ads/google_ads.dart';
+import '../entering_pages/sign_in_page/sign_in_page.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({Key? key}) : super(key: key);

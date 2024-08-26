@@ -1,8 +1,10 @@
-import 'package:coin_go/features/sign_up_page/sign_up_page.dart';
+import 'package:coin_go/features/entering_pages/forgot_password_page/forgot_password_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../root_screen.dart';
-import '../../theme/theme.dart';
+import '../../../root_screen.dart';
+import '../../../theme/theme.dart';
+
+import '../sign_up_page/sign_up_page.dart';
 
 class SignInPage extends StatefulWidget {
   SignInPage({Key? key}) : super(key: key);
@@ -56,8 +58,9 @@ class _SignInPageState extends State<SignInPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              SizedBox(height: 32,),
               Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(32.0),
                 child: Center(
                   child: Text(
                     'AIR LOGBOOK',
@@ -71,12 +74,12 @@ class _SignInPageState extends State<SignInPage> {
                 ),
               ),
               SizedBox(height: 16,),
-              Image.asset(
+/*               Image.asset(
                 'assets/images/sign_in_up_logo.png',
                 width: 220,
                 height: 200,
                 fit: BoxFit.cover,
-              ),
+              ),*/
               SizedBox(height: 32,),
               TextFormField(
                 decoration: InputDecoration(
@@ -159,8 +162,25 @@ class _SignInPageState extends State<SignInPage> {
                   password = value;
                 },
               ),
-              SizedBox(
-                height: 8,
+              Row(
+                children: [
+                  Spacer(),
+                  GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ForgotPasswordPage()),
+                        );
+                      },
+                      child: Text(
+                        "Forgot password?",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                            color: AppTheme.AccentColor),
+                      )),
+                ],
+
               ),
               Row(
                 children: [
