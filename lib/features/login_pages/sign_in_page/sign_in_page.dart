@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../../root_screen.dart';
 import '../../../theme/theme.dart';
 
+import '../components/sign_in_out_operations.dart';
 import '../forgot_password_page/forgot_password_page.dart';
 import '../sign_up_page/sign_up_page.dart';
 
@@ -15,37 +16,11 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final AuthService _authService = AuthService();
 
   String email = '';
   String password = '';
   bool isValidEmail = true;
-
-  void _signInWithEmailAndPassword(BuildContext context) async {
-    if (isValidEmail) {
-      try {
-        await _auth.signInWithEmailAndPassword(
-            email: email, password: password);
-
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => RootScreen()),
-        );
-      } catch (e) {
-        print('Giriş hatası: $e');
-        showErrorMessage(
-            context, 'Login failed. Please check your credentials.');
-      }
-    }
-  }
-
-  void showErrorMessage(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: Colors.red,
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +33,9 @@ class _SignInPageState extends State<SignInPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 32,),
+              SizedBox(
+                height: 32,
+              ),
               Padding(
                 padding: const EdgeInsets.all(32.0),
                 child: Center(
@@ -73,14 +50,18 @@ class _SignInPageState extends State<SignInPage> {
                   ),
                 ),
               ),
-              SizedBox(height: 16,),
+              SizedBox(
+                height: 16,
+              ),
 /*               Image.asset(
                 'assets/images/sign_in_up_logo.png',
                 width: 220,
                 height: 200,
                 fit: BoxFit.cover,
               ),*/
-              SizedBox(height: 32,),
+              SizedBox(
+                height: 32,
+              ),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'E-mail',
@@ -106,7 +87,8 @@ class _SignInPageState extends State<SignInPage> {
                       width: 2.0,
                     ),
                   ),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                 ),
                 style: TextStyle(color: Color(0xff28397f)),
                 cursorColor: Color(0xff28397f),
@@ -153,7 +135,8 @@ class _SignInPageState extends State<SignInPage> {
                       width: 2.0,
                     ),
                   ),
-                  contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                  contentPadding:
+                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                 ),
                 style: TextStyle(color: Color(0xff28397f)),
                 cursorColor: Color(0xff28397f),
@@ -180,14 +163,17 @@ class _SignInPageState extends State<SignInPage> {
                             color: AppTheme.AccentColor),
                       )),
                 ],
-
               ),
               Row(
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {
-                        _signInWithEmailAndPassword(context);
+                      onPressed: () async {
+                        await _authService.signIn(context, email, password);
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => RootScreen()),
+                        );
                       },
                       child: Text(
                         'Sign In',

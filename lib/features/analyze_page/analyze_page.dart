@@ -29,6 +29,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
     }
 
     return Scaffold(
+      backgroundColor: AppTheme.TextColorWhite,
       body: Column(
         children: [
           _buildDateRangePicker(userId),
