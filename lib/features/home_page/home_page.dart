@@ -1,8 +1,10 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:coin_go/features/home_page/sub_pages/add_favorite_aircraft_page/add_favorite_aircraft_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'components/weather_card/weather_card.dart';
+import 'components/weather_card/weather_model.dart';
+import 'components/weather_card/weather_service.dart';
 import '../../general_components/google_ads/google_ads.dart';
 import '../../theme/theme.dart';
 
@@ -16,14 +18,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String? userEmail;
   String? userName;
+  WeatherModel? weather;
 
   @override
   void initState() {
     super.initState();
     getUserEmail();
     getUserName();
+    fetchWeatherData();
   }
-
 
   void getUserEmail() {
     User? user = FirebaseAuth.instance.currentUser;
@@ -42,6 +45,20 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void fetchWeatherData() async {
+    WeatherService weatherService = WeatherService();
+    WeatherModel? fetchedWeather = await weatherService.fetchWeather('çankaya');
+
+    if (fetchedWeather != null) {
+      setState(() {
+        weather = fetchedWeather;
+      });
+    } else {
+      print('Hava durumu verisi yüklenemedi.');
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,14 +66,14 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: [
           ListView(
-            padding: EdgeInsets.only(bottom: 80), // Reklamın yeri için alt boşluk bırakır
+            padding: EdgeInsets.only(bottom: 48), // Alttaki reklam için
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (userName != null) ...[
-                    SizedBox(height: 16),
+                    SizedBox(height: 8),
                     Center(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -67,14 +84,20 @@ class _HomePageState extends State<HomePage> {
                           ),
                           Text(
                             ' $userName'.toUpperCase(),
-                            style: TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              color: Colors.deepOrange,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ],
                       ),
                     ),
                   ],
+
+                  if (weather != null) WeatherCard(weather: weather!),
+
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.only(right: 16,left: 16),
                     child: Row(
                       children: [
                         Expanded(
@@ -87,7 +110,10 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               );
                             },
-                            child: Text('Add Favorite Aircraft', style: TextStyle(color: AppTheme.TextColorWhite)),
+                            child: Text(
+                              'Add Favorite Aircraft',
+                              style: TextStyle(color: AppTheme.TextColorWhite),
+                            ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppTheme.AccentColor,
                               shape: RoundedRectangleBorder(
@@ -115,4 +141,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-

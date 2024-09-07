@@ -29,7 +29,8 @@ class AuthService {
           String uid = user.uid;
 
           // E-posta doğrulandı, kullanıcıyı ana sayfaya yönlendir
-        } else {
+        } /* TODO GERİ EKLE
+        else {
           // E-posta doğrulanmamışsa e-posta doğrulama maili gönder
           await user.sendEmailVerification();
 
@@ -39,7 +40,7 @@ class AuthService {
             code: 'email-not-verified',
             message: 'Lütfen giriş yapmadan önce e-postanızı doğrulayın. Doğrulama e-postası gönderildi.',
           );
-        }
+        }*/
       }
     } catch (e) {
       print('Giriş hatası: $e');
