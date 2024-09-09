@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'weather_model.dart';
 
 class WeatherService {
-  static const String apiKey = '1c99d4033bed2b4e7df2be063cf23d31';  // OpenWeatherMap API key
+  static const String apiKey = 'YOURAPIKEY';  // OpenWeatherMap API key
   static const String baseUrl = 'https://api.openweathermap.org/data/2.5/weather';
 
   Future<WeatherModel?> fetchWeather(String name) async {
