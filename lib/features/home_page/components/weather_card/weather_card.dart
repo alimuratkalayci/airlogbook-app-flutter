@@ -3,18 +3,23 @@ import 'package:lottie/lottie.dart'; // Lottie kütüphanesini import ettik
 import 'weather_model.dart';
 import 'package:coin_go/theme/theme.dart';
 
-class WeatherCard extends StatelessWidget {
+class WeatherCard extends StatefulWidget {
   final WeatherModel weather;
 
   const WeatherCard({Key? key, required this.weather}) : super(key: key);
 
+  @override
+  State<WeatherCard> createState() => _WeatherCardState();
+}
+
+class _WeatherCardState extends State<WeatherCard> {
   @override
   Widget build(BuildContext context) {
     // Hava durumuna göre animasyon URL'sini seçiyoruz
     String animationUrl;
 
     // Hava durumu ana türüne göre animasyon URL'si seçimi
-    switch (weather.weather.first.main.toLowerCase()) {
+    switch (widget.weather.weather.first.main.toLowerCase()) {
       case 'clear':
         animationUrl =
             'https://lottie.host/a4c561c0-8ad0-4d7d-851d-744f488c1db1/d2gag4Tvz3.json'; // Güneşli hava animasyonu
@@ -61,14 +66,13 @@ class WeatherCard extends StatelessWidget {
                         child: Lottie.network(
                           animationUrl,
                           fit: BoxFit.fitWidth,
-                          height: 200,
                         ),
                       ),
                       Center(
                         child: Row(
                           children: [
                             Text(
-                              weather.name,
+                              widget.weather.name,
                               style: TextStyle(
                                   fontSize: 22, fontWeight: FontWeight.bold),
                             ),
@@ -78,7 +82,7 @@ class WeatherCard extends StatelessWidget {
                             ),
                             Spacer(),
                             Text(
-                              '${weather.main.temp.toStringAsFixed(1)} °C',
+                              '${widget.weather.main.temp.toStringAsFixed(1)} °C',
                               style: TextStyle(
                                   fontSize: 22, fontWeight: FontWeight.w600),
                             ),
@@ -88,19 +92,19 @@ class WeatherCard extends StatelessWidget {
                     ],
                   ),
                   Text(
-                    '${weather.weather.first.description.toUpperCase()}',
+                    '${widget.weather.weather.first.description.toUpperCase()}',
                     style: TextStyle(fontSize: 16),
                   ),
                   SizedBox(height: 10),
                   Text(
-                    'Wind: ${weather.wind.speed.toStringAsFixed(1)} m/s, '
-                    'Direction: ${weather.wind.deg}°',
+                    'Wind: ${widget.weather.wind.speed.toStringAsFixed(1)} m/s, '
+                    'Direction: ${widget.weather.wind.deg}°',
                     style: TextStyle(fontSize: 16),
                   ),
                   SizedBox(height: 10),
                   Text(
-                    'Pressure: ${weather.main.pressure} hPa, '
-                    'Visibility: ${weather.visibility / 1000} km',
+                    'Pressure: ${widget.weather.main.pressure} hPa, '
+                    'Visibility: ${widget.weather.visibility / 1000} km',
                     style: TextStyle(fontSize: 16),
                   ),
                 ],

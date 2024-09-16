@@ -1,7 +1,8 @@
-import 'package:coin_go/features/home_page/sub_pages/add_favorite_aircraft_page/add_favorite_aircraft_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'components/last_flight_card/last_flight_card.dart';
+import 'components/last_flight_card/last_flight_service.dart';
 import 'components/weather_card/weather_card.dart';
 import 'components/weather_card/weather_model.dart';
 import 'components/weather_card/weather_service.dart';
@@ -19,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   String? userEmail;
   String? userName;
   WeatherModel? weather;
+  DocumentSnapshot? lastFlight;
 
   @override
   void initState() {
@@ -26,6 +28,7 @@ class _HomePageState extends State<HomePage> {
     getUserEmail();
     getUserName();
     fetchWeatherData();
+    fetchLastFlight();
   }
 
   void getUserEmail() {
@@ -38,7 +41,10 @@ class _HomePageState extends State<HomePage> {
   void getUserName() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
       setState(() {
         userName = userDoc['username'];
       });
@@ -47,17 +53,25 @@ class _HomePageState extends State<HomePage> {
 
   void fetchWeatherData() async {
     WeatherService weatherService = WeatherService();
-    WeatherModel? fetchedWeather = await weatherService.fetchWeather('çankaya');
+    WeatherModel? fetchedWeather =
+        await weatherService.fetchWeather('');
 
     if (fetchedWeather != null) {
       setState(() {
         weather = fetchedWeather;
       });
     } else {
-      print('Hava durumu verisi yüklenemedi.');
+      print('Weather data not loaded.');
     }
   }
 
+  void fetchLastFlight() async {
+    LastFlightService flightService = LastFlightService();
+    DocumentSnapshot? fetchedFlight = await flightService.fetchLastFlight();
+    setState(() {
+      lastFlight = fetchedFlight;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +80,7 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: [
           ListView(
-            padding: EdgeInsets.only(bottom: 48), // Alttaki reklam için
+            padding: EdgeInsets.only(bottom: 48),
             children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -85,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                           Text(
                             ' $userName'.toUpperCase(),
                             style: TextStyle(
-                              color: Colors.deepOrange,
+                              color: AppTheme.AccentColor,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -94,38 +108,13 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ],
 
+                  Row(
+                    children: [
+                      Expanded(child: LastFlightCard(lastFlight: lastFlight)),
+                    ],
+                  ),
                   if (weather != null) WeatherCard(weather: weather!),
 
-                  Padding(
-                    padding: const EdgeInsets.only(right: 16,left: 16),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AddFavoriteAircraftPage(),
-                                ),
-                              );
-                            },
-                            child: Text(
-                              'Add Favorite Aircraft',
-                              style: TextStyle(color: AppTheme.TextColorWhite),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppTheme.AccentColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 16),
                 ],
               ),
             ],

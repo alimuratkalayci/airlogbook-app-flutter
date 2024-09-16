@@ -27,7 +27,7 @@ class _FlightsPageState extends State<FlightsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.BackgroundColor,
+      backgroundColor: AppTheme.TextColorWhite,
       body: Stack(
         children: [
           BlocBuilder<FlightCubit, FlightState>(
@@ -52,6 +52,7 @@ class _FlightsPageState extends State<FlightsPage> {
                   );
                 }
                 return ListView.builder(
+                  padding: EdgeInsets.only(bottom: 56), // Alttaki reklam için
                   itemCount: flights.length,
                   itemBuilder: (context, index) {
                     var flight = flights[index];

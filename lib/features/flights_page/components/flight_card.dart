@@ -96,7 +96,7 @@ class FlightCard extends StatelessWidget {
                       style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 32,
-                          color: AppTheme.DeepOrange)),
+                          color: AppTheme.AccentColor)),
                   Text(formatMonthYear(date), style: TextStyle(fontSize: 16)),
                 ],
               ),
@@ -136,7 +136,7 @@ class FlightCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Icon(Icons.timelapse,color: AppTheme.DeepOrange,size: 20,),
+                      Icon(Icons.timelapse,color: AppTheme.AccentColor,size: 20,),
                       SizedBox(width: 8,),
                       Text('$total_time'),
                     ],
@@ -144,7 +144,7 @@ class FlightCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(Icons.airplane_ticket,color: AppTheme.DeepOrange,size: 20,),
+                      Icon(Icons.airplane_ticket,color: AppTheme.AccentColor,size: 20,),
                       SizedBox(width: 8,),
                       Text('$aircraft_id'),
                     ],
@@ -152,7 +152,7 @@ class FlightCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(Icons.flight,color: AppTheme.DeepOrange,size: 20,),
+                      Icon(Icons.flight,color: AppTheme.AccentColor,size: 20,),
                       SizedBox(width: 8,),
                       Text('$aircraft_type'),
                     ],

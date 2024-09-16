@@ -29,7 +29,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
     }
 
     return Scaffold(
-      backgroundColor: AppTheme.TextColorWhite,
+      backgroundColor: AppTheme.BackgroundColor,
       body: Column(
         children: [
           _buildDateRangePicker(userId),
@@ -342,12 +342,12 @@ class _AnalyzePageState extends State<AnalyzePage> {
             ),
             SizedBox(height: 8.0),
             SizedBox(
-              height: 8,
+              height: 16,
               child: LinearProgressIndicator(
                 value: percentage,
-                borderRadius: BorderRadius.circular(16),
-                backgroundColor: Colors.white,
-                color: Colors.deepOrange,
+                borderRadius: BorderRadius.circular(8),
+                backgroundColor: AppTheme.BackgroundColor,
+                color: AppTheme.DeepOrange,
               ),
             ),
           ],

@@ -1211,14 +1211,15 @@ class _AddFlightPageState extends State<AddFlightPage> {
               ),
             ),
           ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              child: GoogleAds.getBannerAdWidget(),
-            ),
-          ),
+            // ILL ADD LATER (MAYBE)
+            /*            Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          child: GoogleAds.getBannerAdWidget(),
+                        ),
+                      ),*/
         ],
       ),
     );

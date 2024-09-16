@@ -71,17 +71,21 @@ class RootScreenUI extends StatelessWidget {
             centerTitle: true,
           ),
           body: _pages[state.selectedItem.index],
-          bottomNavigationBar: Container(
-            color: AppTheme.BackgroundColor,
-            child: BottomBarFloating(
-              items: _bottomNavItems,
-              backgroundColor: AppTheme.AccentColor,
-              color: AppTheme.TextColorWhite,
-              colorSelected: AppTheme.DeepOrange,
-              indexSelected: state.selectedItem.index,
-              onTap: (int index) {
-                context.read<NavigationCubit>().selectItem(NavigationItem.values[index]);
-              },
+          bottomNavigationBar: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              color: AppTheme.BackgroundColor,
+              child: BottomBarFloating(
+                borderRadius: BorderRadius.circular(16),
+                items: _bottomNavItems,
+                backgroundColor: AppTheme.AccentColor,
+                color: AppTheme.TextColorWhite,
+                colorSelected: AppTheme.DeepOrange,
+                indexSelected: state.selectedItem.index,
+                onTap: (int index) {
+                  context.read<NavigationCubit>().selectItem(NavigationItem.values[index]);
+                },
+              ),
             ),
           ),
         );
