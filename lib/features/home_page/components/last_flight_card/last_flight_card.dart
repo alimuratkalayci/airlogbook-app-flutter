@@ -4,24 +4,27 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../../theme/theme.dart';
 import '../../../flights_page/components/flight_card.dart';
 
-class LastFlightCard extends StatelessWidget {
+class LastFlightCard extends StatefulWidget {
   final DocumentSnapshot? lastFlight;
 
   const LastFlightCard({Key? key, required this.lastFlight}) : super(key: key);
 
   @override
+  State<LastFlightCard> createState() => _LastFlightCardState();
+}
+
+class _LastFlightCardState extends State<LastFlightCard> {
+  @override
   Widget build(BuildContext context) {
-    if (lastFlight == null) {
+    if (widget.lastFlight == null) {
       return Center(
-        child: Text(
-          'There is no flight record.',
-          style: TextStyle(fontSize: 16, color: Colors.grey),
-        ),
+        child: null,
       );
     }
 
     // Firestore'dan çekilen uçuş verileri
-    Map<String, dynamic> flightData = lastFlight!.data() as Map<String, dynamic>;
+    Map<String, dynamic> flightData =
+        widget.lastFlight!.data() as Map<String, dynamic>;
 
     return Card(
       color: AppTheme.TextColorWhite,
@@ -99,7 +102,8 @@ class LastFlightCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Icon(Icons.timelapse, color: AppTheme.AccentColor, size: 20),
+                        Icon(Icons.timelapse,
+                            color: AppTheme.AccentColor, size: 20),
                         SizedBox(width: 8),
                         Text('${flightData['total_time'] ?? '0'} saat'),
                       ],
@@ -122,7 +126,8 @@ class LastFlightCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Icon(Icons.flight, color: AppTheme.AccentColor, size: 20),
+                        Icon(Icons.flight,
+                            color: AppTheme.AccentColor, size: 20),
                         SizedBox(width: 8),
                         Text('${flightData['aircraft_type'] ?? 'Yok'}'),
                       ],
@@ -139,10 +144,9 @@ class LastFlightCard extends StatelessWidget {
                       TextSpan(
                         text: 'Remark \n',
                         style: TextStyle(
-                          color: AppTheme.AccentColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20
-                        ),
+                            color: AppTheme.AccentColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
                       ),
                       TextSpan(
                         text: '${flightData['remarks'] ?? ''}',
@@ -155,27 +159,8 @@ class LastFlightCard extends StatelessWidget {
                 ),
               ],
             )
-
           ],
         ),
-      ),
-    );
-  }
-
-  // Bilgileri görüntülemek için bir yardımcı fonksiyon
-  Widget _buildFlightInfo(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        children: [
-          Text(
-            '$label: ',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Expanded(
-            child: Text(value, style: TextStyle(color: Colors.black87)),
-          ),
-        ],
       ),
     );
   }

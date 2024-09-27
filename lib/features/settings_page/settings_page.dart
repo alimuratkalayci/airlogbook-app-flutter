@@ -1,6 +1,7 @@
 import 'package:coin_go/features/settings_page/sub_pages/add_favorite_aircraft_page/add_favorite_aircraft_page.dart';
 import 'package:coin_go/features/settings_page/sub_pages/change_password_page/change_password_page.dart';
 import 'package:coin_go/features/settings_page/sub_pages/feedback_and_support/feedback_and_support_page.dart';
+import 'package:coin_go/features/settings_page/sub_pages/set_location_page/set_location_page.dart';
 import 'package:coin_go/theme/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +59,6 @@ class _SettingPageState extends State<SettingPage> {
                         ),
                       ],
                     ),
-
                     Row(
                       children: [
                         Expanded(
@@ -73,33 +73,6 @@ class _SettingPageState extends State<SettingPage> {
                             },
                             child: Text(
                               'Change Password',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppTheme.AccentColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => FeedbackAndSupportPage(),
-                                ),
-                              );
-
-                            },
-                            child: Text(
-                              'Feedback and Support',
                               style: TextStyle(color: Colors.white),
                             ),
                             style: ElevatedButton.styleFrom(
@@ -143,6 +116,56 @@ class _SettingPageState extends State<SettingPage> {
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SetLocationPage(),
+                                ),
+                              );
+                            },
+                            child: Text('Set Location', style: TextStyle(color: AppTheme.TextColorWhite),),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppTheme.AccentColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => FeedbackAndSupportPage(),
+                                ),
+                              );
+
+                            },
+                            child: Text(
+                              'Feedback and Support',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppTheme.AccentColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
                               _signOut().then((_) {
                                 Navigator.pushReplacement(
                                   context,
@@ -164,12 +187,13 @@ class _SettingPageState extends State<SettingPage> {
                         ),
                       ],
                     ),
+
                   ],
                 ),
               ],
             ),
           ),
-          Positioned(
+/*           Positioned(
             bottom: 0,
             left: 0,
             right: 0,
@@ -177,7 +201,7 @@ class _SettingPageState extends State<SettingPage> {
               color: AppTheme.BackgroundColor,
               child: GoogleAds.getBannerAdWidget(),
             ),
-          ),
+          ),*/
         ],
       ),
     );

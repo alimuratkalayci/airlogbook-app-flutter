@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   String? userName;
   WeatherModel? weather;
   DocumentSnapshot? lastFlight;
+  String? userLocation;
 
   @override
   void initState() {
@@ -29,6 +30,7 @@ class _HomePageState extends State<HomePage> {
     getUserName();
     fetchWeatherData();
     fetchLastFlight();
+    fetchUserLocation();
   }
 
   void getUserEmail() {
@@ -54,7 +56,7 @@ class _HomePageState extends State<HomePage> {
   void fetchWeatherData() async {
     WeatherService weatherService = WeatherService();
     WeatherModel? fetchedWeather =
-        await weatherService.fetchWeather('');
+        await weatherService.fetchWeather(userLocation!);
 
     if (fetchedWeather != null) {
       setState(() {
@@ -71,6 +73,20 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       lastFlight = fetchedFlight;
     });
+  }
+
+  void fetchUserLocation() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+      setState(() {
+        userLocation = userDoc['location'];
+      });
+      fetchWeatherData(); // Konumu aldıktan sonra hava durumu verisini al
+    }
   }
 
   @override
@@ -94,11 +110,14 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text(
                             'Welcome to Air Logbook',
-                            style: TextStyle(color: AppTheme.TextColorBlack),
+                            style: TextStyle(color: AppTheme.TextColorBlack,
+                              fontSize: 16,
+                            ),
                           ),
                           Text(
                             ' $userName'.toUpperCase(),
                             style: TextStyle(
+                              fontSize: 16,
                               color: AppTheme.AccentColor,
                               fontWeight: FontWeight.bold,
                             ),
@@ -107,24 +126,34 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ],
-
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+                    child: Column(
+                      children: [
+                        Text(
+                            'Before anything else,'
+                                ' make sure to set the aircraft type you frequently use in the Settings section'
+                                ' and update your location through the Set Location page to access the weather '
+                                'conditions in your current region.',style: TextStyle(fontWeight: FontWeight.normal),),
+                      ],
+                    ),
+                  ),
                   Row(
                     children: [
                       Expanded(child: LastFlightCard(lastFlight: lastFlight)),
                     ],
                   ),
                   if (weather != null) WeatherCard(weather: weather!),
-
                 ],
               ),
             ],
           ),
-          Positioned(
+/*           Positioned(
             bottom: 0,
             left: 0,
             right: 0,
             child: GoogleAds.getBannerAdWidget(),
-          ),
+          ),*/
         ],
       ),
     );
