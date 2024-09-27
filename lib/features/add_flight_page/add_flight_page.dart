@@ -3,8 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-
-import '../../general_components/google_ads/google_ads.dart';
 import '../../theme/theme.dart';
 
 class AddFlightPage extends StatefulWidget {
@@ -316,7 +314,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
         borderSide: BorderSide(
-          color: AppTheme.DeepOrange,
+          color: AppTheme.Green,
           width: 2.0,
         ),
       ),
@@ -327,10 +325,11 @@ class _AddFlightPageState extends State<AddFlightPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.BackgroundColor,
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(top: 8),
             child: Form(
               key: _formKey,
               child: SingleChildScrollView(
@@ -1205,7 +1204,6 @@ class _AddFlightPageState extends State<AddFlightPage> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 48,),
                   ],
                 ),
               ),

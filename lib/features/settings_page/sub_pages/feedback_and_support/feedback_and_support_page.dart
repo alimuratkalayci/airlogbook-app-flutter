@@ -46,7 +46,7 @@ class _FeedbackAndSupportPageState extends State<FeedbackAndSupportPage> {
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(8.0),
         borderSide: BorderSide(
-          color: AppTheme.DeepOrange,
+          color: AppTheme.Green,
           width: 2.0,
         ),
       ),

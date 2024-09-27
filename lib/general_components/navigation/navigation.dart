@@ -7,6 +7,8 @@ import 'package:coin_go/features/flights_page/flights_page.dart';
 import 'package:coin_go/features/home_page/home_page.dart';
 import 'package:coin_go/features/settings_page/settings_page.dart';
 import 'package:coin_go/theme/theme.dart';
+import '../../features/notification_page/notification_page.dart';
+import '../google_ads/google_ads.dart';
 import 'navigation_cubit.dart';
 import 'navigation_state.dart';
 
@@ -40,10 +42,6 @@ class RootScreenUI extends StatelessWidget {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-
-
-
-
                 Expanded(
                   child: SafeArea(
                     child: Text(
@@ -55,13 +53,14 @@ class RootScreenUI extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 IconButton(
-                  icon: Icon(Icons.notifications, color: AppTheme.TextColorWhite,
-                  ),
+                  icon: Icon(Icons.notifications, color: AppTheme.TextColorWhite),
                   onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Notifications clicked!')),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MyAccountPage(),
+                      ),
                     );
                   },
                 ),
@@ -71,22 +70,30 @@ class RootScreenUI extends StatelessWidget {
             centerTitle: true,
           ),
           body: _pages[state.selectedItem.index],
-          bottomNavigationBar: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              color: AppTheme.BackgroundColor,
-              child: BottomBarFloating(
-                borderRadius: BorderRadius.circular(16),
-                items: _bottomNavItems,
-                backgroundColor: AppTheme.AccentColor,
-                color: AppTheme.TextColorWhite,
-                colorSelected: AppTheme.DeepOrange,
-                indexSelected: state.selectedItem.index,
-                onTap: (int index) {
-                  context.read<NavigationCubit>().selectItem(NavigationItem.values[index]);
-                },
+          bottomNavigationBar: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Google Ads banner
+              GoogleAds.getBannerAdWidget(),
+              // Navigation Bar
+              Container(
+                color: AppTheme.BackgroundColor,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: BottomBarFloating(
+                    borderRadius: BorderRadius.circular(16),
+                    items: _bottomNavItems,
+                    backgroundColor: AppTheme.AccentColor,
+                    color: AppTheme.TextColorWhite,
+                    colorSelected: AppTheme.Green,
+                    indexSelected: state.selectedItem.index,
+                    onTap: (int index) {
+                      context.read<NavigationCubit>().selectItem(NavigationItem.values[index]);
+                    },
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         );
       },

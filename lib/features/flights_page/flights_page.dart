@@ -1,11 +1,8 @@
 import 'package:coin_go/features/flights_page/components/flight_card.dart';
-import 'package:coin_go/features/flights_page/sub_pages/flight_details_page/flight_details_update_page/flight_details_update_page.dart';
 import 'package:coin_go/features/flights_page/sub_pages/flight_details_page/flight_details_show_page/flight_details_show_page.dart';
 import 'package:coin_go/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:intl/intl.dart';
 import '../../general_components/google_ads/google_ads.dart';
 import 'components/show_detele_modal_bottom_sheet.dart';
 import 'flights_cubit.dart';
@@ -27,7 +24,7 @@ class _FlightsPageState extends State<FlightsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.TextColorWhite,
+      backgroundColor: AppTheme.BackgroundColor,
       body: Stack(
         children: [
           BlocBuilder<FlightCubit, FlightState>(
@@ -44,7 +41,7 @@ class _FlightsPageState extends State<FlightsPage> {
                     child: Text(
                       'No flights logged, tap "+" for first flight',
                       style: TextStyle(
-                        color: Colors.deepOrange,
+                        color: AppTheme.AccentColor,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
@@ -52,7 +49,7 @@ class _FlightsPageState extends State<FlightsPage> {
                   );
                 }
                 return ListView.builder(
-                  padding: EdgeInsets.only(bottom: 56), // Alttaki reklam için
+               //   padding: EdgeInsets.only(bottom: 56), // Alttaki reklam için
                   itemCount: flights.length,
                   itemBuilder: (context, index) {
                     var flight = flights[index];
@@ -91,14 +88,14 @@ class _FlightsPageState extends State<FlightsPage> {
               return Container();
             },
           ),
-          Positioned(
+/*           Positioned(
             bottom: 0,
             left: 0,
             right: 0,
             child: Container(
               child: GoogleAds.getBannerAdWidget(),
             ),
-          ),
+          ),*/
         ],
       ),
     );

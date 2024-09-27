@@ -51,6 +51,7 @@ dependencies:
   modal_bottom_sheet: ^3.0.0
   awesome_bottom_bar: ^1.2.4
   google_mobile_ads: ^5.1.0
+  geocoding: ^3.0.0
 
 
 

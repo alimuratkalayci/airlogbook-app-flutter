@@ -104,14 +104,14 @@ class _AddFavoriteAircraftPageState extends State<AddFavoriteAircraftPage> {
             color: AppTheme.BackgroundColor,
             width: double.infinity,
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
                 TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
                     labelText: 'Search Aircraft Types',
-                    labelStyle: TextStyle(color: AppTheme.DeepOrange), // Etiket rengi
+                    labelStyle: TextStyle(color: AppTheme.AccentColor), // Etiket rengi
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
                       borderSide: BorderSide(color: AppTheme.AccentColor,width: 2), // Kenarlık rengi
@@ -127,7 +127,7 @@ class _AddFavoriteAircraftPageState extends State<AddFavoriteAircraftPage> {
                     fillColor: AppTheme.BackgroundColor, // Arka plan rengi
                     filled: true,
                   ),
-                  style: TextStyle(color: AppTheme.DeepOrange), // Metin rengi
+                  style: TextStyle(color: AppTheme.AccentColor), // Metin rengi
                   onChanged: (value) {
                     _filterAircraftTypes(value);
                   },
@@ -168,7 +168,7 @@ class _AddFavoriteAircraftPageState extends State<AddFavoriteAircraftPage> {
                   padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                   child: ListTile(
                     tileColor: AppTheme.BackgroundColor, // Arka plan rengi
-                    leading: Icon(Icons.airplanemode_active, color: AppTheme.DeepOrange), // İkon
+                    leading: Icon(Icons.airplanemode_active, color: AppTheme.AccentColor,size: 36,), // İkon
                     title: Text(
                       name,
                       style: TextStyle(
@@ -178,9 +178,10 @@ class _AddFavoriteAircraftPageState extends State<AddFavoriteAircraftPage> {
                       ),
                     ),
                     trailing: Icon(
-                        _selectedAircraftTypes.contains(name)
-                            ? Icons.check_circle
-                            : Icons.add, color: AppTheme.DeepOrange), // Sağdaki ikon
+                      size: 36,
+                      _selectedAircraftTypes.contains(name) ? Icons.check : Icons.add,
+                      color: _selectedAircraftTypes.contains(name) ? Colors.green : AppTheme.AccentColor,
+                    ),
                     onTap: () {
                       if (_selectedAircraftTypes.contains(name)) {
                         _removeAircraftType(name);

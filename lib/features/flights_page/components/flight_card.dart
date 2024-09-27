@@ -77,7 +77,7 @@ class FlightCard extends StatelessWidget {
               onDelete();
             },
             backgroundColor: AppTheme.BackgroundColor,
-            foregroundColor: AppTheme.AccentColor,
+            foregroundColor: Colors.red[900],
             icon: Icons.delete,
             label: 'Delete',
           ),

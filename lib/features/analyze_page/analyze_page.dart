@@ -93,7 +93,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: ListView(
-                      padding: EdgeInsets.only(bottom: 48), // Reklamın yeri için alt boşluk bırakır
+                    //  padding: EdgeInsets.only(bottom: 48), // Reklamın yeri için alt boşluk bırakır
                       children: [
                         buildSummaryCard('Total Flight Hours', totalHours, totalHours),
                         buildSummaryCard('Total Night Time', totalNightTime, totalHours),
@@ -113,14 +113,14 @@ class _AnalyzePageState extends State<AnalyzePage> {
                       ],
                     ),
                   ),
-                  Positioned(
+/*                   Positioned(
                     bottom: 0,
                     left: 0,
                     right: 0,
                     child: Container(
                       child: GoogleAds.getBannerAdWidget(),
                     ),
-                  ),
+                  ),*/
                 ]);
               },
             ),
@@ -140,7 +140,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
           _lastFlightDate = DateTime.parse(data['lastFlightDate']);
         }
         return Padding(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -347,7 +347,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
                 value: percentage,
                 borderRadius: BorderRadius.circular(8),
                 backgroundColor: AppTheme.BackgroundColor,
-                color: AppTheme.DeepOrange,
+                color: Colors.deepPurpleAccent,
               ),
             ),
           ],
