@@ -102,28 +102,35 @@ class FlightCard extends StatelessWidget {
               ),
               SizedBox(width: 8),
               Expanded(
-                child: Column(
+                child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(
+                    Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+                        SizedBox(height: 24,),
                         Text('$departure'),
+
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                         Image.asset(
                           'assets/images/direct-flight.png',
                           width: 48,
                           height: 48,
                         ),
-                        Text('$arrival'),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
                         Text('$route'),
                       ],
                     ),
+                    Column(
+                      children: [
+                        SizedBox(height: 24,),
+                        Text('$arrival'),
+                      ],
+                    )
                   ],
                 ),
               ),
