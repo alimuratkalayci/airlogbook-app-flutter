@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import '../../../../theme/theme.dart';
 import '../../../flights_page/components/flight_card.dart';
 
@@ -22,7 +21,6 @@ class _LastFlightCardState extends State<LastFlightCard> {
       );
     }
 
-    // Firestore'dan çekilen uçuş verileri
     Map<String, dynamic> flightData =
         widget.lastFlight!.data() as Map<String, dynamic>;
 
@@ -60,44 +58,46 @@ class _LastFlightCardState extends State<LastFlightCard> {
                         style: TextStyle(fontSize: 16)),
                   ],
                 ),
-                SizedBox(width: 8),
-
-                // Orta kısımda kalkış, varış ve route bilgisi
+                SizedBox(width: 16),
                 Expanded(
-                  child: Column(
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
+                      Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
+                          SizedBox(height: 10,),
                           Text('${flightData['departure_airport'] ?? 'N/A'}'),
+
+                        ],
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
                           Image.asset(
-                            'assets/images/direct-flight.png', // Burada uygun bir uçuş simgesi kullanabilirsiniz
+                            'assets/images/direct-flight.png',
                             width: 48,
                             height: 48,
                           ),
-                          Text('${flightData['arrival_airport'] ?? 'N/A'}'),
+                          Text('${flightData['route'] ?? ''}'),
                         ],
                       ),
-                      SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      Column(
                         children: [
-                          Text('${flightData['route'] ?? 'Bilinmiyor'}'),
+                          SizedBox(height: 10,),
+                          Text('${flightData['arrival_airport'] ?? 'N/A'}'),
+
                         ],
-                      ),
+                      )
                     ],
                   ),
                 ),
-                SizedBox(width: 8),
-
-                // Sağ kısımdaki uçuş detayları (süre, uçak id, uçak tipi)
+                SizedBox(width: 16),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Süre
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -109,8 +109,6 @@ class _LastFlightCardState extends State<LastFlightCard> {
                       ],
                     ),
                     SizedBox(height: 8),
-
-                    // Uçak ID
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -121,8 +119,6 @@ class _LastFlightCardState extends State<LastFlightCard> {
                       ],
                     ),
                     SizedBox(height: 8),
-
-                    // Uçak Tipi
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -136,32 +132,32 @@ class _LastFlightCardState extends State<LastFlightCard> {
                 ),
               ],
             ),
-            Wrap(
+            Row(
               children: [
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: 'Remark \n',
-                        style: TextStyle(
-                            color: AppTheme.AccentColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                      ),
-                      TextSpan(
-                        text: '${flightData['remarks'] ?? ''}',
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                    ],
+                Text(
+                  'Remark',
+                  style: TextStyle(
+                      color: AppTheme.AccentColor,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    '${flightData['remarks'] ?? ''}',
+                    softWrap: true,
+                    overflow: TextOverflow.visible,
                   ),
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
     );
   }
 }
+//TODO COLUMN NERDEN UCTUGU - COLUMN UCAK İMAGE VE ROUTE - COLUMN NEREYE UCTUGU
