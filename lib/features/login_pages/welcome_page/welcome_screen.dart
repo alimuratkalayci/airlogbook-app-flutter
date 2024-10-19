@@ -16,8 +16,9 @@ class WelcomeScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
+            SizedBox(height: 64,),
             Flexible(
-              flex: 4,
+              flex: 2,
               child: Lottie.network(
                 'https://lottie.host/20f33894-3c18-41e9-97b3-b7f67b2d192d/haVgTZj3TT.json', // Lottie animation URL
                 width: screenWidth * 1,

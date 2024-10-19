@@ -67,7 +67,7 @@ class _LastFlightCardState extends State<LastFlightCard> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(height: 10,),
+                          SizedBox(height: 24,),
                           Text('${flightData['departure_airport'] ?? 'N/A'}'),
 
                         ],
@@ -85,7 +85,7 @@ class _LastFlightCardState extends State<LastFlightCard> {
                       ),
                       Column(
                         children: [
-                          SizedBox(height: 10,),
+                          SizedBox(height: 24,),
                           Text('${flightData['arrival_airport'] ?? 'N/A'}'),
 
                         ],
@@ -105,7 +105,7 @@ class _LastFlightCardState extends State<LastFlightCard> {
                         Icon(Icons.timelapse,
                             color: AppTheme.AccentColor, size: 20),
                         SizedBox(width: 8),
-                        Text('${flightData['total_time'] ?? '0'} saat'),
+                        Text('${flightData['total_time'] ?? '0'}'),
                       ],
                     ),
                     SizedBox(height: 8),
@@ -160,4 +160,3 @@ class _LastFlightCardState extends State<LastFlightCard> {
     );
   }
 }
-//TODO COLUMN NERDEN UCTUGU - COLUMN UCAK İMAGE VE ROUTE - COLUMN NEREYE UCTUGU

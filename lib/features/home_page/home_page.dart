@@ -6,7 +6,6 @@ import 'components/last_flight_card/last_flight_service.dart';
 import 'components/weather_card/weather_card.dart';
 import 'components/weather_card/weather_model.dart';
 import 'components/weather_card/weather_service.dart';
-import '../../general_components/google_ads/google_ads.dart';
 import '../../theme/theme.dart';
 
 class HomePage extends StatefulWidget {
@@ -110,7 +109,8 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Text(
                             'Welcome to Air Logbook',
-                            style: TextStyle(color: AppTheme.TextColorBlack,
+                            style: TextStyle(
+                              color: AppTheme.TextColorBlack,
                               fontSize: 16,
                             ),
                           ),
@@ -128,14 +128,22 @@ class _HomePageState extends State<HomePage> {
                   ],
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-                    child: Column(
-                      children: [
-                        Text(
-                            'Before anything else,'
-                                ' make sure to set the aircraft type you frequently use in the Settings section'
-                                ' and update your location through the Set Location page to access the weather '
-                                'conditions in your current region.',style: TextStyle(fontWeight: FontWeight.normal),),
-                      ],
+                    child: Container(
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(16),color: AppTheme.AccentColor,),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              'Before anything else,'
+                              ' make sure to set the aircraft type you frequently use in the Settings section'
+                              ' and update your location through the Set Location page to access the weather '
+                              'conditions in your current region.',
+                              style: TextStyle(fontWeight: FontWeight.normal,color: AppTheme.TextColorWhite),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                   Row(
@@ -148,12 +156,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-/*           Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: GoogleAds.getBannerAdWidget(),
-          ),*/
         ],
       ),
     );

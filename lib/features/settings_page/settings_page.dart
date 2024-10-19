@@ -1,3 +1,4 @@
+import 'package:coin_go/features/login_pages/welcome_page/welcome_screen.dart';
 import 'package:coin_go/features/settings_page/sub_pages/add_favorite_aircraft_page/add_favorite_aircraft_page.dart';
 import 'package:coin_go/features/settings_page/sub_pages/change_password_page/change_password_page.dart';
 import 'package:coin_go/features/settings_page/sub_pages/feedback_and_support/feedback_and_support_page.dart';
@@ -5,8 +6,8 @@ import 'package:coin_go/features/settings_page/sub_pages/set_location_page/set_l
 import 'package:coin_go/theme/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../../general_components/google_ads/google_ads.dart';
 import '../login_pages/sign_in_page/sign_in_page.dart';
+import 'components/show_logout_modal_bottom_sheet.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({Key? key}) : super(key: key);
@@ -29,7 +30,6 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: AppTheme.BackgroundColor,
       body: Stack(
@@ -47,7 +47,7 @@ class _SettingPageState extends State<SettingPage> {
                             onPressed: () {},
                             child: Text(
                               'Profile',
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: AppTheme.TextColorWhite),
                             ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppTheme.AccentColor,
@@ -73,7 +73,7 @@ class _SettingPageState extends State<SettingPage> {
                             },
                             child: Text(
                               'Change Password',
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: AppTheme.TextColorWhite),
                             ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppTheme.AccentColor,
@@ -93,7 +93,8 @@ class _SettingPageState extends State<SettingPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => AddFavoriteAircraftPage(),
+                                  builder: (context) =>
+                                      AddFavoriteAircraftPage(),
                                 ),
                               );
                             },
@@ -123,7 +124,10 @@ class _SettingPageState extends State<SettingPage> {
                                 ),
                               );
                             },
-                            child: Text('Set Location', style: TextStyle(color: AppTheme.TextColorWhite),),
+                            child: Text(
+                              'Set Location',
+                              style: TextStyle(color: AppTheme.TextColorWhite),
+                            ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppTheme.AccentColor,
                               shape: RoundedRectangleBorder(
@@ -142,14 +146,14 @@ class _SettingPageState extends State<SettingPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => FeedbackAndSupportPage(),
+                                  builder: (context) =>
+                                      FeedbackAndSupportPage(),
                                 ),
                               );
-
                             },
                             child: Text(
                               'Feedback and Support',
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: AppTheme.TextColorWhite),
                             ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppTheme.AccentColor,
@@ -166,19 +170,34 @@ class _SettingPageState extends State<SettingPage> {
                         Expanded(
                           child: ElevatedButton(
                             onPressed: () {
-                              _signOut().then((_) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => SignInPage()),
-                                );
+                              // Logout onay modali açılıyor
+                              showLogoutConfirmationBottomSheet(context).then((result) {
+                                // Kullanıcı onay verdiyse
+                                if (result == 'logged_out') {
+                                  // Asenkron bir çıkış fonksiyonu beklenmeli
+                                  _signOut().then((_) {
+                                    // Çıkış işlemi tamamlandığında giriş sayfasına yönlendir
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => WelcomeScreen()),
+                                    );
+                                  }).catchError((error) {
+                                    // Eğer bir hata oluşursa, hata yönetimi yapabilirsin
+                                    print('Sign out failed: $error');
+                                  });
+                                }
+                              }).catchError((error) {
+                                // Modal açılırken veya işlem sırasında bir hata olursa
+                                print('Modal failed: $error');
                               });
                             },
+
                             child: Text(
                               'Sign Out',
                               style: TextStyle(color: Colors.white),
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: AppTheme.AccentColor,
+                              backgroundColor: Colors.red,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                               ),

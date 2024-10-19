@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import '../../general_components/general_alert_dialog/general_alert_dialog.dart';
 import '../../theme/theme.dart';
 
 class AddFlightPage extends StatefulWidget {
@@ -240,9 +241,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
           .collection('my_flights')
           .add(flightRecord);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Flight record added')),
-      );
+      GeneralAlertDialog.show(context, "Flight record added");
 
       // Clear form fields if needed
       _formKey.currentState?.reset();
@@ -359,20 +358,20 @@ class _AddFlightPageState extends State<AddFlightPage> {
                                 Expanded(
                                   child: TextFormField(
                                     controller: _dateController,
-                                    style:
-                                        TextStyle(color: AppTheme.TextColorWhite),
+                                    style: TextStyle(
+                                        color: AppTheme.TextColorWhite),
                                     decoration: InputDecoration(
                                       focusColor: AppTheme.TextColorWhite,
                                       labelText: 'Date',
-                                      labelStyle:
-                                          TextStyle(color: AppTheme.TextColorWhite),
+                                      labelStyle: TextStyle(
+                                          color: AppTheme.TextColorWhite),
                                       hintText: _selectedDate == null
                                           ? 'No Date Chosen!'
                                           : _dateFormat
                                               .format(_selectedDate!)
                                               .toString(),
-                                      hintStyle:
-                                          TextStyle(color: AppTheme.TextColorWhite),
+                                      hintStyle: TextStyle(
+                                          color: AppTheme.TextColorWhite),
                                       border: InputBorder.none,
                                     ),
                                     readOnly: true,
@@ -397,7 +396,8 @@ class _AddFlightPageState extends State<AddFlightPage> {
                               children: [
                                 Text(
                                   'Favorite Aircrafts',
-                                  style: TextStyle(color: AppTheme.TextColorWhite),
+                                  style:
+                                      TextStyle(color: AppTheme.TextColorWhite),
                                 ),
                                 SizedBox(
                                   width: 16,
@@ -407,9 +407,11 @@ class _AddFlightPageState extends State<AddFlightPage> {
                                       ? CircularProgressIndicator()
                                       : errorMessage.isNotEmpty
                                           ? Text(errorMessage,
-                                              style: TextStyle(color: Colors.red))
+                                              style:
+                                                  TextStyle(color: Colors.red))
                                           : DropdownButtonFormField<String>(
-                                              dropdownColor: AppTheme.AccentColor,
+                                              dropdownColor:
+                                                  AppTheme.AccentColor,
                                               iconEnabledColor:
                                                   AppTheme.TextColorWhite,
                                               iconSize: 24,
@@ -421,23 +423,28 @@ class _AddFlightPageState extends State<AddFlightPage> {
                                               decoration: InputDecoration(
                                                 border: OutlineInputBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(8.0),
+                                                      BorderRadius.circular(
+                                                          8.0),
                                                   borderSide: BorderSide(
                                                     color: Colors.white,
                                                     width: 2.0, //
                                                   ),
                                                 ),
-                                                enabledBorder: OutlineInputBorder(
+                                                enabledBorder:
+                                                    OutlineInputBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(8.0),
+                                                      BorderRadius.circular(
+                                                          8.0),
                                                   borderSide: BorderSide(
                                                     color: Colors.white,
                                                     width: 2.0,
                                                   ),
                                                 ),
-                                                focusedBorder: OutlineInputBorder(
+                                                focusedBorder:
+                                                    OutlineInputBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(8.0),
+                                                      BorderRadius.circular(
+                                                          8.0),
                                                   borderSide: BorderSide(
                                                     color: AppTheme.AccentColor,
                                                     width: 2.0,
@@ -451,17 +458,19 @@ class _AddFlightPageState extends State<AddFlightPage> {
                                               hint: Text(
                                                 'Aircraft Types',
                                                 style: TextStyle(
-                                                    color: AppTheme.TextColorWhite),
+                                                    color: AppTheme
+                                                        .TextColorWhite),
                                               ),
                                               value: selectedAircraftType,
                                               onChanged: (String? newValue) {
                                                 setState(() {
-                                                  selectedAircraftType = newValue;
+                                                  selectedAircraftType =
+                                                      newValue;
                                                 });
                                               },
-                                              items: aircraftTypes
-                                                  .map<DropdownMenuItem<String>>(
-                                                      (String value) {
+                                              items: aircraftTypes.map<
+                                                      DropdownMenuItem<String>>(
+                                                  (String value) {
                                                 return DropdownMenuItem<String>(
                                                   value: value,
                                                   child: Text(value,
@@ -527,7 +536,8 @@ class _AddFlightPageState extends State<AddFlightPage> {
                             SizedBox(height: 8),
                             TextFormField(
                               controller: _arrivalAirportController,
-                              decoration: customInputDecoration('Arrival Airport'),
+                              decoration:
+                                  customInputDecoration('Arrival Airport'),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16.0,
@@ -633,20 +643,23 @@ class _AddFlightPageState extends State<AddFlightPage> {
                                     ? Padding(
                                         padding: const EdgeInsets.all(8),
                                         child: Container(
-                                          margin:
-                                              EdgeInsets.symmetric(vertical: 0.0),
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 0.0),
                                           child: TextButton(
                                             onPressed: () {
-                                              double currentValue = double.tryParse(
-                                                      _totalTimeController.text) ??
-                                                  0.0;
+                                              double currentValue =
+                                                  double.tryParse(
+                                                          _totalTimeController
+                                                              .text) ??
+                                                      0.0;
                                               _nightTimeController.text =
                                                   currentValue.toString();
                                             },
                                             child: Text(
                                               'Copy Time',
                                               style: TextStyle(
-                                                  color: AppTheme.TextColorWhite),
+                                                  color:
+                                                      AppTheme.TextColorWhite),
                                             ),
                                           ),
                                         ),
@@ -671,20 +684,23 @@ class _AddFlightPageState extends State<AddFlightPage> {
                                     ? Padding(
                                         padding: const EdgeInsets.all(8),
                                         child: Container(
-                                          margin:
-                                              EdgeInsets.symmetric(vertical: 0.0),
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 0.0),
                                           child: TextButton(
                                             onPressed: () {
-                                              double currentValue = double.tryParse(
-                                                      _totalTimeController.text) ??
-                                                  0.0;
+                                              double currentValue =
+                                                  double.tryParse(
+                                                          _totalTimeController
+                                                              .text) ??
+                                                      0.0;
                                               _picController.text =
                                                   currentValue.toString();
                                             },
                                             child: Text(
                                               'Copy Time',
                                               style: TextStyle(
-                                                  color: AppTheme.TextColorWhite),
+                                                  color:
+                                                      AppTheme.TextColorWhite),
                                             ),
                                           ),
                                         ),
@@ -704,26 +720,29 @@ class _AddFlightPageState extends State<AddFlightPage> {
                               ],
                               controller: _dualRcvdController,
                               style: TextStyle(color: AppTheme.TextColorWhite),
-                              decoration:
-                                  customInputDecoration('Dual Received').copyWith(
+                              decoration: customInputDecoration('Dual Received')
+                                  .copyWith(
                                 suffixIcon: _totalTimeController.text.isNotEmpty
                                     ? Padding(
                                         padding: const EdgeInsets.all(8),
                                         child: Container(
-                                          margin:
-                                              EdgeInsets.symmetric(vertical: 0.0),
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 0.0),
                                           child: TextButton(
                                             onPressed: () {
-                                              double currentValue = double.tryParse(
-                                                      _totalTimeController.text) ??
-                                                  0.0;
+                                              double currentValue =
+                                                  double.tryParse(
+                                                          _totalTimeController
+                                                              .text) ??
+                                                      0.0;
                                               _dualRcvdController.text =
                                                   currentValue.toString();
                                             },
                                             child: Text(
                                               'Copy Time',
                                               style: TextStyle(
-                                                  color: AppTheme.TextColorWhite),
+                                                  color:
+                                                      AppTheme.TextColorWhite),
                                             ),
                                           ),
                                         ),
@@ -743,25 +762,29 @@ class _AddFlightPageState extends State<AddFlightPage> {
                               ],
                               controller: _soloController,
                               style: TextStyle(color: AppTheme.TextColorWhite),
-                              decoration: customInputDecoration('Solo').copyWith(
+                              decoration:
+                                  customInputDecoration('Solo').copyWith(
                                 suffixIcon: _totalTimeController.text.isNotEmpty
                                     ? Padding(
                                         padding: const EdgeInsets.all(8),
                                         child: Container(
-                                          margin:
-                                              EdgeInsets.symmetric(vertical: 0.0),
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 0.0),
                                           child: TextButton(
                                             onPressed: () {
-                                              double currentValue = double.tryParse(
-                                                      _totalTimeController.text) ??
-                                                  0.0;
+                                              double currentValue =
+                                                  double.tryParse(
+                                                          _totalTimeController
+                                                              .text) ??
+                                                      0.0;
                                               _soloController.text =
                                                   currentValue.toString();
                                             },
                                             child: Text(
                                               'Copy Time',
                                               style: TextStyle(
-                                                  color: AppTheme.TextColorWhite),
+                                                  color:
+                                                      AppTheme.TextColorWhite),
                                             ),
                                           ),
                                         ),
@@ -786,20 +809,23 @@ class _AddFlightPageState extends State<AddFlightPage> {
                                     ? Padding(
                                         padding: const EdgeInsets.all(8),
                                         child: Container(
-                                          margin:
-                                              EdgeInsets.symmetric(vertical: 0.0),
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 0.0),
                                           child: TextButton(
                                             onPressed: () {
-                                              double currentValue = double.tryParse(
-                                                      _totalTimeController.text) ??
-                                                  0.0;
+                                              double currentValue =
+                                                  double.tryParse(
+                                                          _totalTimeController
+                                                              .text) ??
+                                                      0.0;
                                               _xcController.text =
                                                   currentValue.toString();
                                             },
                                             child: Text(
                                               'Copy Time',
                                               style: TextStyle(
-                                                  color: AppTheme.TextColorWhite),
+                                                  color:
+                                                      AppTheme.TextColorWhite),
                                             ),
                                           ),
                                         ),
@@ -825,20 +851,23 @@ class _AddFlightPageState extends State<AddFlightPage> {
                                     ? Padding(
                                         padding: const EdgeInsets.all(8),
                                         child: Container(
-                                          margin:
-                                              EdgeInsets.symmetric(vertical: 0.0),
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 0.0),
                                           child: TextButton(
                                             onPressed: () {
-                                              double currentValue = double.tryParse(
-                                                      _totalTimeController.text) ??
-                                                  0.0;
+                                              double currentValue =
+                                                  double.tryParse(
+                                                          _totalTimeController
+                                                              .text) ??
+                                                      0.0;
                                               _simInstController.text =
                                                   currentValue.toString();
                                             },
                                             child: Text(
                                               'Copy Time',
                                               style: TextStyle(
-                                                  color: AppTheme.TextColorWhite),
+                                                  color:
+                                                      AppTheme.TextColorWhite),
                                             ),
                                           ),
                                         ),
@@ -864,20 +893,23 @@ class _AddFlightPageState extends State<AddFlightPage> {
                                     ? Padding(
                                         padding: const EdgeInsets.all(8),
                                         child: Container(
-                                          margin:
-                                              EdgeInsets.symmetric(vertical: 0.0),
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 0.0),
                                           child: TextButton(
                                             onPressed: () {
-                                              double currentValue = double.tryParse(
-                                                      _totalTimeController.text) ??
-                                                  0.0;
+                                              double currentValue =
+                                                  double.tryParse(
+                                                          _totalTimeController
+                                                              .text) ??
+                                                      0.0;
                                               _actualInstController.text =
                                                   currentValue.toString();
                                             },
                                             child: Text(
                                               'Copy Time',
                                               style: TextStyle(
-                                                  color: AppTheme.TextColorWhite),
+                                                  color:
+                                                      AppTheme.TextColorWhite),
                                             ),
                                           ),
                                         ),
@@ -903,20 +935,23 @@ class _AddFlightPageState extends State<AddFlightPage> {
                                     ? Padding(
                                         padding: const EdgeInsets.all(8),
                                         child: Container(
-                                          margin:
-                                              EdgeInsets.symmetric(vertical: 0.0),
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 0.0),
                                           child: TextButton(
                                             onPressed: () {
-                                              double currentValue = double.tryParse(
-                                                      _totalTimeController.text) ??
-                                                  0.0;
+                                              double currentValue =
+                                                  double.tryParse(
+                                                          _totalTimeController
+                                                              .text) ??
+                                                      0.0;
                                               _simulatorController.text =
                                                   currentValue.toString();
                                             },
                                             child: Text(
                                               'Copy Time',
                                               style: TextStyle(
-                                                  color: AppTheme.TextColorWhite),
+                                                  color:
+                                                      AppTheme.TextColorWhite),
                                             ),
                                           ),
                                         ),
@@ -936,25 +971,29 @@ class _AddFlightPageState extends State<AddFlightPage> {
                               ],
                               controller: _groundController,
                               style: TextStyle(color: AppTheme.TextColorWhite),
-                              decoration: customInputDecoration('Ground').copyWith(
+                              decoration:
+                                  customInputDecoration('Ground').copyWith(
                                 suffixIcon: _totalTimeController.text.isNotEmpty
                                     ? Padding(
                                         padding: const EdgeInsets.all(8),
                                         child: Container(
-                                          margin:
-                                              EdgeInsets.symmetric(vertical: 0.0),
+                                          margin: EdgeInsets.symmetric(
+                                              vertical: 0.0),
                                           child: TextButton(
                                             onPressed: () {
-                                              double currentValue = double.tryParse(
-                                                      _totalTimeController.text) ??
-                                                  0.0;
+                                              double currentValue =
+                                                  double.tryParse(
+                                                          _totalTimeController
+                                                              .text) ??
+                                                      0.0;
                                               _groundController.text =
                                                   currentValue.toString();
                                             },
                                             child: Text(
                                               'Copy Time',
                                               style: TextStyle(
-                                                  color: AppTheme.TextColorWhite),
+                                                  color:
+                                                      AppTheme.TextColorWhite),
                                             ),
                                           ),
                                         ),
@@ -977,10 +1016,12 @@ class _AddFlightPageState extends State<AddFlightPage> {
                                   customInputDecoration('Instrument Approach')
                                       .copyWith(
                                 suffixIcon: IconButton(
-                                  icon: Icon(Icons.add, color: Colors.deepOrange),
+                                  icon:
+                                      Icon(Icons.add, color: Colors.deepOrange),
                                   onPressed: () {
                                     int currentValue = int.tryParse(
-                                            _instrumentApproachController.text) ??
+                                            _instrumentApproachController
+                                                .text) ??
                                         0;
                                     _instrumentApproachController.text =
                                         (currentValue + 1).toString();
@@ -1020,13 +1061,15 @@ class _AddFlightPageState extends State<AddFlightPage> {
                               ],
                               controller: _dayToController,
                               style: TextStyle(color: Colors.white),
-                              decoration:
-                                  customInputDecoration('Day Takeoffs').copyWith(
+                              decoration: customInputDecoration('Day Takeoffs')
+                                  .copyWith(
                                 suffixIcon: IconButton(
-                                  icon: Icon(Icons.add, color: Colors.deepOrange),
+                                  icon:
+                                      Icon(Icons.add, color: Colors.deepOrange),
                                   onPressed: () {
                                     int currentValue =
-                                        int.tryParse(_dayToController.text) ?? 0;
+                                        int.tryParse(_dayToController.text) ??
+                                            0;
                                     _dayToController.text =
                                         (currentValue + 1).toString();
                                     _dayLdgController.text =
@@ -1046,13 +1089,15 @@ class _AddFlightPageState extends State<AddFlightPage> {
                               ],
                               controller: _dayLdgController,
                               style: TextStyle(color: Colors.white),
-                              decoration:
-                                  customInputDecoration('Day Landings').copyWith(
+                              decoration: customInputDecoration('Day Landings')
+                                  .copyWith(
                                 suffixIcon: IconButton(
-                                  icon: Icon(Icons.add, color: Colors.deepOrange),
+                                  icon:
+                                      Icon(Icons.add, color: Colors.deepOrange),
                                   onPressed: () {
                                     int currentValue =
-                                        int.tryParse(_dayLdgController.text) ?? 0;
+                                        int.tryParse(_dayLdgController.text) ??
+                                            0;
                                     _dayLdgController.text =
                                         (currentValue + 1).toString();
                                     _dayToController.text =
@@ -1073,12 +1118,15 @@ class _AddFlightPageState extends State<AddFlightPage> {
                               controller: _nightToController,
                               style: TextStyle(color: Colors.white),
                               decoration:
-                                  customInputDecoration('Night Takeoffs').copyWith(
+                                  customInputDecoration('Night Takeoffs')
+                                      .copyWith(
                                 suffixIcon: IconButton(
-                                  icon: Icon(Icons.add, color: Colors.deepOrange),
+                                  icon:
+                                      Icon(Icons.add, color: Colors.deepOrange),
                                   onPressed: () {
                                     int currentValue =
-                                        int.tryParse(_nightToController.text) ?? 0;
+                                        int.tryParse(_nightToController.text) ??
+                                            0;
                                     _nightToController.text =
                                         (currentValue + 1).toString();
                                     _nightLdgController.text =
@@ -1099,12 +1147,15 @@ class _AddFlightPageState extends State<AddFlightPage> {
                               controller: _nightLdgController,
                               style: TextStyle(color: Colors.white),
                               decoration:
-                                  customInputDecoration('Night Landings').copyWith(
+                                  customInputDecoration('Night Landings')
+                                      .copyWith(
                                 suffixIcon: IconButton(
-                                  icon: Icon(Icons.add, color: Colors.deepOrange),
+                                  icon:
+                                      Icon(Icons.add, color: Colors.deepOrange),
                                   onPressed: () {
-                                    int currentValue =
-                                        int.tryParse(_nightLdgController.text) ?? 0;
+                                    int currentValue = int.tryParse(
+                                            _nightLdgController.text) ??
+                                        0;
                                     _nightLdgController.text =
                                         (currentValue + 1).toString();
                                     _nightToController.text =
@@ -1209,18 +1260,8 @@ class _AddFlightPageState extends State<AddFlightPage> {
               ),
             ),
           ),
-            // ILL ADD LATER (MAYBE)
-            /*            Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                          child: GoogleAds.getBannerAdWidget(),
-                        ),
-                      ),*/
         ],
       ),
     );
   }
 }
-// 1064 kod vardı

@@ -93,34 +93,37 @@ class _AnalyzePageState extends State<AnalyzePage> {
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: ListView(
-                    //  padding: EdgeInsets.only(bottom: 48), // Reklamın yeri için alt boşluk bırakır
                       children: [
-                        buildSummaryCard('Total Flight Hours', totalHours, totalHours),
-                        buildSummaryCard('Total Night Time', totalNightTime, totalHours),
+                        buildSummaryCard(
+                            'Total Flight Hours', totalHours, totalHours),
+                        buildSummaryCard(
+                            'Total Night Time', totalNightTime, totalHours),
                         buildSummaryCard('Total PIC', totalPIC, totalHours),
-                        buildSummaryCard('Total Dual Received', totalDualReceived, totalHours),
+                        buildSummaryCard('Total Dual Received',
+                            totalDualReceived, totalHours),
                         buildSummaryCard('Total Solo', totalSolo, totalHours),
                         buildSummaryCard('Total XC', totalXC, totalHours),
-                        buildSummaryCard('Total Simulated Instrument', totalSimInst, totalHours),
-                        buildSummaryCard('Total Actual Instrument', totalActualInst, totalHours),
-                        buildSummaryCard('Total Simulator', totalSimulator, totalHours),
-                        buildSummaryCard('Total Ground Time', totalGround, totalHours),
-                        buildSummaryCardInt('Total Instrument Approach', totalInstrumentApproach),
-                        buildSummaryCardInt('Total Day Takeoffs', totalDayTakeoffs),
-                        buildSummaryCardInt('Total Day Landings', totalDayLandings),
-                        buildSummaryCardInt('Total Night Takeoffs', totalNightTakeoffs),
-                        buildSummaryCardInt('Total Night Landings', totalNightLandings),
+                        buildSummaryCard('Total Simulated Instrument',
+                            totalSimInst, totalHours),
+                        buildSummaryCard('Total Actual Instrument',
+                            totalActualInst, totalHours),
+                        buildSummaryCard(
+                            'Total Simulator', totalSimulator, totalHours),
+                        buildSummaryCard(
+                            'Total Ground Time', totalGround, totalHours),
+                        buildSummaryCardInt('Total Instrument Approach',
+                            totalInstrumentApproach),
+                        buildSummaryCardInt(
+                            'Total Day Takeoffs', totalDayTakeoffs),
+                        buildSummaryCardInt(
+                            'Total Day Landings', totalDayLandings),
+                        buildSummaryCardInt(
+                            'Total Night Takeoffs', totalNightTakeoffs),
+                        buildSummaryCardInt(
+                            'Total Night Landings', totalNightLandings),
                       ],
                     ),
                   ),
-/*                   Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      child: GoogleAds.getBannerAdWidget(),
-                    ),
-                  ),*/
                 ]);
               },
             ),
@@ -179,8 +182,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
                             ? _dateFormat.format(_startDate!)
                             : 'All Entries',
                         style: TextStyle(
-                          color: AppTheme.TextColorWhite,
-                        ),
+                            color: AppTheme.TextColorWhite, fontSize: 20),
                       ),
                     ),
                   ),
@@ -225,8 +227,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
                             ? _dateFormat.format(_endDate!)
                             : 'All Entries',
                         style: TextStyle(
-                          color: AppTheme.TextColorWhite,
-                        ),
+                            color: AppTheme.TextColorWhite, fontSize: 20),
                       ),
                     ),
                   ),
@@ -347,7 +348,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
                 value: percentage,
                 borderRadius: BorderRadius.circular(8),
                 backgroundColor: AppTheme.BackgroundColor,
-                color: Colors.deepPurpleAccent,
+                color: AppTheme.PrimaryColor,
               ),
             ),
           ],
