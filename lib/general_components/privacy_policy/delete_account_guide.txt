@@ -1,0 +1,3 @@
+To delete your account within the app, please follow these steps:
+1. Go to the settings menu in the app.
+2. Select the "Delete Account" option and complete the required steps.
