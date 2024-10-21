@@ -52,16 +52,15 @@ class _SetLocationPageState extends State<SetLocationPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  padding: const EdgeInsets.only(left: 8, right: 8, bottom: 16),
                   child: Text(
                     'To see the weather conditions in the area you are flying in, you need to enter a region name, country name, or city name.',
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
-                SizedBox(height: 16),
                 Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
+                    border: Border.all(color: Colors.transparent),
                     borderRadius: BorderRadius.circular(8),
                     color: AppTheme.AccentColor,
                   ),

@@ -142,6 +142,8 @@ class _AddFavoriteAircraftPageState extends State<AddFavoriteAircraftPage> {
                         child: Chip(
                           deleteIconColor: AppTheme.TextColorWhite,
                           backgroundColor: AppTheme.AccentColor,
+                          shape: RoundedRectangleBorder(side: BorderSide(color: Colors.transparent),
+                          borderRadius: BorderRadius.circular(16)),
                           label: Text(
                             type,
                             style: TextStyle(color: AppTheme.TextColorWhite),

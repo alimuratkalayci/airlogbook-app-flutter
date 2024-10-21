@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Welcome to Air Logbook',
+                            'Welcome to Air Logbook'.toUpperCase(),
                             style: TextStyle(
                               color: AppTheme.TextColorBlack,
                               fontSize: 16,

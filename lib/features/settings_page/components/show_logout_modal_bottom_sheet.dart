@@ -1,28 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../../../theme/theme.dart';
-import '../../login_pages/sign_in_page/sign_in_page.dart';
-
 
 Future<String?> showLogoutConfirmationBottomSheet(BuildContext context) {
   return showMaterialModalBottomSheet<String?>(
     context: context,
-    backgroundColor: Colors.transparent, // Modal arka plan rengini siyah yap
+    backgroundColor: Colors.transparent,
     builder: (context) {
+
+      final screenWidth = MediaQuery.of(context).size.width;
+      final screenHeight = MediaQuery.of(context).size.height;
+
+
+      final notchWidth = screenWidth * 0.20;
+      final notchHeight = screenHeight * 0.005;
+
       return Container(
         padding: EdgeInsets.all(16.0),
         decoration: BoxDecoration(
-          color: AppTheme.BackgroundColor, // Modal içeriği rengini beyaz yap
+          color: AppTheme.BackgroundColor,
           borderRadius: BorderRadius.vertical(
-            top: Radius.circular(16.0), // Üst köşeleri yuvarlat
+            top: Radius.circular(16.0),
           ),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            SizedBox(
-              height: 16,
+
+            Center(
+              child: Container(
+                width: notchWidth,
+                height: notchHeight,
+                decoration: BoxDecoration(
+                  color: Colors.black45,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
             ),
+            SizedBox(height: 16),
             Text(
               'Are you sure you want to logout?',
               style: TextStyle(
@@ -59,7 +74,7 @@ Future<String?> showLogoutConfirmationBottomSheet(BuildContext context) {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pop(); // 'No' butonuna basıldığında modalı kapat
+                      Navigator.of(context).pop();
                     },
                     child: Text(
                       'No',

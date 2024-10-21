@@ -122,11 +122,10 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       backgroundColor: AppTheme.BackgroundColor,
       appBar: AppBar(
-        iconTheme: IconThemeData(color: AppTheme.TextColorWhite),
         backgroundColor: AppTheme.AccentColor,
+        foregroundColor: AppTheme.TextColorWhite,
         title: Text(
           'Sign Up',
-          style: TextStyle(color: AppTheme.TextColorWhite),
         ),
       ),
       body: SingleChildScrollView(
@@ -136,7 +135,6 @@ class _SignUpPageState extends State<SignUpPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextField(
-                style: TextStyle(color: AppTheme.AccentColor),
                 controller: usernameController,
                 decoration: InputDecoration(
                   labelText: 'Username',

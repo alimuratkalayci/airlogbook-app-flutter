@@ -90,7 +90,6 @@ class _SignInPageState extends State<SignInPage> {
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                 ),
-                style: TextStyle(color: Color(0xff28397f)),
                 cursorColor: Color(0xff28397f),
                 onChanged: (value) {
                   setState(() {
@@ -138,7 +137,6 @@ class _SignInPageState extends State<SignInPage> {
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                 ),
-                style: TextStyle(color: Color(0xff28397f)),
                 cursorColor: Color(0xff28397f),
                 obscureText: true,
                 onChanged: (value) {

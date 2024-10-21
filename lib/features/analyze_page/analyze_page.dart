@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
 
-import '../../general_components/google_ads/google_ads.dart';
 
 class AnalyzePage extends StatefulWidget {
   @override
@@ -44,7 +43,12 @@ class _AnalyzePageState extends State<AnalyzePage> {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 }
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Center(child: Text('No flight data available'));
+                  return Center(child: Text('No flight data available',
+                    style: TextStyle(
+                      color: AppTheme.AccentColor,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),));
                 }
 
                 var flights = snapshot.data!.docs;
@@ -196,9 +200,9 @@ class _AnalyzePageState extends State<AnalyzePage> {
                   onTap: () => _pickDate(context, false),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: AppTheme.AccentColor, // Arka plan rengi
+                      color: AppTheme.AccentColor,
                       borderRadius: BorderRadius.circular(
-                          16.0), // Kenarların yuvarlatılması
+                          16.0),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black26,

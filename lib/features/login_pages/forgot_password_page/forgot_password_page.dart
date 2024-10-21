@@ -1,3 +1,4 @@
+import 'package:coin_go/theme/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../components/sign_in_out_operations.dart';
@@ -66,7 +67,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.BackgroundColor,
       appBar: AppBar(
+        backgroundColor: AppTheme.AccentColor,
+        foregroundColor: AppTheme.TextColorWhite,
         title: Text('Forgot Password'),
       ),
       body: Padding(
@@ -74,19 +78,58 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: Text('You can reset your password using the password reset link sent to your email.'),
+            ),
             TextField(
               controller: emailController,
               decoration: InputDecoration(
                 labelText: 'E-mail',
+                labelStyle: TextStyle(color: AppTheme.AccentColor),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color: AppTheme.AccentColor,
+                    width: 2.0,
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color: AppTheme.AccentColor,
+                    width: 2.0,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color: AppTheme.AccentColor,
+                    width: 2.0,
+                  ),
+                ),
+                contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
               ),
               keyboardType: TextInputType.emailAddress,
             ),
             SizedBox(height: 16),
-            _isProcessing
-                ? CircularProgressIndicator()
-                : ElevatedButton(
-              onPressed: _resetPassword,
-              child: Text('Send Reset Link'),
+            Row(
+              children: [
+                _isProcessing
+                    ? CircularProgressIndicator()
+                    : Expanded(
+                      child: ElevatedButton(
+                                        onPressed: _resetPassword,
+                                        child: Text('Send Reset Link',style: TextStyle(color: AppTheme.TextColorWhite),),
+                                        style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.AccentColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                                        ),
+                                      ),
+                    ),
+              ],
             ),
           ],
         ),

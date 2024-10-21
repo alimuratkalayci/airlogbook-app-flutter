@@ -127,6 +127,7 @@ class _FeedbackAndSupportPageState extends State<FeedbackAndSupportPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppTheme.BackgroundColor,
       appBar: AppBar(
         backgroundColor: AppTheme.AccentColor,
         foregroundColor: AppTheme.TextColorWhite,
@@ -140,16 +141,15 @@ class _FeedbackAndSupportPageState extends State<FeedbackAndSupportPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  padding: const EdgeInsets.only(left: 8, right: 8, bottom: 16),
                   child: Text(
                     'We value your feedback! If you have any questions, suggestions, or issues, please let us know by sending us a message below.',
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
-                SizedBox(height: 16),
                 Container(
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
+                    border: Border.all(color: Colors.transparent),
                     borderRadius: BorderRadius.circular(8),
                     color: AppTheme.AccentColor,
                   ),
@@ -164,7 +164,7 @@ class _FeedbackAndSupportPageState extends State<FeedbackAndSupportPage> {
                             style: TextStyle(color: AppTheme.TextColorWhite),
                             decoration: customInputDecoration('Name (optional)'),
                           ),
-                          SizedBox(height: 16),
+                          SizedBox(height: 8),
                           TextFormField(
                             controller: _messageController,
                             style: TextStyle(color: AppTheme.TextColorWhite),

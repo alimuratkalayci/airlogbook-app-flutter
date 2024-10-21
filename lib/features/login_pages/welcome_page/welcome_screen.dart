@@ -17,13 +17,13 @@ class WelcomeScreen extends StatelessWidget {
         child: Column(
           children: [
             SizedBox(height: 64,),
-            Flexible(
-              flex: 2,
+            Expanded(
+              flex: 64,
               child: Lottie.network(
                 'https://lottie.host/20f33894-3c18-41e9-97b3-b7f67b2d192d/haVgTZj3TT.json', // Lottie animation URL
                 width: screenWidth * 1,
                 height: screenHeight * 1,
-                fit: BoxFit.cover,
+                fit: BoxFit.contain,
               ),
             ),
             const Spacer(flex: 10),
@@ -38,7 +38,7 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const Spacer(),
+            const Spacer(flex: 8),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
               child: Text(
@@ -53,7 +53,7 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const Spacer(flex: 2),
+            const Spacer(flex: 8),
             FittedBox(
               child: TextButton(
                 onPressed: () => Navigator.push(
@@ -80,7 +80,7 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const Spacer(flex: 1),
+            const Spacer(flex: 8),
           ],
         ),
       ),

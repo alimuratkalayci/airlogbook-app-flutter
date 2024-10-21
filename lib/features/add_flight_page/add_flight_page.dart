@@ -339,7 +339,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                           left: 8, right: 8, top: 8, bottom: 8),
                       child: Container(
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
+                          border: Border.all(color: Colors.transparent),
                           borderRadius: BorderRadius.circular(16),
                           color: AppTheme.AccentColor,
                         ),
@@ -455,6 +455,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                                                         horizontal: 16.0,
                                                         vertical: 12.0),
                                               ),
+                                              icon: Icon(Icons.airplanemode_active),
                                               hint: Text(
                                                 'Aircraft Types',
                                                 style: TextStyle(
@@ -490,7 +491,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 8),
+                            SizedBox(height: 16),
                             TextFormField(
                               controller: _airCraftController,
                               decoration: customInputDecoration('Aircraft ID'),
@@ -595,7 +596,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
+                          border: Border.all(color: Colors.transparent),
                           borderRadius: BorderRadius.circular(16),
                           color: AppTheme.AccentColor,
                         ),
@@ -1017,7 +1018,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                                       .copyWith(
                                 suffixIcon: IconButton(
                                   icon:
-                                      Icon(Icons.add, color: Colors.deepOrange),
+                                  Icon(Icons.add, color: Colors.green,size: 30,),
                                   onPressed: () {
                                     int currentValue = int.tryParse(
                                             _instrumentApproachController
@@ -1040,7 +1041,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
+                          border: Border.all(color: Colors.transparent),
                           borderRadius: BorderRadius.circular(16),
                           color: AppTheme.AccentColor,
                         ),
@@ -1065,7 +1066,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                                   .copyWith(
                                 suffixIcon: IconButton(
                                   icon:
-                                      Icon(Icons.add, color: Colors.deepOrange),
+                                  Icon(Icons.add, color: Colors.green,size: 30,),
                                   onPressed: () {
                                     int currentValue =
                                         int.tryParse(_dayToController.text) ??
@@ -1093,7 +1094,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                                   .copyWith(
                                 suffixIcon: IconButton(
                                   icon:
-                                      Icon(Icons.add, color: Colors.deepOrange),
+                                  Icon(Icons.add, color: Colors.green,size: 30,),
                                   onPressed: () {
                                     int currentValue =
                                         int.tryParse(_dayLdgController.text) ??
@@ -1122,7 +1123,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                                       .copyWith(
                                 suffixIcon: IconButton(
                                   icon:
-                                      Icon(Icons.add, color: Colors.deepOrange),
+                                  Icon(Icons.add, color: Colors.green,size: 30,),
                                   onPressed: () {
                                     int currentValue =
                                         int.tryParse(_nightToController.text) ??
@@ -1151,7 +1152,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                                       .copyWith(
                                 suffixIcon: IconButton(
                                   icon:
-                                      Icon(Icons.add, color: Colors.deepOrange),
+                                      Icon(Icons.add, color: Colors.green,size: 30,),
                                   onPressed: () {
                                     int currentValue = int.tryParse(
                                             _nightLdgController.text) ??
@@ -1175,7 +1176,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
+                          border: Border.all(color: Colors.transparent),
                           borderRadius: BorderRadius.circular(16),
                           color: AppTheme.AccentColor,
                         ),

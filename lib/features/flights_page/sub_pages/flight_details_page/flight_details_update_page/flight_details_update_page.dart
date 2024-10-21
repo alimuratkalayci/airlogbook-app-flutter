@@ -54,10 +54,10 @@ class _FlightDetailsUpdatePageState extends State<FlightDetailsUpdatePage> {
                     children: [
                       buildNonEditableCard('Date', 'date'),
                       buildNonEditableCard('Aircraft Type', 'aircraft_type'),
-                      buildEditableCard('Aircraft ID', 'aircraft_id'),
-                      buildEditableCard('Departure Airport', 'departure_airport'),
-                      buildEditableCard('Route', 'route'),
-                      buildEditableCard('Arrival Airport', 'arrival_airport'),
+                      buildEditableCardWords('Aircraft ID', 'aircraft_id'),
+                      buildEditableCardWords('Departure Airport', 'departure_airport'),
+                      buildEditableCardWords('Route', 'route'),
+                      buildEditableCardWords('Arrival Airport', 'arrival_airport'),
                       buildEditableCard('Hobbs In', 'hobbs_in', isDouble: true),
                       buildEditableCard('Hobbs Out', 'hobbs_out', isDouble: true),
                       buildEditableCard('Total Time', 'total_time', isDouble: true),
@@ -107,6 +107,41 @@ class _FlightDetailsUpdatePageState extends State<FlightDetailsUpdatePage> {
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget buildEditableCardWords(String title, String field, {bool isDouble = false, bool isInt = false}) {
+    return Card(
+      color: AppTheme.AccentColor,
+      margin: EdgeInsets.symmetric(vertical: 8.0),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: TextFormField(
+          style: TextStyle(color: AppTheme.TextColorWhite),
+          initialValue: flightData[field] != null ? flightData[field].toString() : '',
+          decoration: InputDecoration(
+            labelText: title,
+            labelStyle: TextStyle(fontWeight: FontWeight.bold,color: AppTheme.TextColorWhite),
+          ),
+          onChanged: (newValue) {
+            if (isDouble) {
+              flightData[field] = double.tryParse(newValue);
+            } else if (isInt) {
+              flightData[field] = int.tryParse(newValue);
+            } else {
+              flightData[field] = newValue;
+            }
+          },
+          validator: (value) {
+            if (isDouble) {
+              return double.tryParse(value ?? '') != null ? null : 'Enter a valid number';
+            } else if (isInt) {
+              return int.tryParse(value ?? '') != null ? null : 'Enter a valid integer';
+            }
+            return null;
+          },
+        ),
       ),
     );
   }
