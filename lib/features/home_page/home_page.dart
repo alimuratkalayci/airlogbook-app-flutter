@@ -104,8 +104,8 @@ class _HomePageState extends State<HomePage> {
                   if (userName != null) ...[
                     SizedBox(height: 8),
                     Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
                         children: [
                           Text(
                             'Welcome to Air Logbook'.toUpperCase(),
@@ -124,7 +124,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
-                    ),
+                    )
+
                   ],
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),

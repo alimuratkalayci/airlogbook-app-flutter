@@ -3,7 +3,6 @@ import 'package:coin_go/features/flights_page/sub_pages/flight_details_page/flig
 import 'package:coin_go/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../general_components/google_ads/google_ads.dart';
 import 'components/show_detele_modal_bottom_sheet.dart';
 import 'flights_cubit.dart';
 import 'flights_state.dart';
@@ -49,7 +48,7 @@ class _FlightsPageState extends State<FlightsPage> {
                   );
                 }
                 return ListView.builder(
-               //   padding: EdgeInsets.only(bottom: 56), // Alttaki reklam için
+                  padding: EdgeInsets.only(top: 10),
                   itemCount: flights.length,
                   itemBuilder: (context, index) {
                     var flight = flights[index];
@@ -88,14 +87,6 @@ class _FlightsPageState extends State<FlightsPage> {
               return Container();
             },
           ),
-/*           Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              child: GoogleAds.getBannerAdWidget(),
-            ),
-          ),*/
         ],
       ),
     );

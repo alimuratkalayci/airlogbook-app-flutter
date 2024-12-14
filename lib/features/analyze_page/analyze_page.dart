@@ -72,21 +72,16 @@ class _AnalyzePageState extends State<AnalyzePage> {
                   var data = flight.data() as Map<String, dynamic>;
 
                   totalHours += (data['total_time'] as num?)?.toDouble() ?? 0.0;
-                  totalNightTime +=
-                      (data['night_time'] as num?)?.toDouble() ?? 0.0;
+                  totalNightTime += (data['night_time'] as num?)?.toDouble() ?? 0.0;
                   totalPIC += (data['pic'] as num?)?.toDouble() ?? 0.0;
-                  totalDualReceived +=
-                      (data['dual_rcvd'] as num?)?.toDouble() ?? 0.0;
+                  totalDualReceived += (data['dual_rcvd'] as num?)?.toDouble() ?? 0.0;
                   totalSolo += (data['solo'] as num?)?.toDouble() ?? 0.0;
                   totalXC += (data['xc'] as num?)?.toDouble() ?? 0.0;
                   totalSimInst += (data['sim_inst'] as num?)?.toDouble() ?? 0.0;
-                  totalActualInst +=
-                      (data['actual_inst'] as num?)?.toDouble() ?? 0.0;
-                  totalSimulator +=
-                      (data['simulator'] as num?)?.toDouble() ?? 0.0;
+                  totalActualInst += (data['actual_inst'] as num?)?.toDouble() ?? 0.0;
+                  totalSimulator += (data['simulator'] as num?)?.toDouble() ?? 0.0;
                   totalGround += (data['ground'] as num?)?.toDouble() ?? 0.0;
-                  totalInstrumentApproach +=
-                      (data['instrument_approach'] as int?) ?? 0;
+                  totalInstrumentApproach += (data['instrument_approach'] as int?) ?? 0;
                   totalDayTakeoffs += (data['day_to'] as int?) ?? 0;
                   totalDayLandings += (data['day_ldg'] as int?) ?? 0;
                   totalNightTakeoffs += (data['night_to'] as int?) ?? 0;
@@ -95,7 +90,7 @@ class _AnalyzePageState extends State<AnalyzePage> {
 
                 return Stack(children: [
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.only(left: 16,right: 16,top: 8),
                     child: ListView(
                       children: [
                         buildSummaryCard(

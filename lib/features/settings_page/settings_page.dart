@@ -44,25 +44,6 @@ class _SettingPageState extends State<SettingPage> {
                       children: [
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {},
-                            child: Text(
-                              'Profile',
-                              style: TextStyle(color: AppTheme.TextColorWhite),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppTheme.AccentColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
                             onPressed: () {
                               Navigator.push(
                                 context,
@@ -233,15 +214,6 @@ class _SettingPageState extends State<SettingPage> {
               ],
             ),
           ),
-/*           Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              color: AppTheme.BackgroundColor,
-              child: GoogleAds.getBannerAdWidget(),
-            ),
-          ),*/
         ],
       ),
     );

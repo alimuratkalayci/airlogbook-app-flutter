@@ -104,12 +104,11 @@ class FlightCard extends StatelessWidget {
               Expanded(
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(height: 24,),
                         Text('$departure'),
 
                       ],
@@ -127,7 +126,6 @@ class FlightCard extends StatelessWidget {
                     ),
                     Column(
                       children: [
-                        SizedBox(height: 24,),
                         Text('$arrival'),
                       ],
                     )

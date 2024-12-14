@@ -1,4 +1,4 @@
-package com.example.coin_go
+package com.piesoft.airlogbook
 
 import io.flutter.embedding.android.FlutterActivity
 

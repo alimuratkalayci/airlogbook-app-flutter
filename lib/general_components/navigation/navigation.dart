@@ -8,7 +8,6 @@ import 'package:coin_go/features/home_page/home_page.dart';
 import 'package:coin_go/features/settings_page/settings_page.dart';
 import 'package:coin_go/theme/theme.dart';
 import '../../features/announcement_page/announcement_page.dart';
-import '../google_ads/google_ads.dart';
 import 'navigation_cubit.dart';
 import 'navigation_state.dart';
 
@@ -73,9 +72,6 @@ class RootScreenUI extends StatelessWidget {
           bottomNavigationBar: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Google Ads banner
-              GoogleAds.getBannerAdWidget(),
-              // Navigation Bar
               Container(
                 color: AppTheme.BackgroundColor,
                 child: Padding(

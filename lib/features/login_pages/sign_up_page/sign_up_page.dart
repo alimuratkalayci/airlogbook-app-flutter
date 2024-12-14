@@ -49,6 +49,7 @@ class _SignUpPageState extends State<SignUpPage> {
           'email': emailController.text,
           'admin': 'no',
           'favorite_types': [],
+          'subscription': 'no'
         });
 
         Navigator.pushAndRemoveUntil(
