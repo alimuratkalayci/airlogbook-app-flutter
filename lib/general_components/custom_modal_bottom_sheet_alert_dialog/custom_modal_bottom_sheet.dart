@@ -17,14 +17,32 @@ Future<void> showCustomModal({
       ),
     ),
     builder: (BuildContext context) {
+      final screenWidth = MediaQuery.of(context).size.width;
+      final screenHeight = MediaQuery.of(context).size.height;
+
+      final notchWidth = screenWidth * 0.20; // Çentiğin genişliği
+      final notchHeight = screenHeight * 0.005; // Çentiğin yüksekliği
+
       return Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // iPhone çentiği
+            Center(
+              child: Container(
+                width: notchWidth,
+                height: notchHeight,
+                decoration: BoxDecoration(
+                  color: Colors.black45,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+            ),
+            SizedBox(height: 16),
             Padding(
-              padding: const EdgeInsets.only(top: 16,bottom: 16,left: 8,right: 8),
+              padding: const EdgeInsets.only(top: 0,bottom: 16,left: 8,right: 8),
               child: Text(
                 title,
                 style: TextStyle(
