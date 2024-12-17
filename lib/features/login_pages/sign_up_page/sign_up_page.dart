@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../../general_components/custom_modal_bottom_sheet_alert_dialog/custom_modal_bottom_sheet.dart';
 import '../../../theme/theme.dart';
 import '../sign_in_page/sign_in_page.dart';
 
@@ -58,14 +59,12 @@ class _SignUpPageState extends State<SignUpPage> {
               (route) => false,
         );
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Your registration is completed!',
-              style: TextStyle(color: Colors.green),
-            ),
-          ),
+        showCustomModal(
+          context: context,
+          title: 'Registration Completed',
+          message: 'Your registration is completed!',
         );
+
       } catch (e) {
         String errorMessage = 'An error occurred during registration.';
         if (e is FirebaseAuthException) {
@@ -77,15 +76,12 @@ class _SignUpPageState extends State<SignUpPage> {
             errorMessage = 'The email address is invalid.';
           }
         }
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              errorMessage,
-              style: TextStyle(color: Colors.red),
-            ),
-          ),
+        showCustomModal(
+          context: context,
+          title: 'Error',
+          message: errorMessage,
         );
+
       } finally {
         setState(() {
           _isProcessing = false;

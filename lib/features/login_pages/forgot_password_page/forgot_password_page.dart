@@ -1,6 +1,7 @@
 import 'package:coin_go/theme/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../../general_components/custom_modal_bottom_sheet_alert_dialog/custom_modal_bottom_sheet.dart';
 import '../components/sign_in_out_operations.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
@@ -23,16 +24,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     try {
       await _authService.resetPassword(emailController.text.trim());
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'Password reset email has been sent!',
-            style: TextStyle(color: Colors.green),
-          ),
-        ),
+      showCustomModal(
+          context: context,
+          title: 'Success',
+          message: 'Password reset email has been sent!',
       );
 
-      Navigator.pop(context); // Kullanıcıyı geri yönlendirin
     } catch (e) {
       String errorMessage = 'An error occurred. Please try again.';
       if (e is FirebaseAuthException) {
@@ -43,13 +40,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         }
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            errorMessage,
-            style: TextStyle(color: Colors.red),
-          ),
-        ),
+      showCustomModal(context: context,
+          title: 'Error',
+          message: errorMessage
       );
     } finally {
       setState(() {

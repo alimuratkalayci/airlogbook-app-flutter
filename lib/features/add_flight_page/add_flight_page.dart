@@ -25,7 +25,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import '../../general_components/general_alert_dialog/general_alert_dialog.dart';
+import '../../general_components/custom_modal_bottom_sheet_alert_dialog/custom_modal_bottom_sheet.dart';
 import '../../theme/theme.dart';
 
 class AddFlightPage extends StatefulWidget {
@@ -121,9 +121,12 @@ class _AddFlightPageState extends State<AddFlightPage> {
     final User? currentUser = auth.currentUser;
 
     if (currentUser == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('No user logged in')),
+      showCustomModal(
+        context: context,
+        title: 'No User Logged In',
+        message: 'There is no user currently logged in.',
       );
+
       return;
     }
 
@@ -223,7 +226,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
           .collection('my_flights')
           .add(flightRecord);
 
-      GeneralAlertDialog.show(context, "Flight record saved");
+      showCustomModal(context: context, title: 'Success', message: 'Flight record saved');
 
       _formKey.currentState?.reset();
       _dateController.clear();
@@ -250,9 +253,12 @@ class _AddFlightPageState extends State<AddFlightPage> {
       _nightLdgController.clear();
       _remarksController.clear();
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error adding flight record: $e')),
+      showCustomModal(
+        context: context,
+        title: 'Something Went Wrong',
+        message: 'We encountered an error while adding the flight record: $e',
       );
+
     }
   }
 

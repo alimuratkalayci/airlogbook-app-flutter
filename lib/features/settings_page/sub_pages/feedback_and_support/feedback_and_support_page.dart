@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:coin_go/theme/theme.dart';
-import 'package:intl/intl.dart'; // Tarih formatlama için gerekli
+import 'package:intl/intl.dart';
+
+import '../../../../general_components/custom_modal_bottom_sheet_alert_dialog/custom_modal_bottom_sheet.dart'; // Tarih formatlama için gerekli
 
 class FeedbackAndSupportPage extends StatefulWidget {
   @override
@@ -78,17 +80,20 @@ class _FeedbackAndSupportPageState extends State<FeedbackAndSupportPage> {
             .get();
 
         if (feedbackSnapshot.docs.isNotEmpty) {
-          Timestamp lastFeedbackTimestamp = feedbackSnapshot.docs.first['timestamp'];
+          Timestamp lastFeedbackTimestamp =
+              feedbackSnapshot.docs.first['timestamp'];
           DateTime lastFeedbackDate = lastFeedbackTimestamp.toDate();
-          String lastFeedbackDay = DateFormat('yyyy-MM-dd').format(lastFeedbackDate);
+          String lastFeedbackDay =
+              DateFormat('yyyy-MM-dd').format(lastFeedbackDate);
 
           // Eğer son geri bildirim tarihi bugüne eşitse kullanıcıya uyarı ver
           if (lastFeedbackDay == today) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('You can only send feedback once per day.')),
-            );
+            showCustomModal(
+                context: context,
+                title: 'Warning',
+                message: 'You can only send feedback once per day.');
             setState(() {
-              isLoading = false; // Yüklenme simgesini gizle
+              isLoading = false;
             });
             return;
           }
@@ -105,16 +110,19 @@ class _FeedbackAndSupportPageState extends State<FeedbackAndSupportPage> {
 
         await _firestore.collection('feedback').add(feedbackData);
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Thank you for your feedback!')),
-        );
+        showCustomModal(
+            context: context,
+            title: 'Feedback Submitted',
+            message: 'Your input helps us improve. Thank you!');
 
         // Formu temizle
         _nameController.clear();
         _messageController.clear();
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to send feedback: $e')),
+        showCustomModal(
+          context: context,
+          title: 'Oops, Something Went Wrong',
+          message: 'There was an issue submitting your feedback. Please try again later.',
         );
       } finally {
         setState(() {
@@ -162,13 +170,15 @@ class _FeedbackAndSupportPageState extends State<FeedbackAndSupportPage> {
                           TextFormField(
                             controller: _nameController,
                             style: TextStyle(color: AppTheme.TextColorWhite),
-                            decoration: customInputDecoration('Name (optional)'),
+                            decoration:
+                                customInputDecoration('Name (optional)'),
                           ),
                           SizedBox(height: 8),
                           TextFormField(
                             controller: _messageController,
                             style: TextStyle(color: AppTheme.TextColorWhite),
-                            decoration: customInputDecoration('Message (required)'),
+                            decoration:
+                                customInputDecoration('Message (required)'),
                             maxLines: 5,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -187,15 +197,19 @@ class _FeedbackAndSupportPageState extends State<FeedbackAndSupportPage> {
                   children: [
                     Expanded(
                       child: ElevatedButton(
-                        onPressed: isLoading ? null : _submitFeedback, // Eğer yükleniyorsa buton devre dışı
+                        onPressed: isLoading
+                            ? null
+                            : _submitFeedback, // Eğer yükleniyorsa buton devre dışı
                         child: isLoading
                             ? CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(AppTheme.TextColorWhite),
-                        ) // Yüklenme simgesi
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                    AppTheme.TextColorWhite),
+                              ) // Yüklenme simgesi
                             : Text(
-                          'Send Feedback',
-                          style: TextStyle(color: AppTheme.TextColorWhite),
-                        ),
+                                'Send Feedback',
+                                style:
+                                    TextStyle(color: AppTheme.TextColorWhite),
+                              ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppTheme.AccentColor,
                           shape: RoundedRectangleBorder(

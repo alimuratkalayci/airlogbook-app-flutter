@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
-
+import '../../../../../general_components/custom_modal_bottom_sheet_alert_dialog/custom_modal_bottom_sheet.dart';
 import '../../../../../theme/theme.dart';
 
 class FlightDetailsUpdatePage extends StatefulWidget {
@@ -238,18 +238,25 @@ class _FlightDetailsUpdatePageState extends State<FlightDetailsUpdatePage> {
           .update(flightData);
 
       // Başarıyla güncellendikten sonra başarı mesajı göster
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Flight details updated successfully!')),
-      );
+
+
 
       // Güncelleme işlemi başarılıysa 'updated' değeriyle geri dön
       Navigator.pop(context, 'updated');
+      showCustomModal(
+        context: context,
+        title: 'Success',
+        message: 'Your flight details have been updated successfully!',
+      );
     } catch (e) {
       // Hata durumunda kullanıcıya bilgi ver ve 'error' değeriyle geri dön
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to update flight details: $e')),
-      );
+
       Navigator.pop(context, 'error');
+      showCustomModal(
+        context: context,
+        title: 'Update Failed',
+        message: 'There was an issue updating the flight details. Failed to update flight details: $e',
+      );
     }
   }
 }

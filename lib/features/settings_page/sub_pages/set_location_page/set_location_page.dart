@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import '../../../../general_components/custom_modal_bottom_sheet_alert_dialog/custom_modal_bottom_sheet.dart';
 import '../../../../theme/theme.dart';
 
 class SetLocationPage extends StatefulWidget {
@@ -20,17 +20,22 @@ class _SetLocationPageState extends State<SetLocationPage> {
       if (user != null) {
         await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
           'location': location,
-        }, SetOptions(merge: true)); // Mevcut veriyi günceller
+        }, SetOptions(merge: true));
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Location saved successfully!')),
+        showCustomModal(
+          context: context,
+          title: 'Success',
+          message: 'Your location has been saved successfully!',
         );
+
 
         Navigator.pop(context);
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter a location')),
+      showCustomModal(
+        context: context,
+        title: 'Error',
+        message: 'Please enter a location!',
       );
     }
   }

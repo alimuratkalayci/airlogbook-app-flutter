@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import '../../../../general_components/custom_modal_bottom_sheet_alert_dialog/custom_modal_bottom_sheet.dart';
 import '../../../../theme/theme.dart';
 
 class ChangePasswordPage extends StatefulWidget {
@@ -18,14 +18,19 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     final newPassword = _newPasswordController.text;
 
     if (currentPassword.isEmpty || newPassword.isEmpty) {
-      _showError('Both fields are required');
+      showCustomModal(
+        context: context,
+        title: 'Requirements',
+        message: 'Both fields are required.',
+      );
       return;
     }
+
 
     User? user = _auth.currentUser;
 
     if (user == null) {
-      _showError('No user is currently logged in');
+      showCustomModal(context: context, title: 'Error', message: 'No user is currently logged in');
       return;
     }
 
@@ -41,10 +46,15 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       // Change password
       await user.updatePassword(newPassword);
 
-
-      _showSuccess('Password changed successfully');
+      showCustomModal(context: context, title: 'Success', message: 'Password changed successfully');
     } catch (e) {
-      _showError('Error changing password: ${e.toString()}');
+      showCustomModal(context: context, title: 'Error', message: 'Password changed successfully');
+
+      showCustomModal(
+        context: context,
+        title: 'Error Changing Password',
+        message: 'Error changing password: ${e.toString()}',
+      );
     }
   }
 
@@ -80,18 +90,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         ),
       ),
       contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-    );
-  }
-
-  void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: Colors.red),
-    );
-  }
-
-  void _showSuccess(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), backgroundColor: Colors.green),
     );
   }
 

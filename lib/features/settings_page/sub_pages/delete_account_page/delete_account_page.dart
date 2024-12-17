@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coin_go/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../../../general_components/custom_modal_bottom_sheet_alert_dialog/custom_modal_bottom_sheet.dart';
 import '../../../login_pages/welcome_page/welcome_screen.dart';
 
 class DeleteAccountPage extends StatefulWidget {
@@ -36,8 +37,10 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
       );
     } catch (e) {
       print('Account deletion failed: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to delete your account.')),
+      showCustomModal(
+        context: context,
+        title: 'Error',
+        message: 'Failed to delete your account.',
       );
     }
   }
