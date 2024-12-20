@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../../../theme/theme.dart';
-import '../sign_in_page/sign_in_page.dart';
+import '../sign_in_page/sign_in_up_page.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -59,7 +59,7 @@ class WelcomeScreen extends StatelessWidget {
                 onPressed: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SignInPage(),
+                    builder: (context) => SignInUpPage(),
                   ),
                 ),
                 child: Row(

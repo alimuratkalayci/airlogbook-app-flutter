@@ -2,7 +2,6 @@ import 'package:coin_go/theme/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../../general_components/custom_modal_bottom_sheet_alert_dialog/custom_modal_bottom_sheet.dart';
-import '../components/sign_in_out_operations.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({Key? key}) : super(key: key);
@@ -12,37 +11,44 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  final AuthService _authService = AuthService(); // AuthService örneği
   final TextEditingController emailController = TextEditingController();
   bool _isProcessing = false;
 
+
   void _resetPassword() async {
+    if (emailController.text.trim().isEmpty) {
+      showCustomModal(
+        context: context,
+        title: 'Error',
+        message: 'Please enter your email address!',
+      );
+      return;
+    }
+
     setState(() {
       _isProcessing = true;
     });
 
     try {
-      await _authService.resetPassword(emailController.text.trim());
-
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: emailController.text.trim());
       showCustomModal(
-          context: context,
-          title: 'Success',
-          message: 'Password reset email has been sent!',
+        context: context,
+        title: 'Success',
+        message: 'Password reset email has been sent!',
       );
-
-    } catch (e) {
+      emailController.clear();
+    } on FirebaseAuthException catch (e) {
       String errorMessage = 'An error occurred. Please try again.';
-      if (e is FirebaseAuthException) {
-        if (e.code == 'user-not-found') {
-          errorMessage = 'No user found with this email.';
-        } else if (e.code == 'invalid-email') {
-          errorMessage = 'The email address is invalid.';
-        }
+      if (e.code == 'user-not-found') {
+        errorMessage = 'No user found with this email.';
+      } else if (e.code == 'invalid-email') {
+        errorMessage = 'The email address is invalid.';
       }
-
-      showCustomModal(context: context,
-          title: 'Error',
-          message: errorMessage
+      showCustomModal(
+        context: context,
+        title: 'Error',
+        message: '$errorMessage',
       );
     } finally {
       setState(() {
@@ -50,7 +56,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       });
     }
   }
-
   @override
   void dispose() {
     emailController.dispose();
@@ -69,7 +74,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.only(bottom: 16),
@@ -109,7 +114,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             Row(
               children: [
                 _isProcessing
-                    ? CircularProgressIndicator()
+                    ? Center(child: CircularProgressIndicator())
                     : Expanded(
                       child: ElevatedButton(
                                         onPressed: _resetPassword,

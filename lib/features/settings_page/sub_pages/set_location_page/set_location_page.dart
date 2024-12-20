@@ -21,15 +21,12 @@ class _SetLocationPageState extends State<SetLocationPage> {
         await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
           'location': location,
         }, SetOptions(merge: true));
-
+        Navigator.pop(context);
         showCustomModal(
           context: context,
           title: 'Success',
           message: 'Your location has been saved successfully!',
         );
-
-
-        Navigator.pop(context);
       }
     } else {
       showCustomModal(
