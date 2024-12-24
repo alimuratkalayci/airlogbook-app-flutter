@@ -20,8 +20,8 @@ Future<void> showCustomModal({
       final screenWidth = MediaQuery.of(context).size.width;
       final screenHeight = MediaQuery.of(context).size.height;
 
-      final notchWidth = screenWidth * 0.20; // Çentiğin genişliği
-      final notchHeight = screenHeight * 0.005; // Çentiğin yüksekliği
+      final notchWidth = screenWidth * 0.20;
+      final notchHeight = screenHeight * 0.005;
 
       return Padding(
         padding: EdgeInsets.all(16.0),
@@ -29,7 +29,6 @@ Future<void> showCustomModal({
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // iPhone çentiği
             Center(
               child: Container(
                 width: notchWidth,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart'; // FilteringTextInputFormatter için gerekli
+import 'package:flutter/services.dart';
 import '../../../../theme/theme.dart';
 
 class TotalTimeTextField extends StatelessWidget {
@@ -29,7 +29,7 @@ class TotalTimeTextField extends StatelessWidget {
         onChanged(value);
       },
       validator: (value) {
-        return null; // Validasyon burada yapılabilir
+        return null;
       },
     );
   }

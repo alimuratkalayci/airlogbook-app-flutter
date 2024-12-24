@@ -53,7 +53,7 @@ Future<String?> showLogoutConfirmationBottomSheet(BuildContext context) {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pop('logged_out'); // 'signOuted' döndür
+                      Navigator.of(context).pop('logged_out');
                     },
                     child: Text(
                       'Yes',

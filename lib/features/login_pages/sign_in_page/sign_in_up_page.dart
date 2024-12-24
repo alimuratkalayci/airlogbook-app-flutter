@@ -346,7 +346,7 @@ class _SignInUpPageState extends State<SignInUpPage> {
           ),
           obscureText: true,
         ),
-        if (!passwordsMatch) // Show error message if passwords do not match
+        if (!passwordsMatch)
           Text(
             'Passwords do not match!',
             style: TextStyle(color: Colors.red),
@@ -388,13 +388,11 @@ class _SignInUpPageState extends State<SignInUpPage> {
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
-    // Giriş için kullanıcıdan bilgileri alırken eksik veya hatalı girişi kontrol et
     if (email.isEmpty || password.isEmpty) {
       showCustomModal(context: context, title: 'Error', message: "All fields are required.");
       return;
     }
 
-    // E-posta geçerliliğini kontrol et
     if (!RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$").hasMatch(email)) {
       showCustomModal(context: context, title: 'Error', message: "Please enter a valid e-mail address");
       return;

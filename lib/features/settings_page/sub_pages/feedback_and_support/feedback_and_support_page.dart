@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:coin_go/theme/theme.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../general_components/custom_modal_bottom_sheet_alert_dialog/custom_modal_bottom_sheet.dart'; // Tarih formatlama için gerekli
+import '../../../../general_components/custom_modal_bottom_sheet_alert_dialog/custom_modal_bottom_sheet.dart';
 
 class FeedbackAndSupportPage extends StatefulWidget {
   @override
@@ -15,9 +15,7 @@ class _FeedbackAndSupportPageState extends State<FeedbackAndSupportPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _messageController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool isLoading = false; // Yüklenme durumunu kontrol etmek için
-
-  // Firebase Firestore reference
+  bool isLoading = false;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -59,19 +57,16 @@ class _FeedbackAndSupportPageState extends State<FeedbackAndSupportPage> {
   Future<void> _submitFeedback() async {
     if (_formKey.currentState?.validate() ?? false) {
       setState(() {
-        isLoading = true; // Yüklenme simgesi gösterilsin
+        isLoading = true;
       });
 
       try {
-        // Kullanıcı bilgileri
         User? user = _auth.currentUser;
         String? userEmail = user?.email;
         String userId = user?.uid ?? '';
 
-        // Bugünün tarihini formatla
         String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-        // Kullanıcının en son geri bildirim gönderdiği tarihe bak
         final feedbackSnapshot = await _firestore
             .collection('feedback')
             .where('userId', isEqualTo: userId)
@@ -86,7 +81,6 @@ class _FeedbackAndSupportPageState extends State<FeedbackAndSupportPage> {
           String lastFeedbackDay =
               DateFormat('yyyy-MM-dd').format(lastFeedbackDate);
 
-          // Eğer son geri bildirim tarihi bugüne eşitse kullanıcıya uyarı ver
           if (lastFeedbackDay == today) {
             showCustomModal(
                 context: context,
@@ -99,7 +93,6 @@ class _FeedbackAndSupportPageState extends State<FeedbackAndSupportPage> {
           }
         }
 
-        // Geri bildirim gönderme işlemi
         final feedbackData = {
           'name': _nameController.text,
           'email': userEmail,
@@ -115,7 +108,6 @@ class _FeedbackAndSupportPageState extends State<FeedbackAndSupportPage> {
             title: 'Feedback Submitted',
             message: 'Your input helps us improve. Thank you!');
 
-        // Formu temizle
         _nameController.clear();
         _messageController.clear();
       } catch (e) {
@@ -126,7 +118,7 @@ class _FeedbackAndSupportPageState extends State<FeedbackAndSupportPage> {
         );
       } finally {
         setState(() {
-          isLoading = false; // Yüklenme simgesini gizle
+          isLoading = false;
         });
       }
     }
@@ -199,12 +191,12 @@ class _FeedbackAndSupportPageState extends State<FeedbackAndSupportPage> {
                       child: ElevatedButton(
                         onPressed: isLoading
                             ? null
-                            : _submitFeedback, // Eğer yükleniyorsa buton devre dışı
+                            : _submitFeedback,
                         child: isLoading
                             ? CircularProgressIndicator(
                                 valueColor: AlwaysStoppedAnimation<Color>(
                                     AppTheme.TextColorWhite),
-                              ) // Yüklenme simgesi
+                              )
                             : Text(
                                 'Send Feedback',
                                 style:

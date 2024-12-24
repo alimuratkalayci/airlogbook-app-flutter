@@ -17,7 +17,7 @@ class FlightDetailLoaded extends FlightState {
   FlightDetailLoaded(this.flightDetails);
 }
 
-class FlightDeleted extends FlightState {} // Yeni durum
+class FlightDeleted extends FlightState {}
 
 class FlightError extends FlightState {
   final String error;

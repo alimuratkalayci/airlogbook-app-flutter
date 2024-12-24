@@ -25,9 +25,7 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
 
   Future<void> _deleteAccount() async {
     try {
-      await _deleteUserData();
-
-      await _auth.currentUser?.delete();
+      await _auth.currentUser!.delete();
 
       await _auth.signOut();
 
@@ -56,7 +54,7 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
         print('User data deleted successfully.');
       } catch (e) {
         print('Failed to delete user data: $e');
-        throw e; // Hata durumu için fırlat
+        throw e;
       }
     } else {
       print('No user is currently logged in.');
@@ -145,7 +143,12 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
               children: [
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: _isButtonEnabled ? _deleteAccount : null,
+                    onPressed: _isButtonEnabled
+                        ? () async {
+                      await _deleteUserData();
+                      await _deleteAccount();
+                    }
+                        : null,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.AccentColor,
                       shape: RoundedRectangleBorder(
@@ -157,6 +160,7 @@ class _DeleteAccountPageState extends State<DeleteAccountPage> {
                       style: TextStyle(color: AppTheme.TextColorWhite),
                     ),
                   ),
+
                 ),
               ],
             ),

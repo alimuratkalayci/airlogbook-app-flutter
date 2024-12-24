@@ -87,7 +87,7 @@ class FlightCubit extends Cubit<FlightState> {
 
   void updateUserId() {
     userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-    fetchFlights(); // Yeni kullanıcı ile uçuşları tekrar getir
+    fetchFlights();
   }
 
 }

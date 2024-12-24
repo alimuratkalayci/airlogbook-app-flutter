@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart'; // Lottie kütüphanesini import ettik
+import 'package:lottie/lottie.dart';
 import 'weather_model.dart';
 import 'package:coin_go/theme/theme.dart';
 
@@ -15,10 +15,8 @@ class WeatherCard extends StatefulWidget {
 class _WeatherCardState extends State<WeatherCard> {
   @override
   Widget build(BuildContext context) {
-    // Hava durumuna göre animasyon URL'sini seçiyoruz
     String animationUrl;
 
-    // Hava durumu ana türüne göre animasyon URL'si seçimi
     switch (widget.weather.weather.first.main.toLowerCase()) {
       case 'clear':
         animationUrl =

@@ -35,7 +35,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     }
 
     try {
-      // Re-authenticate the user
       AuthCredential credential = EmailAuthProvider.credential(
         email: user.email!,
         password: currentPassword,
@@ -43,7 +42,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
       await user.reauthenticateWithCredential(credential);
 
-      // Change password
       await user.updatePassword(newPassword);
 
       showCustomModal(context: context, title: 'Success', message: 'Password changed successfully');

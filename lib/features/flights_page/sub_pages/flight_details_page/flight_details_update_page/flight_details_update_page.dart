@@ -221,7 +221,7 @@ class _FlightDetailsUpdatePageState extends State<FlightDetailsUpdatePage> {
           ),
           maxLines: null,
           onChanged: (newValue) {
-            flightData[field] = newValue; // Directly update the map
+            flightData[field] = newValue;
           },
         ),
       ),
@@ -237,11 +237,9 @@ class _FlightDetailsUpdatePageState extends State<FlightDetailsUpdatePage> {
           .doc(widget.flightId)
           .update(flightData);
 
-      // Başarıyla güncellendikten sonra başarı mesajı göster
 
 
 
-      // Güncelleme işlemi başarılıysa 'updated' değeriyle geri dön
       Navigator.pop(context, 'updated');
       showCustomModal(
         context: context,
@@ -249,7 +247,6 @@ class _FlightDetailsUpdatePageState extends State<FlightDetailsUpdatePage> {
         message: 'Your flight details have been updated successfully!',
       );
     } catch (e) {
-      // Hata durumunda kullanıcıya bilgi ver ve 'error' değeriyle geri dön
 
       Navigator.pop(context, 'error');
       showCustomModal(

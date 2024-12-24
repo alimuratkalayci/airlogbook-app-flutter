@@ -6,14 +6,14 @@ import '../../../theme/theme.dart';
 Future<String?> showDeleteConfirmationBottomSheet(BuildContext context, String flightId) {
   return showMaterialModalBottomSheet<String?>(
     context: context,
-    backgroundColor: Colors.transparent, // Modal arka plan rengini siyah yap
+    backgroundColor: Colors.transparent,
     builder: (context) {
       return Container(
         padding: EdgeInsets.all(16.0),
         decoration: BoxDecoration(
-          color: AppTheme.BackgroundColor, // Modal içeriği rengini beyaz yap
+          color: AppTheme.BackgroundColor,
           borderRadius: BorderRadius.vertical(
-            top: Radius.circular(16.0), // Üst köşeleri yuvarlat
+            top: Radius.circular(16.0),
           ),
         ),
         child: Column(
@@ -35,7 +35,7 @@ Future<String?> showDeleteConfirmationBottomSheet(BuildContext context, String f
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pop('deleted'); // 'deleted' döndür
+                      Navigator.of(context).pop('deleted');
                     },
                     child: Text('Yes',style: TextStyle(color: AppTheme.TextColorWhite),),
                     style: ElevatedButton.styleFrom(
@@ -53,7 +53,7 @@ Future<String?> showDeleteConfirmationBottomSheet(BuildContext context, String f
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pop(); // Modal'ı kapat
+                      Navigator.of(context).pop();
                     },
                     child: Text('No',style: TextStyle(color: AppTheme.TextColorWhite),),
                     style: ElevatedButton.styleFrom(

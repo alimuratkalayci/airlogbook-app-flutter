@@ -84,7 +84,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         userLocation = userDoc['location'];
       });
-      fetchWeatherData(); // Konumu aldıktan sonra hava durumu verisini al
+      fetchWeatherData();
     }
   }
 

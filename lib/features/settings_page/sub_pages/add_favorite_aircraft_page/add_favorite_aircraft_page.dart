@@ -111,34 +111,34 @@ class _AddFavoriteAircraftPageState extends State<AddFavoriteAircraftPage> {
                   controller: _searchController,
                   decoration: InputDecoration(
                     labelText: 'Search Aircraft Types',
-                    labelStyle: TextStyle(color: AppTheme.AccentColor), // Etiket rengi
+                    labelStyle: TextStyle(color: AppTheme.AccentColor),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide(color: AppTheme.AccentColor,width: 2), // Kenarlık rengi
+                      borderSide: BorderSide(color: AppTheme.AccentColor,width: 2),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide(color: AppTheme.AccentColor,width: 2), // Etkin kenarlık rengi
+                      borderSide: BorderSide(color: AppTheme.AccentColor,width: 2),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
-                      borderSide: BorderSide(color: AppTheme.AccentColor,width: 2), // Odaklanılmış kenarlık rengi
+                      borderSide: BorderSide(color: AppTheme.AccentColor,width: 2),
                     ),
-                    fillColor: AppTheme.BackgroundColor, // Arka plan rengi
+                    fillColor: AppTheme.BackgroundColor,
                     filled: true,
                   ),
-                  style: TextStyle(color: AppTheme.AccentColor), // Metin rengi
+                  style: TextStyle(color: AppTheme.AccentColor),
                   onChanged: (value) {
                     _filterAircraftTypes(value);
                   },
                 ),
                 SizedBox(height: 16,),
                 SingleChildScrollView(
-                  scrollDirection: Axis.horizontal, // Yatay kaydırma yönü
+                  scrollDirection: Axis.horizontal,
                   child: Row(
                     children: _selectedAircraftTypes.map((type) {
                       return Padding(
-                        padding: const EdgeInsets.only(right: 8.0), // Sağ boşluk için padding
+                        padding: const EdgeInsets.only(right: 8.0),
                         child: Chip(
                           deleteIconColor: AppTheme.TextColorWhite,
                           backgroundColor: AppTheme.AccentColor,
@@ -169,14 +169,14 @@ class _AddFavoriteAircraftPageState extends State<AddFavoriteAircraftPage> {
                 return Padding(
                   padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
                   child: ListTile(
-                    tileColor: AppTheme.BackgroundColor, // Arka plan rengi
+                    tileColor: AppTheme.BackgroundColor,
                     leading: Icon(Icons.airplanemode_active, color: AppTheme.AccentColor,size: 36,), // İkon
                     title: Text(
                       name,
                       style: TextStyle(
-                        color: AppTheme.AccentColor, // Yazı rengi
-                        fontSize: 18, // Yazı boyutu
-                        fontWeight: FontWeight.bold, // Yazı kalınlığı
+                        color: AppTheme.AccentColor,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     trailing: Icon(
@@ -194,7 +194,7 @@ class _AddFavoriteAircraftPageState extends State<AddFavoriteAircraftPage> {
                     contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8), // İç boşluk
                     shape: RoundedRectangleBorder(
                       side: BorderSide(color: AppTheme.AccentColor,width: 2),
-                      borderRadius: BorderRadius.circular(16), // Köşe yuvarlatma
+                      borderRadius: BorderRadius.circular(16),
                     ),
                   ),
                 );

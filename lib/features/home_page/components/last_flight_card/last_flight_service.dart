@@ -20,7 +20,6 @@ class LastFlightService {
           .get();
 
       if (snapshot.docs.isNotEmpty) {
-        // Eğer doküman varsa, ilkini döndür
         return snapshot.docs.first;
       } else {
         print("No flights found.");

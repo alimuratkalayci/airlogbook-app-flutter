@@ -14,7 +14,6 @@ class AuthCubit extends Cubit<AuthState> {
         _firestore = FirebaseFirestore.instance,
         super(AuthInitial());
 
-  // Sign In Method
   Future<void> signIn(BuildContext context, String email, String password) async {
     emit(AuthLoading());
     try {
@@ -39,11 +38,9 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  // Sign Up Method
   Future<void> signUp(BuildContext context, String email, String password, String username) async {
     emit(AuthLoading());
     try {
-      // Firebase Authentication ile kullanıcı kaydı
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
@@ -51,7 +48,6 @@ class AuthCubit extends Cubit<AuthState> {
 
       User? user = userCredential.user;
       if (user != null) {
-        // Firestore'da kullanıcı bilgilerini sakla
         await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
           'username': username,
           'email': email,
@@ -60,10 +56,8 @@ class AuthCubit extends Cubit<AuthState> {
           'subscription': 'no'
         });
 
-        // Kullanıcıya email doğrulama göndermeyi unutma
         await user.sendEmailVerification();
 
-        // Kullanıcıyı çıkış yaptır
         await FirebaseAuth.instance.signOut();
 
         showCustomModal(context: context, title: 'Registration Successful', message: 'Please verify your email address.');
@@ -73,7 +67,6 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  // Reset Password Method
   Future<void> resetPassword(BuildContext context, String email) async {
     emit(AuthLoading());
     try {
@@ -85,7 +78,6 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  // Sign Out Method
   Future<void> signOut(BuildContext context) async {
     emit(AuthLoading());
     try {
@@ -98,7 +90,6 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  // Check Email Verification
   Future<void> checkEmailVerification(BuildContext context) async {
     emit(AuthLoading());
     try {

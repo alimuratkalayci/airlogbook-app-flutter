@@ -455,7 +455,7 @@ class _AddFlightPageState extends State<AddFlightPage> {
                                                   BorderRadius.circular(8.0),
                                               borderSide: BorderSide(
                                                 color: Colors.white,
-                                                width: 2.0, //
+                                                width: 2.0,
                                               ),
                                             ),
                                             enabledBorder: OutlineInputBorder(
